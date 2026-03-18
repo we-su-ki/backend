@@ -6,8 +6,6 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -28,14 +26,10 @@ public class Cocktail {
     private String recipe;
 
     @ElementCollection
-    @CollectionTable(name = "cocktail_tags", joinColumns = @JoinColumn(name = "cocktail_id"))
-    private List<CocktailTag> cocktailTags = new ArrayList<>();
+    @CollectionTable(name = "cocktail_sensory_descriptors", joinColumns = @JoinColumn(name = "cocktail_id"))
+    private List<DescriptorCode> sensoryDescriptors = new ArrayList<>();
 
-    public Map<String, List<String>> getTags() {
-        return cocktailTags.stream()
-                .collect(Collectors.groupingBy(
-                        CocktailTag::category,
-                        Collectors.mapping(CocktailTag::tag, Collectors.toList())
-                ));
+    public SensoryDescriptors getSensoryDescriptors() {
+        return new SensoryDescriptors(sensoryDescriptors);
     }
 }

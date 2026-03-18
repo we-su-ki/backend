@@ -22,87 +22,87 @@ class CocktailRecommendationRequestTest {
     @BeforeEach
     void setUp() {
         objectMapper = new ObjectMapper();
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
+        var validatorFactory = Validation.buildDefaultValidatorFactory();
+        validator = validatorFactory.getValidator();
     }
 
     @Test
     @DisplayName("JSON을 DTO로 역직렬화")
     void shouldDeserializeFromJson() throws Exception {
         // given
-        String json = "{\"query\":\"달달한 칵테일 추천해줘\"}";
+        var jsonString = "{\"query\":\"달달한 칵테일 추천해줘\"}";
 
         // when
-        CocktailRecommendationRequest request = objectMapper.readValue(json, CocktailRecommendationRequest.class);
+        var deserializedRequest = objectMapper.readValue(jsonString, CocktailRecommendationRequest.class);
 
         // then
-        assertThat(request).isNotNull();
-        assertThat(request.query()).isEqualTo("달달한 칵테일 추천해줘");
+        assertThat(deserializedRequest).isNotNull();
+        assertThat(deserializedRequest.query()).isEqualTo("달달한 칵테일 추천해줘");
     }
 
     @Test
     @DisplayName("DTO를 JSON으로 직렬화")
     void shouldSerializeToJson() throws Exception {
         // given
-        CocktailRecommendationRequest request = new CocktailRecommendationRequest("달달한 칵테일 추천해줘");
+        var requestDto = new CocktailRecommendationRequest("달달한 칵테일 추천해줘");
 
         // when
-        String json = objectMapper.writeValueAsString(request);
+        var serializedJson = objectMapper.writeValueAsString(requestDto);
 
         // then
-        assertThat(json).contains("\"query\"");
-        assertThat(json).contains("달달한 칵테일 추천해줘");
+        assertThat(serializedJson).contains("\"query\"");
+        assertThat(serializedJson).contains("달달한 칵테일 추천해줘");
     }
 
     @Test
     @DisplayName("query 필드가 null이면 검증 실패")
     void shouldFailValidationWhenQueryIsNull() {
         // given
-        CocktailRecommendationRequest request = new CocktailRecommendationRequest(null);
+        var invalidRequest = new CocktailRecommendationRequest(null);
 
         // when
-        Set<ConstraintViolation<CocktailRecommendationRequest>> violations = validator.validate(request);
+        var validationViolations = validator.validate(invalidRequest);
 
         // then
-        assertThat(violations).isNotEmpty();
+        assertThat(validationViolations).isNotEmpty();
     }
 
     @Test
     @DisplayName("query 필드가 빈 문자열이면 검증 실패")
     void shouldFailValidationWhenQueryIsBlank() {
         // given
-        CocktailRecommendationRequest request = new CocktailRecommendationRequest("");
+        var invalidRequest = new CocktailRecommendationRequest("");
 
         // when
-        Set<ConstraintViolation<CocktailRecommendationRequest>> violations = validator.validate(request);
+        var validationViolations = validator.validate(invalidRequest);
 
         // then
-        assertThat(violations).isNotEmpty();
+        assertThat(validationViolations).isNotEmpty();
     }
 
     @Test
     @DisplayName("query 필드가 공백만 있으면 검증 실패")
     void shouldFailValidationWhenQueryIsWhitespace() {
         // given
-        CocktailRecommendationRequest request = new CocktailRecommendationRequest("   ");
+        var invalidRequest = new CocktailRecommendationRequest("   ");
 
         // when
-        Set<ConstraintViolation<CocktailRecommendationRequest>> violations = validator.validate(request);
+        var validationViolations = validator.validate(invalidRequest);
 
         // then
-        assertThat(violations).isNotEmpty();
+        assertThat(validationViolations).isNotEmpty();
     }
 
     @Test
     @DisplayName("정상적인 query 값이면 검증 통과")
     void shouldPassValidationWhenQueryIsValid() {
         // given
-        CocktailRecommendationRequest request = new CocktailRecommendationRequest("달달한 칵테일 추천해줘");
+        var validRequest = new CocktailRecommendationRequest("달달한 칵테일 추천해줘");
 
         // when
-        Set<ConstraintViolation<CocktailRecommendationRequest>> violations = validator.validate(request);
+        var validationViolations = validator.validate(validRequest);
 
         // then
-        assertThat(violations).isEmpty();
+        assertThat(validationViolations).isEmpty();
     }
 }

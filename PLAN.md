@@ -15,15 +15,20 @@ cocktail-be/
 │   │   │   │       ├── CocktailRecommendationRequest.java
 │   │   │   │       ├── CocktailRecommendationResponse.java
 │   │   │   │       ├── CocktailDto.java
-│   │   │   │       ├── AnalyzedKeywords.java
 │   │   │   │       └── ErrorResponse.java
-│   │   │   ├── service/                        # 비즈니스 로직
-│   │   │   │   ├── CocktailRecommendationService.java
-│   │   │   │   ├── KeywordAnalyzer.java
-│   │   │   │   └── CocktailMatcher.java
+│   │   │   ├── service/
+│   │   │   │   └── KeywordAnalyzer.java        # 서비스 인터페이스
+│   │   │   ├── infrastructure/
+│   │   │   │   └── config_based_analyzer/
+│   │   │   │       ├── ConfigBasedKeywordAnalyzer.java
+│   │   │   │       └── DescriptorDefinition.java
 │   │   │   ├── domain/                         # 도메인 모델
 │   │   │   │   ├── Cocktail.java
-│   │   │   │   ├── Ingredient.java             # record
+│   │   │   │   ├── Ingredient.java
+│   │   │   │   ├── DescriptorCode.java
+│   │   │   │   ├── SensoryAxis.java
+│   │   │   │   └── SensoryDescriptors.java
+│   │   │   ├── repository/
 │   │   │   │   └── CocktailRepository.java
 │   │   │   ├── exception/                      # 예외 처리
 │   │   │   │   ├── GlobalExceptionHandler.java
@@ -32,12 +37,14 @@ cocktail-be/
 │   │   │       └── WebConfig.java
 │   │   └── resources/
 │   │       ├── application.properties
-│   │       └── data/
-│   │           └── cocktails.json
+│   │       ├── keywords.yml
+│   │       └── data.sql
 │   └── test/
 │       └── java/com/cock/cocktail/
 │           ├── web/                            # 웹 계층 테스트
-│           ├── service/                        # 서비스 계층 테스트
+│           ├── application/                    # 서비스 인터페이스 테스트
+│           ├── infrastructure/config_based_analyzer/
+│           ├── domain/
 │           └── CocktailBeApplicationTests.java
 ├── build.gradle
 └── README.md
@@ -46,8 +53,9 @@ cocktail-be/
 **구조 설명**
 - `web/`: 웹 계층 (Controller, DTO)
 - `web/dto/`: 웹 요청/응답 DTO - Java record로 구현
-- `service/`: 비즈니스 로직
-- `domain/`: 도메인 모델 - Ingredient는 record, Cocktail은 일반 클래스
+- `service/`: 서비스 인터페이스
+- `infrastructure/config_based_analyzer/`: 설정 기반 키워드 분석기 구현
+- `domain/`: 도메인 모델 (Cocktail, DescriptorCode, SensoryDescriptors)
 - `exception/`: 예외 처리
 - `config/`: 설정
 
@@ -100,7 +108,6 @@ cocktail-be/
   - CocktailRecommendationRequest (web/dto)
   - CocktailRecommendationResponse (web/dto)
   - CocktailDto (web/dto)
-  - AnalyzedKeywords (web/dto)
   - ErrorResponse (web/dto)
 - [x] 도메인 모델 구현
   - Ingredient (domain) - record
@@ -129,64 +136,173 @@ cocktail-be/
 
 **테스트 작성 (TDD)**
 - [ ] CocktailRepository 테스트
-  - JSON 파일 로드 테스트
+  - SQL 초기 데이터 로드 테스트
   - 전체 칵테일 조회 테스트
   - ID로 칵테일 조회 테스트
-  - 태그로 칵테일 검색 테스트
+  - descriptor code 기반 검색 테스트
 
 **구현**
 - [ ] 칵테일 데이터 구조 설계
-  - ID, 이름, 재료, 레시피, 태그
-- [ ] 초기 칵테일 데이터 작성 (JSON)
+  - ID, 이름, 재료, 레시피, sensory descriptor
+- [ ] 초기 칵테일 데이터 작성 (SQL)
   - 10~20개 정도의 칵테일
-  - 다양한 맛/향/질감 태그 포함
-- [ ] 칵테일 데이터 로더 구현
-  - JSON 파일에서 데이터 읽기
-  - 메모리에 로드
-  - CocktailRepository 클래스 구현
+  - descriptor code(`sweet`, `fruity` 등) 저장
+- [ ] JPA + SQL 초기화 연동
+  - `data.sql`로 초기 데이터 로드
+  - `CocktailRepository`에서 sensory descriptor 검색 지원
 
 **완료 조건**
-- ✅ cocktails.json 파일 생성 (10~20개)
+- ✅ data.sql 파일 생성 (10~20개)
 - ✅ CocktailRepository 구현 완료
 - ✅ 모든 Repository 테스트 통과
 
 **예상 산출물**
-- cocktails.json 파일
+- data.sql 파일
 - CocktailRepository.java
 - CocktailRepositoryTest.java
 - 10~20개 칵테일 데이터
 
 **칵테일 데이터 예시**
-```json
-{
-  "id": "mojito",
-  "name": "모히또",
-  "ingredients": [
-    {"name": "화이트 럼", "amount": "50ml"},
-    {"name": "라임 주스", "amount": "20ml"},
-    {"name": "민트 잎", "amount": "10장"},
-    {"name": "설탕", "amount": "2티스푼"},
-    {"name": "탄산수", "amount": "100ml"}
-  ],
-  "recipe": [
-    "글라스에 민트 잎과 설탕을 넣고 으깬다",
-    "라임 주스와 럼을 추가한다",
-    "얼음을 채우고 탄산수를 부은 뒤 가볍게 섞는다"
-  ],
-  "tags": {
-    "taste": ["상큼한"],
-    "texture": ["깔끔한"],
-    "carbonation": ["톡 쏘는"],
-    "flavor": ["민트", "시트러스"],
-    "mood": ["여름에 어울리는", "가볍게 마시기 좋은"]
-  }
-}
+```sql
+INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (1, 'TASTE', 'sweet');
+INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (1, 'AROMA', 'fruity');
+INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (1, 'SENSATION', 'carbonated');
 ```
 
 ---
 
+### Phase 3.5: Sensory Descriptor 모델링 (MVP 단순화)
+**목표**: 감각 속성 체계를 도메인 모델로 정립
+
+**배경**
+- 맛 인지는 단일 축이 아닌 여러 감각 차원의 결합
+- TASTE(기본미), AROMA(향), MOUTHFEEL(질감), SENSATION(자극감), IMPRESSION(인상)
+- 각 축은 측정 방식과 확장 방식이 다름
+- sweet(강도), lime(계층), smoky(강도), tingling(존재), refreshing(복합 인상)
+
+**감각 축 분류 원칙**
+```
+TASTE (기본미)
+- sweet, sour, bitter, salty
+- 값 타입: SCALAR (강도 1-5)
+
+AROMA (향)
+- fruity > citrus > lime
+- fruity > berry > strawberry
+- smoky, herbal
+- 값 타입: BINARY (존재) 또는 TAGGED (primary/secondary/hint)
+- 계층 구조 지원 필요
+
+MOUTHFEEL (질감)
+- smooth, creamy, light, dry
+- 값 타입: BINARY 또는 SCALAR
+
+SENSATION (자극감)
+- carbonated, tingling, warming, cooling
+- 값 타입: BINARY 또는 SCALAR
+- 주의: "톡 쏘는"은 여러 후보로 매핑 가능 (carbonated/tingling/spicy)
+
+IMPRESSION (인상/분위기)
+- refreshing, elegant, easy_to_drink
+- 감각 데이터로 직접 환원 불가
+- 복합 인상: refreshing = citrus + cooling + low-sweet + carbonation
+```
+
+**MVP 단순화 범위**
+- ✅ DescriptorCode 값 객체 (axis + code)
+- ✅ 설정 파일 기반 descriptor 관리 (keywords.yml)
+- ✅ Cocktail.sensoryDescriptors(List<DescriptorCode>)로 연결
+- ⏸ 강도(intensity) 값: 나중 구현
+- ⏸ 역할(PRIMARY/SECONDARY/HINT): 나중 구현
+- ⏸ 사용자 쿼리 다중 해석: 나중 구현
+
+**테스트 작성 (TDD)**
+- [ ] Descriptor 모델 테스트
+  - axis별 descriptor 조회 테스트
+  - 계층 구조 (parent-child) 테스트
+  - 동의어 매칭 테스트
+- [ ] CocktailDescriptor 연결 테스트
+  - 칵테일별 descriptor 조회 테스트
+  - descriptor로 칵테일 검색 테스트
+
+**구현**
+- [ ] DescriptorCode 도메인 모델
+  - axis, value(code)
+  - axis: TASTE, AROMA, MOUTHFEEL, SENSATION, IMPRESSION
+- [ ] 키워드 동의어 모델 (설정 파일)
+  - code + synonym 매핑
+- [ ] keywords.yml 재구성
+  - axis별로 분리
+  - 계층 구조 표현
+- [ ] ConfigBasedKeywordAnalyzer 수정
+  - axis별 descriptor 추출
+  - 계층 구조 고려한 매칭
+
+**완료 조건**
+- ✅ Descriptor 모델 구현 완료
+- ✅ keywords.yml이 axis별로 재구성됨
+- ✅ 계층 구조가 반영됨 (예: fruity > citrus > lime)
+- ✅ ConfigBasedKeywordAnalyzer가 axis 분리 지원
+- ✅ 모든 테스트 통과
+
+**예상 산출물**
+- DescriptorCode.java (도메인 모델)
+- SensoryAxis.java (Enum: TASTE, AROMA, ...)
+- keywords.yml (재구성)
+- ConfigBasedKeywordAnalyzer.java (수정)
+- DescriptorTest.java
+
+**데이터 구조 예시**
+```yaml
+# keywords.yml
+descriptors:
+  taste:
+    - code: "sweet"
+      label: "달달한"
+      synonyms: ["달달한", "달콤한", "달달", "달콤", "단"]
+    - code: "sour"
+      label: "새콤한"
+      synonyms: ["새콤한", "시큼한", "신"]
+
+  aroma:
+    - code: "fruity"
+      label: "과일향"
+      synonyms: ["과일향", "과일맛"]
+      children:
+        - code: "citrus"
+          label: "시트러스"
+          synonyms: ["시트러스", "감귤"]
+          children:
+            - code: "lime"
+              label: "라임"
+              synonyms: ["라임"]
+    - code: "smoky"
+      label: "스모키"
+      synonyms: ["스모키", "훈연향"]
+
+  sensation:
+    - code: "carbonated"
+      label: "톡 쏘는"
+      synonyms: ["톡 쏘는", "톡쏘는", "탄산"]
+      note: "사용자 '톡 쏘는' 입력 시 carbonated/tingling 모두 후보"
+
+  impression:
+    - code: "refreshing"
+      label: "상쾌한"
+      note: "복합 인상: citrus + cooling + carbonation 조합으로 해석"
+```
+
+**설계 원칙 (객체지향)**
+- 감각 축을 1급 개념으로 승격
+- sweet, lime, smoky를 같은 타입으로 취급하지 않음
+- 계층 구조로 상위/하위 개념 보존
+- 원문 표현과 정규화된 개념 분리
+- descriptor ontology 중심 설계
+
+---
+
 ### Phase 4: 키워드 분석기 구현
-**목표**: 사용자 입력에서 키워드 추출
+**목표**: 사용자 입력에서 키워드 추출 (Descriptor 기반)
 
 **테스트 작성 (TDD)**
 - [ ] KeywordAnalyzer 단위 테스트
@@ -210,7 +326,7 @@ cocktail-be/
 - [ ] 키워드 매칭 로직 구현
   - 문자열 포함 여부 체크
   - 동의어 처리
-- [ ] 분석 결과 AnalyzedKeywords 객체로 반환
+- [ ] 분석 결과 SensoryDescriptors 객체로 반환
 
 **완료 조건**
 - ✅ KeywordAnalyzer 구현 완료
@@ -227,18 +343,18 @@ cocktail-be/
 입력: "달달하고 톡 쏘는 과일맛이 나는 부드러운 칵테일 추천해줘"
 
 1. 키워드 사전과 비교
-   - "달달하고" → taste: ["달달한"]
-   - "톡 쏘는" → carbonation: ["톡 쏘는"]
-   - "과일맛" → flavor: ["과일맛"]
-   - "부드러운" → texture: ["부드러운"]
+   - "달달하고" → TASTE: ["sweet"]
+   - "톡 쏘는" → SENSATION: ["carbonated"]
+   - "과일맛" → AROMA: ["fruity"]
+   - "부드러운" → MOUTHFEEL: ["smooth"]
 
 2. 결과 반환
-   AnalyzedKeywords {
-     taste: ["달달한"],
-     texture: ["부드러운"],
-     carbonation: ["톡 쏘는"],
-     flavor: ["과일맛"],
-     mood: []
+   SensoryDescriptors {
+     taste: ["sweet"],
+     aroma: ["fruity"],
+     mouthfeel: ["smooth"],
+     sensation: ["carbonated"],
+     impression: []
    }
 ```
 

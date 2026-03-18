@@ -1,0 +1,102 @@
+# Sensory Descriptor 정의
+# 감각 축(axis)별로 descriptor를 계층 구조로 관리
+
+taste:
+  - code: "sweet"
+    label: "달달한"
+    synonyms: ["달달한", "달콤한", "달달", "달콤", "단", "달아"]
+  - code: "sour"
+    label: "새콤한"
+    synonyms: ["새콤한", "시큼한", "새콤", "시큼", "신"]
+  - code: "bitter"
+    label: "쓴"
+    synonyms: ["쓴", "쓴맛"]
+
+aroma:
+  - code: "fruity"
+    label: "과일향"
+    synonyms: ["과일향", "과일맛", "과일"]
+    children:
+      - code: "citrus"
+        label: "시트러스"
+        synonyms: ["시트러스", "감귤"]
+        children:
+          - code: "lime"
+            label: "라임"
+            synonyms: ["라임"]
+          - code: "lemon"
+            label: "레몬"
+            synonyms: ["레몬"]
+          - code: "orange"
+            label: "오렌지"
+            synonyms: ["오렌지"]
+      - code: "berry"
+        label: "베리"
+        synonyms: ["베리"]
+        children:
+          - code: "strawberry"
+            label: "딸기"
+            synonyms: ["딸기"]
+          - code: "blueberry"
+            label: "블루베리"
+            synonyms: ["블루베리"]
+  - code: "mint"
+    label: "민트"
+    synonyms: ["민트", "박하"]
+  - code: "coffee"
+    label: "커피"
+    synonyms: ["커피", "에스프레소"]
+  - code: "smoky"
+    label: "스모키"
+    synonyms: ["스모키", "훈연향"]
+  - code: "herbal"
+    label: "허브"
+    synonyms: ["허브"]
+  - code: "coconut"
+    label: "코코넛"
+    synonyms: ["코코넛"]
+  - code: "ginger"
+    label: "생강"
+    synonyms: ["생강"]
+
+mouthfeel:
+  - code: "smooth"
+    label: "부드러운"
+    synonyms: ["부드러운", "부드러", "부드럽"]
+  - code: "clean"
+    label: "깔끔한"
+    synonyms: ["깔끔한", "깔끔"]
+  - code: "heavy"
+    label: "묵직한"
+    synonyms: ["묵직한", "묵직"]
+
+sensation:
+  - code: "carbonated"
+    label: "톡 쏘는"
+    synonyms: ["톡 쏘는", "톡쏘는", "탄산", "톡소는"]
+  - code: "mild"
+    label: "순한"
+    synonyms: ["순한", "순"]
+  - code: "strong"
+    label: "강한"
+    synonyms: ["강한", "강"]
+
+impression:
+  - code: "refreshing"
+    label: "상쾌한"
+    synonyms: ["상쾌한", "시원한"]
+  - code: "summer"
+    label: "여름에 어울리는"
+    synonyms: ["여름에 어울리는", "여름"]
+  - code: "light_drinking"
+    label: "가볍게 마시기 좋은"
+    synonyms: ["가볍게 마시기 좋은", "가벼운", "가볍게"]
+  - code: "party"
+    label: "파티용"
+    synonyms: ["파티용", "파티", "모임"]
+  - code: "romantic"
+    label: "로맨틱한"
+    synonyms: ["로맨틱한", "로맨틱", "데이트"]
+  - code: "classic"
+    label: "클래식한"
+    synonyms: ["클래식한", "클래식", "전통적"]

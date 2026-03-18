@@ -25,7 +25,9 @@ REST API (Web Layer)
 com.cock.cocktail
 ├── web/              # 웹 계층 (Controller, DTO)
 │   └── dto/          # 웹 요청/응답 DTO (record)
-├── service/          # 비즈니스 로직
+├── service/          # 서비스 인터페이스 (예: KeywordAnalyzer)
+├── infrastructure/
+│   └── config_based_analyzer/  # 설정 기반 키워드 분석기 구현
 ├── domain/           # 도메인 모델 (Cocktail, Ingredient)
 ├── exception/        # 예외 처리
 └── config/           # 설정
@@ -87,11 +89,12 @@ POST /api/v1/cocktails/recommend
       "tags": ["달콤한", "과일향", "탄산", "부드러운"]
     }
   ],
-  "analyzedKeywords": {
-    "taste": ["달달한"],
-    "texture": ["부드러운"],
-    "carbonation": ["톡 쏘는"],
-    "flavor": ["과일맛"]
+  "sensoryDescriptors": {
+    "taste": ["sweet"],
+    "aroma": ["fruity"],
+    "mouthfeel": ["smooth"],
+    "sensation": ["carbonated"],
+    "impression": []
   }
 }
 ```
@@ -109,7 +112,7 @@ POST /api/v1/cocktails/recommend
 | recommendations[].recipe               | Array  | 제조 방법 (단계별)      |
 | recommendations[].reason               | String | 추천 이유            |
 | recommendations[].tags                 | Array  | 칵테일 특징 태그        |
-| analyzedKeywords                       | Object | 분석된 키워드 (카테고리별)  |
+| sensoryDescriptors                     | Object | 분석된 descriptor code (축별) |
 
 **Response (Error - 400)**
 ```json
@@ -163,7 +166,7 @@ GET /api/v1/health
 | 필드                | 타입                  | 필수 | 설명          |
 |-------------------|---------------------|----|-------------|
 | recommendations   | Array[CocktailDto]  | O  | 추천 칵테일 목록  |
-| analyzedKeywords  | AnalyzedKeywords    | O  | 분석된 키워드    |
+| sensoryDescriptors| SensoryDescriptors  | O  | 분석된 descriptor code |
 
 ### 3.3 CocktailDto (record)
 칵테일 정보 - 웹 계층 DTO
@@ -185,16 +188,16 @@ GET /api/v1/health
 | name   | String | O  | 재료 이름 |
 | amount | String | O  | 재료 용량 |
 
-### 3.5 AnalyzedKeywords (record)
-분석된 키워드 정보 - 웹 계층 DTO
+### 3.5 SensoryDescriptors (도메인 모델)
+분석된 감각 descriptor code 정보
 
-| 필드          | 타입            | 필수 | 설명      |
-|-------------|---------------|----|---------  |
-| taste       | Array[String] | X  | 맛 키워드   |
-| texture     | Array[String] | X  | 질감 키워드  |
-| carbonation | Array[String] | X  | 자극감 키워드 |
-| flavor      | Array[String] | X  | 향 키워드   |
-| mood        | Array[String] | X  | 분위기 키워드 |
+| 필드        | 타입            | 필수 | 설명                   |
+|-----------|---------------|----|----------------------|
+| taste     | Array[String] | X  | taste 축 descriptor code |
+| aroma     | Array[String] | X  | aroma 축 descriptor code |
+| mouthfeel | Array[String] | X  | mouthfeel 축 descriptor code |
+| sensation | Array[String] | X  | sensation 축 descriptor code |
+| impression| Array[String] | X  | impression 축 descriptor code |
 
 ### 3.6 ErrorResponse (record)
 에러 응답 - 웹 계층 DTO
@@ -226,12 +229,12 @@ GET /api/v1/health
 ### 4.3 모델 출력
 ```
 {
-  "analyzedKeywords": {
-    "taste": ["달달한"],
-    "texture": ["부드러운"],
-    "carbonation": ["톡 쏘는"],
-    "flavor": ["과일맛"],
-    "mood": []
+  "sensoryDescriptors": {
+    "taste": ["sweet"],
+    "aroma": ["fruity"],
+    "mouthfeel": ["smooth"],
+    "sensation": ["carbonated"],
+    "impression": []
   },
   "recommendations": [
     {
@@ -247,12 +250,12 @@ GET /api/v1/health
 
 | 필드                                | 타입     | 설명             |
 |-----------------------------------|--------|----------------|
-| analyzedKeywords                  | Object | 분석된 키워드 정보    |
-| analyzedKeywords.taste            | Array  | 맛 키워드 목록      |
-| analyzedKeywords.texture          | Array  | 질감 키워드 목록     |
-| analyzedKeywords.carbonation      | Array  | 자극감 키워드 목록    |
-| analyzedKeywords.flavor           | Array  | 향 키워드 목록      |
-| analyzedKeywords.mood             | Array  | 분위기 키워드 목록    |
+| sensoryDescriptors                | Object | 분석된 descriptor code 정보 |
+| sensoryDescriptors.taste          | Array  | taste code 목록 |
+| sensoryDescriptors.aroma          | Array  | aroma code 목록 |
+| sensoryDescriptors.mouthfeel      | Array  | mouthfeel code 목록 |
+| sensoryDescriptors.sensation      | Array  | sensation code 목록 |
+| sensoryDescriptors.impression     | Array  | impression code 목록 |
 | recommendations                   | Array  | 추천 칵테일 목록     |
 | recommendations[].cocktailId      | String | 칵테일 ID         |
 | recommendations[].cocktailName    | String | 칵테일 이름        |
@@ -299,7 +302,7 @@ GET /api/v1/health
 
 2. 키워드 분석
    - 추천 모델에 사용자 쿼리 전달
-   - 맛, 질감, 향, 분위기 키워드 추출
+   - 감각 축별 descriptor code 추출 (taste/aroma/mouthfeel/sensation/impression)
 
 3. 칵테일 매칭
    - 분석된 키워드 기반으로 칵테일 검색
@@ -311,7 +314,7 @@ GET /api/v1/health
    - 재료, 제조법, 추천 이유 생성
 
 5. 응답 생성
-   - 추천 칵테일 목록과 분석된 키워드 반환
+   - 추천 칵테일 목록과 분석된 descriptor code 반환
 ```
 
 ## 6. 에러 처리

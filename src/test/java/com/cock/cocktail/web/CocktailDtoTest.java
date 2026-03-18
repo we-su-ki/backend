@@ -25,7 +25,7 @@ class CocktailDtoTest {
     @DisplayName("JSON을 CocktailDto로 역직렬화")
     void shouldDeserializeFromJson() throws Exception {
         // given
-        String json = """
+        var jsonString = """
                 {
                     "id": 1,
                     "name": "모히또",
@@ -43,24 +43,24 @@ class CocktailDtoTest {
                 """;
 
         // when
-        CocktailDto cocktail = objectMapper.readValue(json, CocktailDto.class);
+        var deserializedCocktail = objectMapper.readValue(jsonString, CocktailDto.class);
 
         // then
-        assertThat(cocktail).isNotNull();
-        assertThat(cocktail.id()).isEqualTo(1L);
-        assertThat(cocktail.name()).isEqualTo("모히또");
-        assertThat(cocktail.ingredients()).hasSize(2);
-        assertThat(cocktail.recipe()).contains("얼음을 넣는다");
-        assertThat(cocktail.reason()).isEqualTo("상큼한 맛이 어울립니다");
-        assertThat(cocktail.tags()).hasSize(2);
-        assertThat(cocktail.tags().get("taste")).contains("상큼한");
+        assertThat(deserializedCocktail).isNotNull();
+        assertThat(deserializedCocktail.id()).isEqualTo(1L);
+        assertThat(deserializedCocktail.name()).isEqualTo("모히또");
+        assertThat(deserializedCocktail.ingredients()).hasSize(2);
+        assertThat(deserializedCocktail.recipe()).contains("얼음을 넣는다");
+        assertThat(deserializedCocktail.reason()).isEqualTo("상큼한 맛이 어울립니다");
+        assertThat(deserializedCocktail.tags()).hasSize(2);
+        assertThat(deserializedCocktail.tags().get("taste")).contains("상큼한");
     }
 
     @Test
     @DisplayName("CocktailDto를 JSON으로 직렬화")
     void shouldSerializeToJson() throws Exception {
         // given
-        CocktailDto cocktail = new CocktailDto(
+        var cocktailDto = new CocktailDto(
                 1L,
                 "모히또",
                 List.of(
@@ -76,14 +76,14 @@ class CocktailDtoTest {
         );
 
         // when
-        String json = objectMapper.writeValueAsString(cocktail);
+        var serializedJson = objectMapper.writeValueAsString(cocktailDto);
 
         // then
-        assertThat(json).contains("\"id\":1");
-        assertThat(json).contains("\"name\":\"모히또\"");
-        assertThat(json).contains("\"ingredients\"");
-        assertThat(json).contains("\"recipe\"");
-        assertThat(json).contains("\"reason\"");
-        assertThat(json).contains("\"tags\"");
+        assertThat(serializedJson).contains("\"id\":1");
+        assertThat(serializedJson).contains("\"name\":\"모히또\"");
+        assertThat(serializedJson).contains("\"ingredients\"");
+        assertThat(serializedJson).contains("\"recipe\"");
+        assertThat(serializedJson).contains("\"reason\"");
+        assertThat(serializedJson).contains("\"tags\"");
     }
 }
