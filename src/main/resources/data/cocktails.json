@@ -1,0 +1,329 @@
+[
+  {
+    "id": "mojito",
+    "name": "모히또",
+    "ingredients": [
+      {"name": "화이트 럼", "amount": "50ml"},
+      {"name": "라임 주스", "amount": "20ml"},
+      {"name": "민트 잎", "amount": "10장"},
+      {"name": "설탕", "amount": "2티스푼"},
+      {"name": "탄산수", "amount": "100ml"}
+    ],
+    "recipe": [
+      "글라스에 민트 잎과 설탕을 넣고 으깬다",
+      "라임 주스와 럼을 추가한다",
+      "얼음을 채우고 탄산수를 부은 뒤 가볍게 섞는다"
+    ],
+    "tags": {
+      "taste": ["상큼한"],
+      "texture": ["깔끔한"],
+      "carbonation": ["톡 쏘는"],
+      "flavor": ["민트", "시트러스"],
+      "mood": ["여름에 어울리는", "가볍게 마시기 좋은"]
+    }
+  },
+  {
+    "id": "margarita",
+    "name": "마가리타",
+    "ingredients": [
+      {"name": "데킬라", "amount": "50ml"},
+      {"name": "트리플섹", "amount": "25ml"},
+      {"name": "라임 주스", "amount": "25ml"},
+      {"name": "소금", "amount": "적당량"}
+    ],
+    "recipe": [
+      "글라스 입구에 소금을 묻힌다",
+      "셰이커에 재료와 얼음을 넣고 흔든다",
+      "준비한 글라스에 따른다"
+    ],
+    "tags": {
+      "taste": ["새콤한"],
+      "texture": ["깔끔한"],
+      "carbonation": ["순한"],
+      "flavor": ["시트러스"],
+      "mood": ["파티용"]
+    }
+  },
+  {
+    "id": "pinacolada",
+    "name": "피나콜라다",
+    "ingredients": [
+      {"name": "화이트 럼", "amount": "50ml"},
+      {"name": "파인애플 주스", "amount": "80ml"},
+      {"name": "코코넛 크림", "amount": "30ml"}
+    ],
+    "recipe": [
+      "블렌더에 모든 재료와 얼음을 넣는다",
+      "부드럽게 갈아준다",
+      "글라스에 따르고 파인애플로 장식한다"
+    ],
+    "tags": {
+      "taste": ["달달한"],
+      "texture": ["부드러운", "묵직한"],
+      "carbonation": ["순한"],
+      "flavor": ["과일향", "코코넛"],
+      "mood": ["여름에 어울리는"]
+    }
+  },
+  {
+    "id": "cosmopolitan",
+    "name": "코스모폴리탄",
+    "ingredients": [
+      {"name": "보드카", "amount": "40ml"},
+      {"name": "트리플섹", "amount": "15ml"},
+      {"name": "크랜베리 주스", "amount": "30ml"},
+      {"name": "라임 주스", "amount": "15ml"}
+    ],
+    "recipe": [
+      "셰이커에 모든 재료와 얼음을 넣는다",
+      "강하게 흔든다",
+      "마티니 글라스에 따른다"
+    ],
+    "tags": {
+      "taste": ["새콤한", "달달한"],
+      "texture": ["깔끔한"],
+      "carbonation": ["순한"],
+      "flavor": ["베리"],
+      "mood": ["로맨틱한", "파티용"]
+    }
+  },
+  {
+    "id": "whiskey_sour",
+    "name": "위스키 사워",
+    "ingredients": [
+      {"name": "버번 위스키", "amount": "50ml"},
+      {"name": "레몬 주스", "amount": "25ml"},
+      {"name": "설탕 시럽", "amount": "15ml"},
+      {"name": "달걀 흰자", "amount": "1개 분량"}
+    ],
+    "recipe": [
+      "셰이커에 재료를 넣고 먼저 드라이 셰이크한다",
+      "얼음을 넣고 다시 흔든다",
+      "글라스에 따르고 비터스를 떨어뜨린다"
+    ],
+    "tags": {
+      "taste": ["새콤한"],
+      "texture": ["부드러운"],
+      "carbonation": ["순한"],
+      "flavor": ["시트러스"],
+      "mood": ["가볍게 마시기 좋은"]
+    }
+  },
+  {
+    "id": "old_fashioned",
+    "name": "올드 패션드",
+    "ingredients": [
+      {"name": "버번 위스키", "amount": "60ml"},
+      {"name": "앙고스투라 비터스", "amount": "2대시"},
+      {"name": "설탕", "amount": "1개"},
+      {"name": "오렌지 필", "amount": "1조각"}
+    ],
+    "recipe": [
+      "글라스에 설탕과 비터스를 넣고 으깬다",
+      "위스키를 넣고 얼음을 추가한다",
+      "오렌지 필로 장식한다"
+    ],
+    "tags": {
+      "taste": ["쓴"],
+      "texture": ["묵직한"],
+      "carbonation": ["강한"],
+      "flavor": ["오렌지"],
+      "mood": ["클래식한"]
+    }
+  },
+  {
+    "id": "aperol_spritz",
+    "name": "아페롤 스프리츠",
+    "ingredients": [
+      {"name": "아페롤", "amount": "60ml"},
+      {"name": "프로세코", "amount": "90ml"},
+      {"name": "탄산수", "amount": "30ml"},
+      {"name": "오렌지 슬라이스", "amount": "1조각"}
+    ],
+    "recipe": [
+      "와인 글라스에 얼음을 채운다",
+      "아페롤, 프로세코, 탄산수 순으로 붓는다",
+      "가볍게 저어주고 오렌지로 장식한다"
+    ],
+    "tags": {
+      "taste": ["쓴", "상큼한"],
+      "texture": ["깔끔한"],
+      "carbonation": ["톡 쏘는"],
+      "flavor": ["오렌지"],
+      "mood": ["여름에 어울리는", "가볍게 마시기 좋은"]
+    }
+  },
+  {
+    "id": "espresso_martini",
+    "name": "에스프레소 마티니",
+    "ingredients": [
+      {"name": "보드카", "amount": "50ml"},
+      {"name": "커피 리큐르", "amount": "25ml"},
+      {"name": "에스프레소", "amount": "30ml"},
+      {"name": "설탕 시럽", "amount": "10ml"}
+    ],
+    "recipe": [
+      "셰이커에 모든 재료와 얼음을 넣는다",
+      "강하게 흔들어 거품을 낸다",
+      "마티니 글라스에 따른다"
+    ],
+    "tags": {
+      "taste": ["쓴", "달달한"],
+      "texture": ["부드러운"],
+      "carbonation": ["순한"],
+      "flavor": ["커피"],
+      "mood": ["파티용"]
+    }
+  },
+  {
+    "id": "gin_tonic",
+    "name": "진 토닉",
+    "ingredients": [
+      {"name": "진", "amount": "50ml"},
+      {"name": "토닉 워터", "amount": "150ml"},
+      {"name": "라임", "amount": "1조각"}
+    ],
+    "recipe": [
+      "하이볼 글라스에 얼음을 채운다",
+      "진을 붓고 토닉 워터로 채운다",
+      "라임을 짜서 넣고 가볍게 저어준다"
+    ],
+    "tags": {
+      "taste": ["쓴"],
+      "texture": ["깔끔한"],
+      "carbonation": ["톡 쏘는"],
+      "flavor": ["허브"],
+      "mood": ["가볍게 마시기 좋은"]
+    }
+  },
+  {
+    "id": "daiquiri",
+    "name": "다이키리",
+    "ingredients": [
+      {"name": "화이트 럼", "amount": "60ml"},
+      {"name": "라임 주스", "amount": "20ml"},
+      {"name": "설탕 시럽", "amount": "15ml"}
+    ],
+    "recipe": [
+      "셰이커에 모든 재료와 얼음을 넣는다",
+      "강하게 흔든다",
+      "차가운 칵테일 글라스에 따른다"
+    ],
+    "tags": {
+      "taste": ["새콤한", "달달한"],
+      "texture": ["깔끔한"],
+      "carbonation": ["순한"],
+      "flavor": ["시트러스"],
+      "mood": ["가볍게 마시기 좋은"]
+    }
+  },
+  {
+    "id": "moscow_mule",
+    "name": "모스코 뮬",
+    "ingredients": [
+      {"name": "보드카", "amount": "50ml"},
+      {"name": "라임 주스", "amount": "15ml"},
+      {"name": "진저비어", "amount": "120ml"}
+    ],
+    "recipe": [
+      "구리 머그에 얼음을 채운다",
+      "보드카와 라임 주스를 넣는다",
+      "진저비어로 채우고 가볍게 저어준다"
+    ],
+    "tags": {
+      "taste": ["상큼한"],
+      "texture": ["깔끔한"],
+      "carbonation": ["톡 쏘는"],
+      "flavor": ["생강", "시트러스"],
+      "mood": ["여름에 어울리는"]
+    }
+  },
+  {
+    "id": "negroni",
+    "name": "네그로니",
+    "ingredients": [
+      {"name": "진", "amount": "30ml"},
+      {"name": "캄파리", "amount": "30ml"},
+      {"name": "스위트 베르무트", "amount": "30ml"}
+    ],
+    "recipe": [
+      "올드 패션드 글라스에 얼음을 넣는다",
+      "모든 재료를 붓는다",
+      "저어주고 오렌지 필로 장식한다"
+    ],
+    "tags": {
+      "taste": ["쓴"],
+      "texture": ["묵직한"],
+      "carbonation": ["강한"],
+      "flavor": ["허브"],
+      "mood": ["클래식한"]
+    }
+  },
+  {
+    "id": "blue_hawaii",
+    "name": "블루 하와이",
+    "ingredients": [
+      {"name": "화이트 럼", "amount": "40ml"},
+      {"name": "블루 큐라소", "amount": "20ml"},
+      {"name": "파인애플 주스", "amount": "60ml"},
+      {"name": "코코넛 크림", "amount": "20ml"}
+    ],
+    "recipe": [
+      "셰이커에 모든 재료와 얼음을 넣는다",
+      "흔들어 섞는다",
+      "허리케인 글라스에 따르고 파인애플로 장식한다"
+    ],
+    "tags": {
+      "taste": ["달달한"],
+      "texture": ["부드러운"],
+      "carbonation": ["순한"],
+      "flavor": ["과일향", "코코넛"],
+      "mood": ["여름에 어울리는", "파티용"]
+    }
+  },
+  {
+    "id": "sangria",
+    "name": "상그리아",
+    "ingredients": [
+      {"name": "레드 와인", "amount": "750ml"},
+      {"name": "브랜디", "amount": "50ml"},
+      {"name": "오렌지 주스", "amount": "100ml"},
+      {"name": "각종 과일", "amount": "적당량"},
+      {"name": "설탕", "amount": "2큰술"}
+    ],
+    "recipe": [
+      "큰 피처에 와인을 붓는다",
+      "브랜디, 오렌지 주스, 설탕을 넣는다",
+      "과일을 썰어 넣고 최소 2시간 냉장 보관한다"
+    ],
+    "tags": {
+      "taste": ["달달한", "상큼한"],
+      "texture": ["부드러운"],
+      "carbonation": ["순한"],
+      "flavor": ["과일향"],
+      "mood": ["파티용", "여름에 어울리는"]
+    }
+  },
+  {
+    "id": "mint_julep",
+    "name": "민트 줄렙",
+    "ingredients": [
+      {"name": "버번 위스키", "amount": "60ml"},
+      {"name": "민트 잎", "amount": "8장"},
+      {"name": "설탕", "amount": "1티스푼"},
+      {"name": "물", "amount": "약간"}
+    ],
+    "recipe": [
+      "글라스에 민트 잎과 설탕, 물을 넣고 으깬다",
+      "크러시 아이스를 가득 채운다",
+      "위스키를 붓고 민트로 장식한다"
+    ],
+    "tags": {
+      "taste": ["달달한"],
+      "texture": ["깔끔한"],
+      "carbonation": ["순한"],
+      "flavor": ["민트"],
+      "mood": ["여름에 어울리는"]
+    }
+  }
+]
