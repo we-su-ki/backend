@@ -3,8 +3,8 @@ package com.cock.cocktail.domain;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
-public record Ingredient(
-        String name,
-        String amount
+public record CocktailTag(
+        String category,
+        String tag
 ) {
 }

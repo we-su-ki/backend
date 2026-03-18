@@ -1,26 +1,28 @@
 package com.cock.cocktail.domain;
 
-import org.junit.jupiter.api.BeforeEach;
+import com.cock.cocktail.repository.CocktailRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
+import com.cock.cocktail.config.DataLoader;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DataJpaTest
+@Import(DataLoader.class)
 class CocktailRepositoryTest {
 
+    @Autowired
     private CocktailRepository cocktailRepository;
 
-    @BeforeEach
-    void setUp() {
-        cocktailRepository = new CocktailRepository();
-    }
-
     @Test
-    @DisplayName("JSON 파일에서 칵테일 데이터 로드")
-    void shouldLoadCocktailsFromJson() {
+    @DisplayName("데이터베이스에서 칵테일 데이터 로드")
+    void shouldLoadCocktailsFromDatabase() {
         // when
         List<Cocktail> cocktails = cocktailRepository.findAll();
 
@@ -46,7 +48,8 @@ class CocktailRepositoryTest {
     @DisplayName("ID로 칵테일 조회 - 존재하는 경우")
     void shouldFindCocktailById() {
         // given
-        String cocktailId = "mojito";
+        Cocktail savedCocktail = cocktailRepository.findAll().get(0);
+        Long cocktailId = savedCocktail.getId();
 
         // when
         Optional<Cocktail> cocktail = cocktailRepository.findById(cocktailId);
@@ -61,7 +64,7 @@ class CocktailRepositoryTest {
     @DisplayName("ID로 칵테일 조회 - 존재하지 않는 경우")
     void shouldReturnEmptyWhenCocktailNotFound() {
         // given
-        String nonExistentId = "non-existent-cocktail";
+        Long nonExistentId = 999999L;
 
         // when
         Optional<Cocktail> cocktail = cocktailRepository.findById(nonExistentId);
@@ -120,7 +123,7 @@ class CocktailRepositoryTest {
         // then
         assertThat(cocktails).isNotEmpty();
         for (Cocktail cocktail : cocktails) {
-            assertThat(cocktail.getId()).isNotBlank();
+            assertThat(cocktail.getId()).isNotNull();
             assertThat(cocktail.getName()).isNotBlank();
             assertThat(cocktail.getIngredients()).isNotEmpty();
             assertThat(cocktail.getRecipe()).isNotEmpty();
