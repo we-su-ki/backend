@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,28 +22,20 @@ public class Cocktail {
 
     @ElementCollection
     @CollectionTable(name = "cocktail_ingredients", joinColumns = @JoinColumn(name = "cocktail_id"))
-    private List<Ingredient> ingredients;
+    private List<Ingredient> ingredients = new ArrayList<>();
 
     @Column(length = 1000)
     private String recipe;
 
     @ElementCollection
     @CollectionTable(name = "cocktail_tags", joinColumns = @JoinColumn(name = "cocktail_id"))
-    private List<CocktailTag> cocktailTags;
+    private List<CocktailTag> cocktailTags = new ArrayList<>();
 
-    // 비즈니스 로직을 위한 헬퍼 메서드
     public Map<String, List<String>> getTags() {
-        if (cocktailTags == null) {
-            return new HashMap<>();
-        }
         return cocktailTags.stream()
                 .collect(Collectors.groupingBy(
                         CocktailTag::category,
                         Collectors.mapping(CocktailTag::tag, Collectors.toList())
                 ));
-    }
-
-    public void setCocktailTags(List<CocktailTag> cocktailTags) {
-        this.cocktailTags = cocktailTags;
     }
 }
