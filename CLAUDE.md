@@ -43,6 +43,16 @@ com.cock.cocktail
 
 ### Code Style
 - 불변 객체 우선 (record, final 사용)
+- **컬렉션 필드 초기화**: null 체크 대신 필드 선언 시점에 빈 컬렉션 할당
+- **사용하지 않는 메서드 제거**: 코드베이스에서 참조되지 않는 메서드는 즉시 제거
+- **계층 분리**: JSON 직렬화/역직렬화는 웹 계층(DTO) 관심사
+  - 도메인 엔티티는 순수한 비즈니스 로직만 포함
+  - `@JsonProperty` 등의 직렬화 어노테이션은 도메인에 사용 금지
+
+### Database & Data Initialization
+- **데이터 초기화**: SQL 파일(`data.sql`) 사용, CommandLineRunner/DataLoader 사용 금지
+- **데이터베이스**: H2 파일 모드 사용
+- **JPA**: Spring Data JPA 사용, repository는 인터페이스로 작성
 
 ### Test Conventions
 - **TDD 방식**: 테스트 먼저 작성해서 완료 조건으로 이용
@@ -51,6 +61,7 @@ com.cock.cocktail
 - 한글로 간결하게 핵심만 작성
 - 형식: `{작업 내용}` (예: "DTO를 record로 변경")
 - Claude Code 관련 문구 제외
+- **커밋 타이밍**: 사용자가 명시적으로 요청할 때만 커밋, 작업 완료 후 자동 커밋 금지
 
 ## References
 
