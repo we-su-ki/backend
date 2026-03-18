@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class DescriptorDefinitionTest {
 
@@ -206,8 +207,10 @@ class DescriptorDefinitionTest {
         );
 
         // then
-        assertThat(descriptor.synonyms()).isNotNull();
-        assertThat(descriptor.synonyms()).isEmpty();
+        assertAll(
+                () -> assertThat(descriptor.synonyms()).isNotNull(),
+                () -> assertThat(descriptor.synonyms()).isEmpty()
+        );
     }
 
     @Test
@@ -222,7 +225,9 @@ class DescriptorDefinitionTest {
         );
 
         // then
-        assertThat(descriptor.children()).isNotNull();
-        assertThat(descriptor.children()).isEmpty();
+        assertAll(
+                () -> assertThat(descriptor.children()).isNotNull(),
+                () -> assertThat(descriptor.children()).isEmpty()
+        );
     }
 }

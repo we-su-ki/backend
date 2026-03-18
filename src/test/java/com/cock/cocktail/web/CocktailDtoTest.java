@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class CocktailDtoTest {
 
@@ -46,14 +47,16 @@ class CocktailDtoTest {
         var deserializedCocktail = objectMapper.readValue(jsonString, CocktailDto.class);
 
         // then
-        assertThat(deserializedCocktail).isNotNull();
-        assertThat(deserializedCocktail.id()).isEqualTo(1L);
-        assertThat(deserializedCocktail.name()).isEqualTo("모히또");
-        assertThat(deserializedCocktail.ingredients()).hasSize(2);
-        assertThat(deserializedCocktail.recipe()).contains("얼음을 넣는다");
-        assertThat(deserializedCocktail.reason()).isEqualTo("상큼한 맛이 어울립니다");
-        assertThat(deserializedCocktail.tags()).hasSize(2);
-        assertThat(deserializedCocktail.tags().get("taste")).contains("상큼한");
+        assertAll(
+                () -> assertThat(deserializedCocktail).isNotNull(),
+                () -> assertThat(deserializedCocktail.id()).isEqualTo(1L),
+                () -> assertThat(deserializedCocktail.name()).isEqualTo("모히또"),
+                () -> assertThat(deserializedCocktail.ingredients()).hasSize(2),
+                () -> assertThat(deserializedCocktail.recipe()).contains("얼음을 넣는다"),
+                () -> assertThat(deserializedCocktail.reason()).isEqualTo("상큼한 맛이 어울립니다"),
+                () -> assertThat(deserializedCocktail.tags()).hasSize(2),
+                () -> assertThat(deserializedCocktail.tags().get("taste")).contains("상큼한")
+        );
     }
 
     @Test
@@ -79,11 +82,13 @@ class CocktailDtoTest {
         var serializedJson = objectMapper.writeValueAsString(cocktailDto);
 
         // then
-        assertThat(serializedJson).contains("\"id\":1");
-        assertThat(serializedJson).contains("\"name\":\"모히또\"");
-        assertThat(serializedJson).contains("\"ingredients\"");
-        assertThat(serializedJson).contains("\"recipe\"");
-        assertThat(serializedJson).contains("\"reason\"");
-        assertThat(serializedJson).contains("\"tags\"");
+        assertAll(
+                () -> assertThat(serializedJson).contains("\"id\":1"),
+                () -> assertThat(serializedJson).contains("\"name\":\"모히또\""),
+                () -> assertThat(serializedJson).contains("\"ingredients\""),
+                () -> assertThat(serializedJson).contains("\"recipe\""),
+                () -> assertThat(serializedJson).contains("\"reason\""),
+                () -> assertThat(serializedJson).contains("\"tags\"")
+        );
     }
 }

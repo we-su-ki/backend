@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class ConfigBasedKeywordAnalyzerTest {
 
@@ -39,11 +40,13 @@ class ConfigBasedKeywordAnalyzerTest {
         var sensoryDescriptors = analyzer.analyze(query);
 
         // then
-        assertThat(sensoryDescriptors.taste()).isNotEmpty();
-        assertThat(sensoryDescriptors.aroma()).isEmpty();
-        assertThat(sensoryDescriptors.mouthfeel()).isEmpty();
-        assertThat(sensoryDescriptors.sensation()).isEmpty();
-        assertThat(sensoryDescriptors.impression()).isEmpty();
+        assertAll(
+                () -> assertThat(sensoryDescriptors.taste()).isNotEmpty(),
+                () -> assertThat(sensoryDescriptors.aroma()).isEmpty(),
+                () -> assertThat(sensoryDescriptors.mouthfeel()).isEmpty(),
+                () -> assertThat(sensoryDescriptors.sensation()).isEmpty(),
+                () -> assertThat(sensoryDescriptors.impression()).isEmpty()
+        );
     }
 
     @Test
@@ -56,11 +59,13 @@ class ConfigBasedKeywordAnalyzerTest {
         var sensoryDescriptors = analyzer.analyze(query);
 
         // then
-        assertThat(sensoryDescriptors.codeValues(SensoryAxis.TASTE)).contains("sweet");
-        assertThat(sensoryDescriptors.codeValues(SensoryAxis.AROMA)).contains("lime");
-        assertThat(sensoryDescriptors.mouthfeel()).isEmpty();
-        assertThat(sensoryDescriptors.sensation()).isEmpty();
-        assertThat(sensoryDescriptors.impression()).isEmpty();
+        assertAll(
+                () -> assertThat(sensoryDescriptors.codeValues(SensoryAxis.TASTE)).contains("sweet"),
+                () -> assertThat(sensoryDescriptors.codeValues(SensoryAxis.AROMA)).contains("lime"),
+                () -> assertThat(sensoryDescriptors.mouthfeel()).isEmpty(),
+                () -> assertThat(sensoryDescriptors.sensation()).isEmpty(),
+                () -> assertThat(sensoryDescriptors.impression()).isEmpty()
+        );
     }
 
     @Test
@@ -73,8 +78,10 @@ class ConfigBasedKeywordAnalyzerTest {
         var sensoryDescriptors = analyzer.analyze(query);
 
         // then
-        assertThat(sensoryDescriptors.codeValues(SensoryAxis.AROMA)).contains("lime");
-        assertThat(sensoryDescriptors.codeValues(SensoryAxis.AROMA)).doesNotContain("citrus", "fruity");
+        assertAll(
+                () -> assertThat(sensoryDescriptors.codeValues(SensoryAxis.AROMA)).contains("lime"),
+                () -> assertThat(sensoryDescriptors.codeValues(SensoryAxis.AROMA)).doesNotContain("citrus", "fruity")
+        );
     }
 
     @Test
@@ -117,9 +124,11 @@ class ConfigBasedKeywordAnalyzerTest {
         var sensoryDescriptors3 = analyzer.analyze(query3);
 
         // then
-        assertThat(sensoryDescriptors1.codeValues(SensoryAxis.TASTE)).contains("sweet");
-        assertThat(sensoryDescriptors2.codeValues(SensoryAxis.TASTE)).contains("sweet");
-        assertThat(sensoryDescriptors3.codeValues(SensoryAxis.TASTE)).contains("sweet");
+        assertAll(
+                () -> assertThat(sensoryDescriptors1.codeValues(SensoryAxis.TASTE)).contains("sweet"),
+                () -> assertThat(sensoryDescriptors2.codeValues(SensoryAxis.TASTE)).contains("sweet"),
+                () -> assertThat(sensoryDescriptors3.codeValues(SensoryAxis.TASTE)).contains("sweet")
+        );
     }
 
     @Test
@@ -132,11 +141,13 @@ class ConfigBasedKeywordAnalyzerTest {
         var sensoryDescriptors = analyzer.analyze(query);
 
         // then
-        assertThat(sensoryDescriptors.taste()).isEmpty();
-        assertThat(sensoryDescriptors.aroma()).isEmpty();
-        assertThat(sensoryDescriptors.mouthfeel()).isEmpty();
-        assertThat(sensoryDescriptors.sensation()).isEmpty();
-        assertThat(sensoryDescriptors.impression()).isEmpty();
+        assertAll(
+                () -> assertThat(sensoryDescriptors.taste()).isEmpty(),
+                () -> assertThat(sensoryDescriptors.aroma()).isEmpty(),
+                () -> assertThat(sensoryDescriptors.mouthfeel()).isEmpty(),
+                () -> assertThat(sensoryDescriptors.sensation()).isEmpty(),
+                () -> assertThat(sensoryDescriptors.impression()).isEmpty()
+        );
     }
 
     @Test
@@ -149,11 +160,13 @@ class ConfigBasedKeywordAnalyzerTest {
         var sensoryDescriptors = analyzer.analyze(query);
 
         // then
-        assertThat(sensoryDescriptors.taste()).as("taste descriptors").isNotEmpty();
-        assertThat(sensoryDescriptors.aroma()).as("aroma descriptors").isNotEmpty();
-        assertThat(sensoryDescriptors.mouthfeel()).as("mouthfeel descriptors").isNotEmpty();
-        assertThat(sensoryDescriptors.sensation()).as("sensation descriptors").isNotEmpty();
-        assertThat(sensoryDescriptors.impression()).as("impression descriptors").isNotEmpty();
+        assertAll(
+                () -> assertThat(sensoryDescriptors.taste()).as("taste descriptors").isNotEmpty(),
+                () -> assertThat(sensoryDescriptors.aroma()).as("aroma descriptors").isNotEmpty(),
+                () -> assertThat(sensoryDescriptors.mouthfeel()).as("mouthfeel descriptors").isNotEmpty(),
+                () -> assertThat(sensoryDescriptors.sensation()).as("sensation descriptors").isNotEmpty(),
+                () -> assertThat(sensoryDescriptors.impression()).as("impression descriptors").isNotEmpty()
+        );
     }
 
     @Test
@@ -204,11 +217,13 @@ class ConfigBasedKeywordAnalyzerTest {
         var config = createNestedDescriptorConfig(null, null, null, null, null);
 
         // when & then
-        assertThat(invokeListAccessor(config, "taste")).isEmpty();
-        assertThat(invokeListAccessor(config, "aroma")).isEmpty();
-        assertThat(invokeListAccessor(config, "mouthfeel")).isEmpty();
-        assertThat(invokeListAccessor(config, "sensation")).isEmpty();
-        assertThat(invokeListAccessor(config, "impression")).isEmpty();
+        assertAll(
+                () -> assertThat(invokeListAccessor(config, "taste")).isEmpty(),
+                () -> assertThat(invokeListAccessor(config, "aroma")).isEmpty(),
+                () -> assertThat(invokeListAccessor(config, "mouthfeel")).isEmpty(),
+                () -> assertThat(invokeListAccessor(config, "sensation")).isEmpty(),
+                () -> assertThat(invokeListAccessor(config, "impression")).isEmpty()
+        );
     }
 
     @Test

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DataJpaTest
 class CocktailRepositoryTest {
@@ -21,8 +22,10 @@ class CocktailRepositoryTest {
         var allCocktails = cocktailRepository.findAll();
 
         // then
-        assertThat(allCocktails).isNotEmpty();
-        assertThat(allCocktails.size()).isGreaterThanOrEqualTo(10);
+        assertAll(
+                () -> assertThat(allCocktails).isNotEmpty(),
+                () -> assertThat(allCocktails.size()).isGreaterThanOrEqualTo(10)
+        );
     }
 
     @Test
@@ -32,10 +35,12 @@ class CocktailRepositoryTest {
         var allCocktails = cocktailRepository.findAll();
 
         // then
-        assertThat(allCocktails).isNotNull();
-        assertThat(allCocktails).allMatch(c -> c.getId() != null);
-        assertThat(allCocktails).allMatch(c -> c.getName() != null);
-        assertThat(allCocktails).allMatch(c -> c.getIngredients() != null);
+        assertAll(
+                () -> assertThat(allCocktails).isNotNull(),
+                () -> assertThat(allCocktails).allMatch(c -> c.getId() != null),
+                () -> assertThat(allCocktails).allMatch(c -> c.getName() != null),
+                () -> assertThat(allCocktails).allMatch(c -> c.getIngredients() != null)
+        );
     }
 
     @Test
@@ -49,9 +54,11 @@ class CocktailRepositoryTest {
         var foundCocktail = cocktailRepository.findById(existingCocktailId);
 
         // then
-        assertThat(foundCocktail).isPresent();
-        assertThat(foundCocktail.get().getId()).isEqualTo(existingCocktailId);
-        assertThat(foundCocktail.get().getName()).isNotBlank();
+        assertAll(
+                () -> assertThat(foundCocktail).isPresent(),
+                () -> assertThat(foundCocktail.get().getId()).isEqualTo(existingCocktailId),
+                () -> assertThat(foundCocktail.get().getName()).isNotBlank()
+        );
     }
 
     @Test
@@ -77,9 +84,11 @@ class CocktailRepositoryTest {
         var matchedCocktails = cocktailRepository.findByTag("taste", searchTasteTag);
 
         // then
-        assertThat(matchedCocktails).isNotEmpty();
-        assertThat(matchedCocktails).allMatch(
-                c -> c.getSensoryDescriptors().codeValues(SensoryAxis.TASTE).contains(searchTasteTag)
+        assertAll(
+                () -> assertThat(matchedCocktails).isNotEmpty(),
+                () -> assertThat(matchedCocktails).allMatch(
+                        c -> c.getSensoryDescriptors().codeValues(SensoryAxis.TASTE).contains(searchTasteTag)
+                )
         );
     }
 
@@ -93,9 +102,11 @@ class CocktailRepositoryTest {
         var matchedCocktails = cocktailRepository.findByTag("flavor", searchFlavorTag);
 
         // then
-        assertThat(matchedCocktails).isNotEmpty();
-        assertThat(matchedCocktails).allMatch(
-                c -> c.getSensoryDescriptors().codeValues(SensoryAxis.AROMA).contains(searchFlavorTag)
+        assertAll(
+                () -> assertThat(matchedCocktails).isNotEmpty(),
+                () -> assertThat(matchedCocktails).allMatch(
+                        c -> c.getSensoryDescriptors().codeValues(SensoryAxis.AROMA).contains(searchFlavorTag)
+                )
         );
     }
 
@@ -121,11 +132,13 @@ class CocktailRepositoryTest {
         // then
         assertThat(allCocktails).isNotEmpty();
         for (Cocktail eachCocktail : allCocktails) {
-            assertThat(eachCocktail.getId()).isNotNull();
-            assertThat(eachCocktail.getName()).isNotBlank();
-            assertThat(eachCocktail.getIngredients()).isNotEmpty();
-            assertThat(eachCocktail.getRecipe()).isNotBlank();
-            assertThat(eachCocktail.getSensoryDescriptors().isEmpty()).isFalse();
+            assertAll(
+                    () -> assertThat(eachCocktail.getId()).isNotNull(),
+                    () -> assertThat(eachCocktail.getName()).isNotBlank(),
+                    () -> assertThat(eachCocktail.getIngredients()).isNotEmpty(),
+                    () -> assertThat(eachCocktail.getRecipe()).isNotBlank(),
+                    () -> assertThat(eachCocktail.getSensoryDescriptors().isEmpty()).isFalse()
+            );
         }
     }
 }

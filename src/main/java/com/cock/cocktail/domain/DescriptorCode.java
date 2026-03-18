@@ -13,7 +13,7 @@ import java.util.Objects;
 public record DescriptorCode(
         @Enumerated(EnumType.STRING)
         SensoryAxis axis,
-        @Column(name = "value")
+        @Column(name = "`value`")
         String value
 ) {
     public DescriptorCode {

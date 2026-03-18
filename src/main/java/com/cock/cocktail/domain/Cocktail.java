@@ -1,15 +1,16 @@
 package com.cock.cocktail.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
-@Setter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Cocktail {
 
     @Id
@@ -20,6 +21,7 @@ public class Cocktail {
 
     @ElementCollection
     @CollectionTable(name = "cocktail_ingredients", joinColumns = @JoinColumn(name = "cocktail_id"))
+    @Builder.Default
     private List<Ingredient> ingredients = new ArrayList<>();
 
     @Column(length = 1000)
@@ -27,6 +29,7 @@ public class Cocktail {
 
     @ElementCollection
     @CollectionTable(name = "cocktail_sensory_descriptors", joinColumns = @JoinColumn(name = "cocktail_id"))
+    @Builder.Default
     private List<DescriptorCode> sensoryDescriptors = new ArrayList<>();
 
     public SensoryDescriptors getSensoryDescriptors() {

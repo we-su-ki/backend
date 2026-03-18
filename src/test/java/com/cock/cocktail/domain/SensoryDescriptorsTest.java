@@ -9,6 +9,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class SensoryDescriptorsTest {
 
@@ -41,11 +42,13 @@ class SensoryDescriptorsTest {
         ));
 
         // then
-        assertThat(descriptors.codeValues(SensoryAxis.TASTE)).containsExactlyInAnyOrder("sweet", "sour");
-        assertThat(descriptors.codeValues(SensoryAxis.AROMA)).containsExactlyInAnyOrder("fruity", "lime");
-        assertThat(descriptors.codeValues(SensoryAxis.MOUTHFEEL)).containsExactly("smooth");
-        assertThat(descriptors.codeValues(SensoryAxis.SENSATION)).containsExactly("carbonated");
-        assertThat(descriptors.codeValues(SensoryAxis.IMPRESSION)).containsExactlyInAnyOrder("refreshing", "summer");
+        assertAll(
+                () -> assertThat(descriptors.codeValues(SensoryAxis.TASTE)).containsExactlyInAnyOrder("sweet", "sour"),
+                () -> assertThat(descriptors.codeValues(SensoryAxis.AROMA)).containsExactlyInAnyOrder("fruity", "lime"),
+                () -> assertThat(descriptors.codeValues(SensoryAxis.MOUTHFEEL)).containsExactly("smooth"),
+                () -> assertThat(descriptors.codeValues(SensoryAxis.SENSATION)).containsExactly("carbonated"),
+                () -> assertThat(descriptors.codeValues(SensoryAxis.IMPRESSION)).containsExactlyInAnyOrder("refreshing", "summer")
+        );
     }
 
     @Test
@@ -55,11 +58,13 @@ class SensoryDescriptorsTest {
         var descriptors = new SensoryDescriptors(Map.of());
 
         // then
-        assertThat(descriptors.taste()).isEmpty();
-        assertThat(descriptors.aroma()).isEmpty();
-        assertThat(descriptors.mouthfeel()).isEmpty();
-        assertThat(descriptors.sensation()).isEmpty();
-        assertThat(descriptors.impression()).isEmpty();
+        assertAll(
+                () -> assertThat(descriptors.taste()).isEmpty(),
+                () -> assertThat(descriptors.aroma()).isEmpty(),
+                () -> assertThat(descriptors.mouthfeel()).isEmpty(),
+                () -> assertThat(descriptors.sensation()).isEmpty(),
+                () -> assertThat(descriptors.impression()).isEmpty()
+        );
     }
 
     @Test

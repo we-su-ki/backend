@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class CocktailRecommendationRequestTest {
 
@@ -36,8 +37,10 @@ class CocktailRecommendationRequestTest {
         var deserializedRequest = objectMapper.readValue(jsonString, CocktailRecommendationRequest.class);
 
         // then
-        assertThat(deserializedRequest).isNotNull();
-        assertThat(deserializedRequest.query()).isEqualTo("달달한 칵테일 추천해줘");
+        assertAll(
+                () -> assertThat(deserializedRequest).isNotNull(),
+                () -> assertThat(deserializedRequest.query()).isEqualTo("달달한 칵테일 추천해줘")
+        );
     }
 
     @Test
@@ -50,8 +53,10 @@ class CocktailRecommendationRequestTest {
         var serializedJson = objectMapper.writeValueAsString(requestDto);
 
         // then
-        assertThat(serializedJson).contains("\"query\"");
-        assertThat(serializedJson).contains("달달한 칵테일 추천해줘");
+        assertAll(
+                () -> assertThat(serializedJson).contains("\"query\""),
+                () -> assertThat(serializedJson).contains("달달한 칵테일 추천해줘")
+        );
     }
 
     @Test
