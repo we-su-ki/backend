@@ -1,7 +1,7 @@
-package com.cock.cocktail.model;
+package com.cock.cocktail.web;
 
-import com.cock.cocktail.model.dto.CocktailDto;
-import com.cock.cocktail.model.dto.Ingredient;
+import com.cock.cocktail.web.dto.CocktailDto;
+import com.cock.cocktail.web.dto.Ingredient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -43,28 +43,29 @@ class CocktailDtoTest {
 
         // then
         assertThat(cocktail).isNotNull();
-        assertThat(cocktail.getId()).isEqualTo("mojito");
-        assertThat(cocktail.getName()).isEqualTo("모히또");
-        assertThat(cocktail.getIngredients()).hasSize(2);
-        assertThat(cocktail.getRecipe()).hasSize(2);
-        assertThat(cocktail.getReason()).isEqualTo("상큼한 맛이 어울립니다");
-        assertThat(cocktail.getTags()).hasSize(2);
+        assertThat(cocktail.id()).isEqualTo("mojito");
+        assertThat(cocktail.name()).isEqualTo("모히또");
+        assertThat(cocktail.ingredients()).hasSize(2);
+        assertThat(cocktail.recipe()).hasSize(2);
+        assertThat(cocktail.reason()).isEqualTo("상큼한 맛이 어울립니다");
+        assertThat(cocktail.tags()).hasSize(2);
     }
 
     @Test
     @DisplayName("CocktailDto를 JSON으로 직렬화")
     void shouldSerializeToJson() throws Exception {
         // given
-        CocktailDto cocktail = new CocktailDto();
-        cocktail.setId("mojito");
-        cocktail.setName("모히또");
-        cocktail.setIngredients(List.of(
-                new Ingredient("럼", "50ml"),
-                new Ingredient("라임", "20ml")
-        ));
-        cocktail.setRecipe(List.of("얼음을 넣는다", "재료를 섞는다"));
-        cocktail.setReason("상큼한 맛이 어울립니다");
-        cocktail.setTags(List.of("상큼한", "시원한"));
+        CocktailDto cocktail = new CocktailDto(
+                "mojito",
+                "모히또",
+                List.of(
+                        new Ingredient("럼", "50ml"),
+                        new Ingredient("라임", "20ml")
+                ),
+                List.of("얼음을 넣는다", "재료를 섞는다"),
+                "상큼한 맛이 어울립니다",
+                List.of("상큼한", "시원한")
+        );
 
         // when
         String json = objectMapper.writeValueAsString(cocktail);

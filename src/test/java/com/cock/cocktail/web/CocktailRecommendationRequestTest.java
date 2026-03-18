@@ -1,6 +1,6 @@
-package com.cock.cocktail.model;
+package com.cock.cocktail.web;
 
-import com.cock.cocktail.model.dto.CocktailRecommendationRequest;
+import com.cock.cocktail.web.dto.CocktailRecommendationRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -37,15 +37,14 @@ class CocktailRecommendationRequestTest {
 
         // then
         assertThat(request).isNotNull();
-        assertThat(request.getQuery()).isEqualTo("달달한 칵테일 추천해줘");
+        assertThat(request.query()).isEqualTo("달달한 칵테일 추천해줘");
     }
 
     @Test
     @DisplayName("DTO를 JSON으로 직렬화")
     void shouldSerializeToJson() throws Exception {
         // given
-        CocktailRecommendationRequest request = new CocktailRecommendationRequest();
-        request.setQuery("달달한 칵테일 추천해줘");
+        CocktailRecommendationRequest request = new CocktailRecommendationRequest("달달한 칵테일 추천해줘");
 
         // when
         String json = objectMapper.writeValueAsString(request);
@@ -59,8 +58,7 @@ class CocktailRecommendationRequestTest {
     @DisplayName("query 필드가 null이면 검증 실패")
     void shouldFailValidationWhenQueryIsNull() {
         // given
-        CocktailRecommendationRequest request = new CocktailRecommendationRequest();
-        request.setQuery(null);
+        CocktailRecommendationRequest request = new CocktailRecommendationRequest(null);
 
         // when
         Set<ConstraintViolation<CocktailRecommendationRequest>> violations = validator.validate(request);
@@ -73,8 +71,7 @@ class CocktailRecommendationRequestTest {
     @DisplayName("query 필드가 빈 문자열이면 검증 실패")
     void shouldFailValidationWhenQueryIsBlank() {
         // given
-        CocktailRecommendationRequest request = new CocktailRecommendationRequest();
-        request.setQuery("");
+        CocktailRecommendationRequest request = new CocktailRecommendationRequest("");
 
         // when
         Set<ConstraintViolation<CocktailRecommendationRequest>> violations = validator.validate(request);
@@ -87,8 +84,7 @@ class CocktailRecommendationRequestTest {
     @DisplayName("query 필드가 공백만 있으면 검증 실패")
     void shouldFailValidationWhenQueryIsWhitespace() {
         // given
-        CocktailRecommendationRequest request = new CocktailRecommendationRequest();
-        request.setQuery("   ");
+        CocktailRecommendationRequest request = new CocktailRecommendationRequest("   ");
 
         // when
         Set<ConstraintViolation<CocktailRecommendationRequest>> violations = validator.validate(request);
@@ -101,8 +97,7 @@ class CocktailRecommendationRequestTest {
     @DisplayName("정상적인 query 값이면 검증 통과")
     void shouldPassValidationWhenQueryIsValid() {
         // given
-        CocktailRecommendationRequest request = new CocktailRecommendationRequest();
-        request.setQuery("달달한 칵테일 추천해줘");
+        CocktailRecommendationRequest request = new CocktailRecommendationRequest("달달한 칵테일 추천해줘");
 
         // when
         Set<ConstraintViolation<CocktailRecommendationRequest>> violations = validator.validate(request);
