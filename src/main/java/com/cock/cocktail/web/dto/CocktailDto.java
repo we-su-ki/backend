@@ -1,5 +1,7 @@
 package com.cock.cocktail.web.dto;
 
+import com.cock.cocktail.domain.Ingredient;
+
 import java.util.List;
 
 public record CocktailDto(

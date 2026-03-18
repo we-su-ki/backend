@@ -1,7 +1,7 @@
 package com.cock.cocktail.web;
 
+import com.cock.cocktail.domain.Ingredient;
 import com.cock.cocktail.web.dto.CocktailDto;
-import com.cock.cocktail.web.dto.Ingredient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

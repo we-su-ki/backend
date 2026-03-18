@@ -1,6 +1,5 @@
-package com.cock.cocktail.model.domain;
+package com.cock.cocktail.domain;
 
-import com.cock.cocktail.web.dto.Ingredient;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,4 +1,4 @@
-package com.cock.cocktail.web.dto;
+package com.cock.cocktail.domain;
 
 public record Ingredient(
         String name,
