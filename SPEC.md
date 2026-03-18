@@ -11,12 +11,29 @@
 ```
 Client
    ↓
-REST API (Controller)
+REST API (Web Layer)
    ↓
 비즈니스 로직 (Service)
    ├── 키워드 분석기
    └── 칵테일 추천 모델
+   ↓
+도메인 모델 (Domain)
 ```
+
+### 1.3 패키지 구조
+```
+com.cock.cocktail
+├── web/              # 웹 계층 (Controller, DTO)
+│   └── dto/          # 웹 요청/응답 DTO (record)
+├── service/          # 비즈니스 로직
+├── domain/           # 도메인 모델 (Cocktail, Ingredient)
+├── exception/        # 예외 처리
+└── config/           # 설정
+```
+
+**구현 원칙**
+- 웹 계층 DTO는 record로 구현
+- 도메인 모델은 일반 클래스로 구현 (Lombok 사용)
 
 ## 2. API 명세
 
@@ -129,23 +146,27 @@ GET /api/v1/health
 
 ## 3. 데이터 모델 명세
 
-### 3.1 CocktailRecommendationRequest
-사용자의 칵테일 추천 요청
+**구현 형식**
+- 웹 계층 DTO: Java record로 구현 (불변 객체)
+- 도메인 모델: 일반 클래스 (Lombok 사용)
+
+### 3.1 CocktailRecommendationRequest (record)
+사용자의 칵테일 추천 요청 - 웹 계층 DTO
 
 | 필드    | 타입     | 필수 | 설명          |
 |-------|--------|----|-----------  |
 | query | String | O  | 자연어 입력 문장  |
 
-### 3.2 CocktailRecommendationResponse
-칵테일 추천 응답
+### 3.2 CocktailRecommendationResponse (record)
+칵테일 추천 응답 - 웹 계층 DTO
 
 | 필드                | 타입                  | 필수 | 설명          |
 |-------------------|---------------------|----|-------------|
-| recommendations   | Array[Cocktail]     | O  | 추천 칵테일 목록  |
+| recommendations   | Array[CocktailDto]  | O  | 추천 칵테일 목록  |
 | analyzedKeywords  | AnalyzedKeywords    | O  | 분석된 키워드    |
 
-### 3.3 Cocktail
-칵테일 정보
+### 3.3 CocktailDto (record)
+칵테일 정보 - 웹 계층 DTO
 
 | 필드          | 타입                | 필수 | 설명           |
 |-------------|-------------------|----|--------------|
@@ -156,16 +177,16 @@ GET /api/v1/health
 | reason      | String            | O  | 추천 이유       |
 | tags        | Array[String]     | O  | 특징 태그       |
 
-### 3.4 Ingredient
-재료 정보
+### 3.4 Ingredient (record)
+재료 정보 - 도메인 모델
 
 | 필드     | 타입     | 필수 | 설명    |
 |--------|--------|----|----- |
 | name   | String | O  | 재료 이름 |
 | amount | String | O  | 재료 용량 |
 
-### 3.5 AnalyzedKeywords
-분석된 키워드 정보
+### 3.5 AnalyzedKeywords (record)
+분석된 키워드 정보 - 웹 계층 DTO
 
 | 필드          | 타입            | 필수 | 설명      |
 |-------------|---------------|----|---------  |
@@ -175,8 +196,8 @@ GET /api/v1/health
 | flavor      | Array[String] | X  | 향 키워드   |
 | mood        | Array[String] | X  | 분위기 키워드 |
 
-### 3.6 ErrorResponse
-에러 응답
+### 3.6 ErrorResponse (record)
+에러 응답 - 웹 계층 DTO
 
 | 필드        | 타입     | 필수 | 설명         |
 |-----------|--------|----|-----------  |

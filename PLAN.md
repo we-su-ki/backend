@@ -8,28 +8,27 @@ cocktail-be/
 │   ├── main/
 │   │   ├── java/com/cock/cocktail/
 │   │   │   ├── CocktailBeApplication.java
-│   │   │   ├── controller/
+│   │   │   ├── web/                            # 웹 계층
 │   │   │   │   ├── CocktailController.java
-│   │   │   │   └── HealthController.java
-│   │   │   ├── service/
+│   │   │   │   ├── HealthController.java
+│   │   │   │   └── dto/                        # 웹 요청/응답 DTO (record)
+│   │   │   │       ├── CocktailRecommendationRequest.java
+│   │   │   │       ├── CocktailRecommendationResponse.java
+│   │   │   │       ├── CocktailDto.java
+│   │   │   │       ├── AnalyzedKeywords.java
+│   │   │   │       └── ErrorResponse.java
+│   │   │   ├── service/                        # 비즈니스 로직
 │   │   │   │   ├── CocktailRecommendationService.java
 │   │   │   │   ├── KeywordAnalyzer.java
 │   │   │   │   └── CocktailMatcher.java
-│   │   │   ├── model/
-│   │   │   │   ├── dto/
-│   │   │   │   │   ├── CocktailRecommendationRequest.java
-│   │   │   │   │   ├── CocktailRecommendationResponse.java
-│   │   │   │   │   ├── CocktailDto.java
-│   │   │   │   │   ├── Ingredient.java
-│   │   │   │   │   ├── AnalyzedKeywords.java
-│   │   │   │   │   └── ErrorResponse.java
-│   │   │   │   └── domain/
-│   │   │   │       ├── Cocktail.java
-│   │   │   │       └── CocktailRepository.java
-│   │   │   ├── exception/
+│   │   │   ├── domain/                         # 도메인 모델
+│   │   │   │   ├── Cocktail.java
+│   │   │   │   ├── Ingredient.java             # record
+│   │   │   │   └── CocktailRepository.java
+│   │   │   ├── exception/                      # 예외 처리
 │   │   │   │   ├── GlobalExceptionHandler.java
 │   │   │   │   └── InvalidRequestException.java
-│   │   │   └── config/
+│   │   │   └── config/                         # 설정
 │   │   │       └── WebConfig.java
 │   │   └── resources/
 │   │       ├── application.properties
@@ -37,13 +36,20 @@ cocktail-be/
 │   │           └── cocktails.json
 │   └── test/
 │       └── java/com/cock/cocktail/
-│           ├── controller/
-│           ├── service/
-│           ├── model/
+│           ├── web/                            # 웹 계층 테스트
+│           ├── service/                        # 서비스 계층 테스트
 │           └── CocktailBeApplicationTests.java
 ├── build.gradle
 └── README.md
 ```
+
+**구조 설명**
+- `web/`: 웹 계층 (Controller, DTO)
+- `web/dto/`: 웹 요청/응답 DTO - Java record로 구현
+- `service/`: 비즈니스 로직
+- `domain/`: 도메인 모델 - Ingredient는 record, Cocktail은 일반 클래스
+- `exception/`: 예외 처리
+- `config/`: 설정
 
 ## 2. 구현 단계 (TDD 방식)
 
@@ -81,36 +87,40 @@ cocktail-be/
 **목표**: API 요청/응답 및 도메인 객체 정의
 
 **테스트 작성 (TDD)**
-- [ ] DTO 직렬화/역직렬화 테스트
+- [x] DTO 직렬화/역직렬화 테스트
   - JSON → DTO 변환 테스트
   - DTO → JSON 변환 테스트
-- [ ] Validation 테스트
+- [x] Validation 테스트
   - query 필드 null 검증
   - query 필드 빈 문자열 검증
   - 정상 값 검증
 
 **구현**
-- [ ] DTO 클래스 구현
-  - CocktailRecommendationRequest
-  - CocktailRecommendationResponse
-  - CocktailDto
-  - Ingredient
-  - AnalyzedKeywords
-  - ErrorResponse
-- [ ] 도메인 모델 구현
-  - Cocktail (칵테일 엔티티)
-- [ ] Validation 어노테이션 추가
-  - @NotBlank, @Size 등
+- [x] 웹 계층 DTO 구현 (Java record 사용)
+  - CocktailRecommendationRequest (web/dto)
+  - CocktailRecommendationResponse (web/dto)
+  - CocktailDto (web/dto)
+  - AnalyzedKeywords (web/dto)
+  - ErrorResponse (web/dto)
+- [x] 도메인 모델 구현
+  - Ingredient (domain) - record
+  - Cocktail (domain) - 일반 클래스 (Lombok)
+- [x] Validation 어노테이션 추가
+  - @NotBlank 등
 
 **완료 조건**
-- ✅ 모든 DTO 클래스가 구현됨
+- ✅ 모든 DTO가 record로 구현됨
 - ✅ 직렬화/역직렬화 테스트 통과
 - ✅ Validation 테스트 통과
 
 **예상 산출물**
-- 6개 DTO 클래스
-- 1개 도메인 클래스
+- 5개 웹 계층 DTO (record)
+- 2개 도메인 모델 (Ingredient: record, Cocktail: 일반 클래스)
 - DTO 테스트 클래스
+
+**구현 원칙**
+- 웹 계층 DTO는 불변성을 위해 record 사용
+- 도메인 모델은 비즈니스 로직 필요 시 일반 클래스 사용
 
 ---
 
