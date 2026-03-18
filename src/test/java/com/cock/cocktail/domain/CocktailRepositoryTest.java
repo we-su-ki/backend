@@ -126,7 +126,7 @@ class CocktailRepositoryTest {
             assertThat(cocktail.getId()).isNotNull();
             assertThat(cocktail.getName()).isNotBlank();
             assertThat(cocktail.getIngredients()).isNotEmpty();
-            assertThat(cocktail.getRecipe()).isNotEmpty();
+            assertThat(cocktail.getRecipe()).isNotBlank();
             assertThat(cocktail.getTags()).isNotEmpty();
         }
     }

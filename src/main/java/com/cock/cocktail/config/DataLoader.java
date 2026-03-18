@@ -1,6 +1,7 @@
 package com.cock.cocktail.config;
 
 import com.cock.cocktail.domain.Cocktail;
+import com.cock.cocktail.domain.CocktailTag;
 import com.cock.cocktail.repository.CocktailRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,12 +34,31 @@ public class DataLoader implements CommandLineRunner {
     private List<Cocktail> loadCocktails() {
         try {
             ClassPathResource resource = new ClassPathResource("data/cocktails.json");
-            return objectMapper.readValue(
+            List<CocktailDataDto> dataList = objectMapper.readValue(
                     resource.getInputStream(),
-                    new TypeReference<List<Cocktail>>() {}
+                    new TypeReference<List<CocktailDataDto>>() {}
             );
+            return dataList.stream()
+                    .map(this::convertToEntity)
+                    .toList();
         } catch (IOException e) {
             throw new RuntimeException("Failed to load cocktail data", e);
         }
+    }
+
+    private Cocktail convertToEntity(CocktailDataDto dto) {
+        Cocktail cocktail = new Cocktail();
+        cocktail.setName(dto.name());
+        cocktail.setIngredients(dto.ingredients());
+        cocktail.setRecipe(dto.recipe());
+
+        // Map<String, List<String>> tags를 List<CocktailTag>로 변환
+        List<CocktailTag> cocktailTags = dto.tags().entrySet().stream()
+                .flatMap(entry -> entry.getValue().stream()
+                        .map(tag -> new CocktailTag(entry.getKey(), tag)))
+                .toList();
+        cocktail.setCocktailTags(cocktailTags);
+
+        return cocktail;
     }
 }

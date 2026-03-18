@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,15 +27,18 @@ class CocktailDtoTest {
         // given
         String json = """
                 {
-                    "id": "mojito",
+                    "id": 1,
                     "name": "모히또",
                     "ingredients": [
                         {"name": "럼", "amount": "50ml"},
                         {"name": "라임", "amount": "20ml"}
                     ],
-                    "recipe": ["얼음을 넣는다", "재료를 섞는다"],
+                    "recipe": "얼음을 넣는다\\n재료를 섞는다",
                     "reason": "상큼한 맛이 어울립니다",
-                    "tags": ["상큼한", "시원한"]
+                    "tags": {
+                        "taste": ["상큼한"],
+                        "mood": ["시원한"]
+                    }
                 }
                 """;
 
@@ -43,12 +47,13 @@ class CocktailDtoTest {
 
         // then
         assertThat(cocktail).isNotNull();
-        assertThat(cocktail.id()).isEqualTo("mojito");
+        assertThat(cocktail.id()).isEqualTo(1L);
         assertThat(cocktail.name()).isEqualTo("모히또");
         assertThat(cocktail.ingredients()).hasSize(2);
-        assertThat(cocktail.recipe()).hasSize(2);
+        assertThat(cocktail.recipe()).contains("얼음을 넣는다");
         assertThat(cocktail.reason()).isEqualTo("상큼한 맛이 어울립니다");
         assertThat(cocktail.tags()).hasSize(2);
+        assertThat(cocktail.tags().get("taste")).contains("상큼한");
     }
 
     @Test
@@ -56,22 +61,25 @@ class CocktailDtoTest {
     void shouldSerializeToJson() throws Exception {
         // given
         CocktailDto cocktail = new CocktailDto(
-                "mojito",
+                1L,
                 "모히또",
                 List.of(
                         new Ingredient("럼", "50ml"),
                         new Ingredient("라임", "20ml")
                 ),
-                List.of("얼음을 넣는다", "재료를 섞는다"),
+                "얼음을 넣는다\n재료를 섞는다",
                 "상큼한 맛이 어울립니다",
-                List.of("상큼한", "시원한")
+                Map.of(
+                        "taste", List.of("상큼한"),
+                        "mood", List.of("시원한")
+                )
         );
 
         // when
         String json = objectMapper.writeValueAsString(cocktail);
 
         // then
-        assertThat(json).contains("\"id\":\"mojito\"");
+        assertThat(json).contains("\"id\":1");
         assertThat(json).contains("\"name\":\"모히또\"");
         assertThat(json).contains("\"ingredients\"");
         assertThat(json).contains("\"recipe\"");
