@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -140,5 +142,67 @@ class CocktailRepositoryTest {
                     () -> assertThat(eachCocktail.getSensoryDescriptors().isEmpty()).isFalse()
             );
         }
+    }
+
+    @Test
+    @DisplayName("descriptors로 칵테일 검색 - 단일 descriptor")
+    void shouldFindCocktailsByDescriptor() {
+        // given
+        var sweetDescriptor = new DescriptorCode(SensoryAxis.TASTE, "sweet");
+
+        // when
+        var matchedCocktails = cocktailRepository.findByDescriptors(Set.of(sweetDescriptor));
+
+        // then
+        assertAll(
+                () -> assertThat(matchedCocktails).isNotEmpty(),
+                () -> assertThat(matchedCocktails).allMatch(
+                        c -> c.getSensoryDescriptors().taste().contains(sweetDescriptor)
+                )
+        );
+    }
+
+    @Test
+    @DisplayName("descriptors로 칵테일 검색 - 복수 descriptors (OR 조건)")
+    void shouldFindCocktailsByMultipleDescriptors() {
+        // given
+        var sweetDescriptor = new DescriptorCode(SensoryAxis.TASTE, "sweet");
+        var fruityDescriptor = new DescriptorCode(SensoryAxis.AROMA, "fruity");
+
+        // when
+        var matchedCocktails = cocktailRepository.findByDescriptors(Set.of(sweetDescriptor, fruityDescriptor));
+
+        // then
+        assertAll(
+                () -> assertThat(matchedCocktails).isNotEmpty(),
+                () -> assertThat(matchedCocktails).allMatch(c -> {
+                    var descriptors = c.getSensoryDescriptors();
+                    return descriptors.taste().contains(sweetDescriptor)
+                            || descriptors.aroma().contains(fruityDescriptor);
+                })
+        );
+    }
+
+    @Test
+    @DisplayName("descriptors로 칵테일 검색 - 매칭되는 칵테일 없음")
+    void shouldReturnEmptyListWhenNoMatchingDescriptors() {
+        // given
+        var nonExistentDescriptor = new DescriptorCode(SensoryAxis.TASTE, "nonexistent");
+
+        // when
+        var matchedCocktails = cocktailRepository.findByDescriptors(Set.of(nonExistentDescriptor));
+
+        // then
+        assertThat(matchedCocktails).isEmpty();
+    }
+
+    @Test
+    @DisplayName("descriptors로 칵테일 검색 - 빈 Set으로 검색")
+    void shouldReturnEmptyListWhenDescriptorsIsEmpty() {
+        // when
+        var matchedCocktails = cocktailRepository.findByDescriptors(Set.of());
+
+        // then
+        assertThat(matchedCocktails).isEmpty();
     }
 }
