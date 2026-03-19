@@ -41,8 +41,8 @@ public class SimpleCocktailMatcher implements CocktailMatcher {
         var allDescriptors = extractAllDescriptors(descriptors);
         var candidates = cocktailRepository.findByDescriptors(allDescriptors);
 
-        // 2. 각 칵테일에 대해 점수 계산
-        var scoredCocktails = candidates.stream()
+        // 2. 각 칵테일에 대해 점수 계산 및 반환
+        return candidates.stream()
                 .map(cocktail -> {
                     var score = scoreCalculator.calculate(cocktail, descriptors);
                     var matchedDescriptors = findMatchedDescriptors(cocktail, allDescriptors);
@@ -50,15 +50,12 @@ public class SimpleCocktailMatcher implements CocktailMatcher {
                     return new MatchedCocktail(cocktail, score, reason, matchedDescriptors);
                 })
                 // 3. 점수 > 0 인 칵테일만 선택
-                .filter(match -> match.getScore() > 0.0)
+                .filter(match -> match.score() > 0.0)
                 // 4. 점수 내림차순 정렬
-                .sorted(Comparator.comparingDouble(MatchedCocktail::getScore).reversed())
+                .sorted(Comparator.comparingDouble(MatchedCocktail::score).reversed())
                 // 5. 상위 3개 선정
                 .limit(MAX_RECOMMENDATIONS)
                 .toList();
-
-        // 6. MatchedCocktail 리스트 반환
-        return scoredCocktails;
     }
 
     private Set<DescriptorCode> extractAllDescriptors(SensoryDescriptors descriptors) {

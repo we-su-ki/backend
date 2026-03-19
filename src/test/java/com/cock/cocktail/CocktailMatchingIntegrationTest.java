@@ -36,7 +36,7 @@ class CocktailMatchingIntegrationTest {
                 () -> assertThat(descriptors.taste()).isNotEmpty(),
                 () -> assertThat(descriptors.aroma()).isNotEmpty(),
                 () -> assertThat(matches).isNotEmpty(),
-                () -> assertThat(matches).allMatch(match -> match.getScore() > 0.0),
+                () -> assertThat(matches).allMatch(match -> match.score() > 0.0),
                 () -> assertThat(matches).hasSizeLessThanOrEqualTo(3)
         );
     }
@@ -53,7 +53,7 @@ class CocktailMatchingIntegrationTest {
                 () -> assertThat(descriptors.mouthfeel()).isNotEmpty(),
                 () -> assertThat(descriptors.sensation()).isNotEmpty(),
                 () -> assertThat(matches).isNotEmpty(),
-                () -> assertThat(matches).allMatch(match -> match.getScore() > 0.0)
+                () -> assertThat(matches).allMatch(match -> match.score() > 0.0)
         );
     }
 
@@ -81,8 +81,8 @@ class CocktailMatchingIntegrationTest {
 
         if (matches.size() > 1) {
             for (int i = 0; i < matches.size() - 1; i++) {
-                assertThat(matches.get(i).getScore())
-                        .isGreaterThanOrEqualTo(matches.get(i + 1).getScore());
+                assertThat(matches.get(i).score())
+                        .isGreaterThanOrEqualTo(matches.get(i + 1).score());
             }
         }
     }
@@ -97,8 +97,8 @@ class CocktailMatchingIntegrationTest {
 
         assertAll(
                 () -> assertThat(matches).isNotEmpty(),
-                () -> assertThat(matches).allMatch(match -> match.getReason() != null),
-                () -> assertThat(matches).allMatch(match -> !match.getReason().isBlank())
+                () -> assertThat(matches).allMatch(match -> match.reason() != null),
+                () -> assertThat(matches).allMatch(match -> !match.reason().isBlank())
         );
     }
 
@@ -119,11 +119,11 @@ class CocktailMatchingIntegrationTest {
                 () -> assertThat(matches).hasSizeLessThanOrEqualTo(3),
 
                 // MatchedCocktail 검증
-                () -> assertThat(matches).allMatch(match -> match.getCocktail() != null),
-                () -> assertThat(matches).allMatch(match -> match.getScore() > 0.0),
-                () -> assertThat(matches).allMatch(match -> match.getScore() <= 1.0),
-                () -> assertThat(matches).allMatch(match -> match.getReason() != null),
-                () -> assertThat(matches).allMatch(match -> match.getMatchedDescriptors() != null)
+                () -> assertThat(matches).allMatch(match -> match.cocktail() != null),
+                () -> assertThat(matches).allMatch(match -> match.score() > 0.0),
+                () -> assertThat(matches).allMatch(match -> match.score() <= 1.0),
+                () -> assertThat(matches).allMatch(match -> match.reason() != null),
+                () -> assertThat(matches).allMatch(match -> match.matchedDescriptors() != null)
         );
     }
 
@@ -137,8 +137,8 @@ class CocktailMatchingIntegrationTest {
 
         if (matches.size() >= 2) {
             // 첫 번째 칵테일의 점수가 마지막 칵테일보다 크거나 같아야 함
-            assertThat(matches.get(0).getScore())
-                    .isGreaterThanOrEqualTo(matches.get(matches.size() - 1).getScore());
+            assertThat(matches.get(0).score())
+                    .isGreaterThanOrEqualTo(matches.get(matches.size() - 1).score());
         }
     }
 
@@ -153,7 +153,7 @@ class CocktailMatchingIntegrationTest {
         if (!matches.isEmpty()) {
             var queryDescriptors = extractAll(descriptors);
             for (var match : matches) {
-                var matchedDescriptors = match.getMatchedDescriptors();
+                var matchedDescriptors = match.matchedDescriptors();
                 // 매칭된 descriptors는 쿼리의 부분집합이어야 함
                 assertThat(queryDescriptors).containsAll(matchedDescriptors);
             }

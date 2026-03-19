@@ -2,16 +2,23 @@ package com.cock.cocktail.infrastructure.matching;
 
 import com.cock.cocktail.domain.Cocktail;
 import com.cock.cocktail.domain.DescriptorCode;
+import com.cock.cocktail.domain.DescriptorRegistry;
+import com.cock.cocktail.domain.MatchedCocktail;
 import com.cock.cocktail.domain.SensoryAxis;
 import com.cock.cocktail.domain.SensoryDescriptors;
 import com.cock.cocktail.repository.CocktailRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.io.ClassPathResource;
 
+import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -31,8 +38,18 @@ class SimpleCocktailMatcherTest {
     @BeforeEach
     void setUp() {
         var scoreCalculator = new MatchScoreCalculator();
-        var reasonGenerator = new ReasonGenerator();
+        var reasonGenerator = new ReasonGenerator(loadDescriptorRegistry());
         matcher = new SimpleCocktailMatcher(cocktailRepository, scoreCalculator, reasonGenerator);
+    }
+
+    private static DescriptorRegistry loadDescriptorRegistry() {
+        try {
+            var yamlMapper = new ObjectMapper(new YAMLFactory());
+            var keywordsResource = new ClassPathResource("keywords.yml");
+            return yamlMapper.readValue(keywordsResource.getInputStream(), DescriptorRegistry.class);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load descriptor configuration", e);
+        }
     }
 
     @Test
@@ -57,9 +74,9 @@ class SimpleCocktailMatcherTest {
 
         assertAll(
                 () -> assertThat(matches).isNotEmpty(),
-                () -> assertThat(matches).allMatch(match -> match.getScore() > 0.0),
-                () -> assertThat(matches).allMatch(match -> match.getCocktail() != null),
-                () -> assertThat(matches).allMatch(match -> match.getReason() != null)
+                () -> assertThat(matches).allMatch(match -> match.score() > 0.0),
+                () -> assertThat(matches).allMatch(match -> match.cocktail() != null),
+                () -> assertThat(matches).allMatch(match -> match.reason() != null)
         );
     }
 
@@ -87,7 +104,7 @@ class SimpleCocktailMatcherTest {
 
         assertAll(
                 () -> assertThat(matches).isNotEmpty(),
-                () -> assertThat(matches).allMatch(match -> match.getScore() > 0.0)
+                () -> assertThat(matches).allMatch(match -> match.score() > 0.0)
         );
     }
 
@@ -161,12 +178,9 @@ class SimpleCocktailMatcherTest {
 
         var matches = matcher.match(descriptors);
 
-        if (matches.size() > 1) {
-            for (int i = 0; i < matches.size() - 1; i++) {
-                assertThat(matches.get(i).getScore())
-                        .isGreaterThanOrEqualTo(matches.get(i + 1).getScore());
-            }
-        }
+        assertThat(matches)
+                .extracting(MatchedCocktail::score)
+                .isSortedAccordingTo(Comparator.reverseOrder());
     }
 
     @Test
@@ -187,7 +201,7 @@ class SimpleCocktailMatcherTest {
 
         var matches = matcher.match(descriptors);
 
-        assertThat(matches).allMatch(match -> match.getScore() > 0.0);
+        assertThat(matches).allMatch(match -> match.score() > 0.0);
     }
 
     @Test
@@ -220,7 +234,7 @@ class SimpleCocktailMatcherTest {
         var matches = matcher.match(descriptors);
 
         if (!matches.isEmpty()) {
-            assertThat(matches.get(0).getMatchedDescriptors()).isNotNull();
+            assertThat(matches.get(0).matchedDescriptors()).isNotNull();
         }
     }
 }

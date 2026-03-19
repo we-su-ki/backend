@@ -41,23 +41,23 @@ class DataIntegrityTest {
         assertAll(
                 () -> assertThat(matches).isNotEmpty(),
                 () -> assertThat(matches).hasSizeLessThanOrEqualTo(3),
-                () -> assertThat(matches).allMatch(m -> m.getScore() > 0),
-                () -> assertThat(matches).allMatch(m -> m.getReason() != null),
-                () -> assertThat(matches).allMatch(m -> !m.getMatchedDescriptors().isEmpty())
+                () -> assertThat(matches).allMatch(m -> m.score() > 0),
+                () -> assertThat(matches).allMatch(m -> m.reason() != null),
+                () -> assertThat(matches).allMatch(m -> !m.matchedDescriptors().isEmpty())
         );
 
         var firstMatch = matches.get(0);
         assertAll(
-                () -> assertThat(firstMatch.getScore()).isEqualTo(1.0),
-                () -> assertThat(firstMatch.getReason()).contains("달달한"),
-                () -> assertThat(firstMatch.getReason()).contains("과일향"),
-                () -> assertThat(firstMatch.getReason()).contains("부드러운"),
-                () -> assertThat(firstMatch.getMatchedDescriptors()).hasSize(3),
-                () -> assertThat(firstMatch.getMatchedDescriptors())
+                () -> assertThat(firstMatch.score()).isEqualTo(1.0),
+                () -> assertThat(firstMatch.reason()).contains("달달한"),
+                () -> assertThat(firstMatch.reason()).contains("과일향"),
+                () -> assertThat(firstMatch.reason()).contains("부드러운"),
+                () -> assertThat(firstMatch.matchedDescriptors()).hasSize(3),
+                () -> assertThat(firstMatch.matchedDescriptors())
                         .anyMatch(d -> d.axis() == SensoryAxis.TASTE && d.value().equals("sweet")),
-                () -> assertThat(firstMatch.getMatchedDescriptors())
+                () -> assertThat(firstMatch.matchedDescriptors())
                         .anyMatch(d -> d.axis() == SensoryAxis.AROMA && d.value().equals("fruity")),
-                () -> assertThat(firstMatch.getMatchedDescriptors())
+                () -> assertThat(firstMatch.matchedDescriptors())
                         .anyMatch(d -> d.axis() == SensoryAxis.MOUTHFEEL && d.value().equals("smooth"))
         );
     }
@@ -93,8 +93,8 @@ class DataIntegrityTest {
 
         assertAll(
                 () -> assertThat(matches).isNotEmpty(),
-                () -> assertThat(matches.get(0).getScore()).isEqualTo(1.0),
-                () -> assertThat(matches.get(0).getMatchedDescriptors()).hasSize(3)
+                () -> assertThat(matches.get(0).score()).isEqualTo(1.0),
+                () -> assertThat(matches.get(0).matchedDescriptors()).hasSize(3)
         );
     }
 
@@ -105,7 +105,7 @@ class DataIntegrityTest {
 
         assertAll(
                 () -> assertThat(matches).isNotEmpty(),
-                () -> assertThat(matches.get(0).getReason()).contains("달달한")
+                () -> assertThat(matches.get(0).reason()).contains("달달한")
         );
     }
 
@@ -115,7 +115,7 @@ class DataIntegrityTest {
         var matches = recommendationService.recommend("달달하고 과일향 나는 칵테일");
 
         var firstMatch = matches.get(0);
-        var matchedDescriptorValues = firstMatch.getMatchedDescriptors().stream()
+        var matchedDescriptorValues = firstMatch.matchedDescriptors().stream()
                 .map(d -> d.value())
                 .toList();
 
@@ -131,8 +131,8 @@ class DataIntegrityTest {
         var matches = recommendationService.recommend("달달한 칵테일");
 
         for (int i = 0; i < matches.size() - 1; i++) {
-            assertThat(matches.get(i).getScore())
-                    .isGreaterThanOrEqualTo(matches.get(i + 1).getScore());
+            assertThat(matches.get(i).score())
+                    .isGreaterThanOrEqualTo(matches.get(i + 1).score());
         }
     }
 

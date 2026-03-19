@@ -14,11 +14,11 @@ public record RecommendedCocktailDto(
         List<String> matchedKeywords
 ) {
     public static RecommendedCocktailDto from(MatchedCocktail matched) {
-        var cocktail = matched.getCocktail();
+        var cocktail = matched.cocktail();
         var ingredients = cocktail.getIngredients().stream()
                 .map(IngredientDto::from)
                 .toList();
-        var matchedKeywords = matched.getMatchedDescriptors().stream()
+        var matchedKeywords = matched.matchedDescriptors().stream()
                 .map(com.cock.cocktail.domain.DescriptorCode::value)
                 .toList();
 
@@ -27,8 +27,8 @@ public record RecommendedCocktailDto(
                 cocktail.getName(),
                 ingredients,
                 cocktail.getRecipe(),
-                matched.getScore(),
-                matched.getReason(),
+                matched.score(),
+                matched.reason(),
                 matchedKeywords
         );
     }

@@ -22,11 +22,7 @@ public class MatchScoreCalculator {
             return 0.0;
         }
 
-        var cocktailDescriptors = Set.copyOf(cocktail.getSensoryDescriptors().taste());
-        cocktailDescriptors = union(cocktailDescriptors, cocktail.getSensoryDescriptors().aroma());
-        cocktailDescriptors = union(cocktailDescriptors, cocktail.getSensoryDescriptors().mouthfeel());
-        cocktailDescriptors = union(cocktailDescriptors, cocktail.getSensoryDescriptors().sensation());
-        cocktailDescriptors = union(cocktailDescriptors, cocktail.getSensoryDescriptors().impression());
+        var cocktailDescriptors = extractAllDescriptors(cocktail.getSensoryDescriptors());
 
         var intersection = queryDescriptors.stream()
                 .filter(cocktailDescriptors::contains)
@@ -43,10 +39,5 @@ public class MatchScoreCalculator {
                 descriptors.sensation(),
                 descriptors.impression()
         ).flatMap(Set::stream).collect(Collectors.toSet());
-    }
-
-    private Set<DescriptorCode> union(Set<DescriptorCode> set1, Set<DescriptorCode> set2) {
-        return Stream.concat(set1.stream(), set2.stream())
-                .collect(Collectors.toSet());
     }
 }

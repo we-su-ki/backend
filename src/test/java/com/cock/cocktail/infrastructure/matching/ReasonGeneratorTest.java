@@ -2,16 +2,31 @@ package com.cock.cocktail.infrastructure.matching;
 
 import com.cock.cocktail.domain.DescriptorCode;
 import com.cock.cocktail.domain.SensoryAxis;
+import com.cock.cocktail.domain.DescriptorRegistry;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.io.ClassPathResource;
 
+import java.io.IOException;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ReasonGeneratorTest {
 
-    private final ReasonGenerator generator = new ReasonGenerator();
+    private final ReasonGenerator generator = new ReasonGenerator(loadDescriptorRegistry());
+
+    private static DescriptorRegistry loadDescriptorRegistry() {
+        try {
+            var yamlMapper = new ObjectMapper(new YAMLFactory());
+            var keywordsResource = new ClassPathResource("keywords.yml");
+            return yamlMapper.readValue(keywordsResource.getInputStream(), DescriptorRegistry.class);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load descriptor configuration", e);
+        }
+    }
 
     @Test
     @DisplayName("단일 descriptor 매칭 시 이유 생성")

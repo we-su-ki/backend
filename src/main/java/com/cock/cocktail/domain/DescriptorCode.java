@@ -1,5 +1,6 @@
 package com.cock.cocktail.domain;
 
+import com.cock.cocktail.util.Strings;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
@@ -18,9 +19,8 @@ public record DescriptorCode(
 ) {
     public DescriptorCode {
         Objects.requireNonNull(axis, "axis must not be null");
-        if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException("value must not be blank");
-        }
-        value = value.trim().toLowerCase();
+        value = Strings.trimAndLowerCase(
+                Strings.requireNotBlank(value, "value must not be blank")
+        );
     }
 }

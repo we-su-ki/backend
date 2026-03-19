@@ -4,14 +4,19 @@ import com.cock.cocktail.domain.Cocktail;
 import com.cock.cocktail.domain.DescriptorCode;
 import com.cock.cocktail.domain.SensoryAxis;
 import com.cock.cocktail.domain.SensoryDescriptors;
+import com.cock.cocktail.domain.DescriptorRegistry;
 import com.cock.cocktail.repository.CocktailRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.io.ClassPathResource;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -34,8 +39,18 @@ class EdgeCaseTest {
     @BeforeEach
     void setUp() {
         var scoreCalculator = new MatchScoreCalculator();
-        var reasonGenerator = new ReasonGenerator();
+        var reasonGenerator = new ReasonGenerator(loadDescriptorRegistry());
         cocktailMatcher = new SimpleCocktailMatcher(cocktailRepository, scoreCalculator, reasonGenerator);
+    }
+
+    private static DescriptorRegistry loadDescriptorRegistry() {
+        try {
+            var yamlMapper = new ObjectMapper(new YAMLFactory());
+            var keywordsResource = new ClassPathResource("keywords.yml");
+            return yamlMapper.readValue(keywordsResource.getInputStream(), DescriptorRegistry.class);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load descriptor configuration", e);
+        }
     }
 
     @Test
@@ -106,7 +121,7 @@ class EdgeCaseTest {
         assertAll(
                 () -> assertThat(matches).isNotNull(),
                 () -> assertThat(matches).hasSizeLessThanOrEqualTo(3),
-                () -> assertThat(matches).allMatch(match -> match.getScore() > 0.0)
+                () -> assertThat(matches).allMatch(match -> match.score() > 0.0)
         );
     }
 
@@ -134,10 +149,10 @@ class EdgeCaseTest {
                 () -> {
                     if (!firstCall.isEmpty() && !secondCall.isEmpty()) {
                         for (int i = 0; i < firstCall.size(); i++) {
-                            assertThat(firstCall.get(i).getCocktail().getId())
-                                    .isEqualTo(secondCall.get(i).getCocktail().getId());
-                            assertThat(firstCall.get(i).getScore())
-                                    .isEqualTo(secondCall.get(i).getScore());
+                            assertThat(firstCall.get(i).cocktail().getId())
+                                    .isEqualTo(secondCall.get(i).cocktail().getId());
+                            assertThat(firstCall.get(i).score())
+                                    .isEqualTo(secondCall.get(i).score());
                         }
                     }
                 }
@@ -167,7 +182,7 @@ class EdgeCaseTest {
         var matches = cocktailMatcher.match(descriptors);
 
         assertThat(matches).allMatch(match -> {
-            double score = match.getScore();
+            double score = match.score();
             return score >= 0.0 && score <= 1.0;
         });
     }

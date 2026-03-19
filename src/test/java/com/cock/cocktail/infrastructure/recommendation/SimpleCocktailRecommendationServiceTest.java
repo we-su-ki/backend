@@ -75,8 +75,8 @@ class SimpleCocktailRecommendationServiceTest {
 
         assertAll(
                 () -> assertThat(result).hasSize(1),
-                () -> assertThat(result.get(0).getCocktail().getName()).isEqualTo("Mojito"),
-                () -> assertThat(result.get(0).getScore()).isEqualTo(0.85)
+                () -> assertThat(result.get(0).cocktail().getName()).isEqualTo("Mojito"),
+                () -> assertThat(result.get(0).score()).isEqualTo(0.85)
         );
     }
 
@@ -172,9 +172,9 @@ class SimpleCocktailRecommendationServiceTest {
         // then - 순서 유지 확인
         assertAll(
                 () -> assertThat(result).hasSize(3),
-                () -> assertThat(result.get(0).getScore()).isEqualTo(0.9),
-                () -> assertThat(result.get(1).getScore()).isEqualTo(0.7),
-                () -> assertThat(result.get(2).getScore()).isEqualTo(0.5)
+                () -> assertThat(result.get(0).score()).isEqualTo(0.9),
+                () -> assertThat(result.get(1).score()).isEqualTo(0.7),
+                () -> assertThat(result.get(2).score()).isEqualTo(0.5)
         );
     }
 

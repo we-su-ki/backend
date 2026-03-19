@@ -40,11 +40,11 @@ class SensoryDescriptorsTest {
                 .build();
 
         assertAll(
-                () -> assertThat(descriptors.codeValues(SensoryAxis.TASTE)).containsExactlyInAnyOrder("sweet", "sour"),
-                () -> assertThat(descriptors.codeValues(SensoryAxis.AROMA)).containsExactlyInAnyOrder("fruity", "lime"),
-                () -> assertThat(descriptors.codeValues(SensoryAxis.MOUTHFEEL)).containsExactly("smooth"),
-                () -> assertThat(descriptors.codeValues(SensoryAxis.SENSATION)).containsExactly("carbonated"),
-                () -> assertThat(descriptors.codeValues(SensoryAxis.IMPRESSION)).containsExactlyInAnyOrder("refreshing", "summer")
+                () -> assertThat(descriptors.taste().stream().map(d -> d.value()).toList()).containsExactlyInAnyOrder("sweet", "sour"),
+                () -> assertThat(descriptors.aroma().stream().map(d -> d.value()).toList()).containsExactlyInAnyOrder("fruity", "lime"),
+                () -> assertThat(descriptors.mouthfeel().stream().map(d -> d.value()).toList()).containsExactly("smooth"),
+                () -> assertThat(descriptors.sensation().stream().map(d -> d.value()).toList()).containsExactly("carbonated"),
+                () -> assertThat(descriptors.impression().stream().map(d -> d.value()).toList()).containsExactlyInAnyOrder("refreshing", "summer")
         );
     }
 

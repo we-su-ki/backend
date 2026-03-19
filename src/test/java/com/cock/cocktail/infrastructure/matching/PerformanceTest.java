@@ -4,14 +4,19 @@ import com.cock.cocktail.domain.Cocktail;
 import com.cock.cocktail.domain.DescriptorCode;
 import com.cock.cocktail.domain.SensoryAxis;
 import com.cock.cocktail.domain.SensoryDescriptors;
+import com.cock.cocktail.domain.DescriptorRegistry;
 import com.cock.cocktail.repository.CocktailRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.io.ClassPathResource;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -34,7 +39,7 @@ class PerformanceTest {
     @BeforeEach
     void setUp() {
         var scoreCalculator = new MatchScoreCalculator();
-        var reasonGenerator = new ReasonGenerator();
+        var reasonGenerator = new ReasonGenerator(loadDescriptorRegistry());
         cocktailMatcher = new SimpleCocktailMatcher(cocktailRepository, scoreCalculator, reasonGenerator);
 
         // 100개의 mock 칵테일 준비
@@ -114,5 +119,15 @@ class PerformanceTest {
         System.out.println("매칭된 칵테일 수: " + matches.size());
         // 콜드 스타트는 더 느릴 수 있으므로 200ms 허용
         assertThat(duration).isLessThan(200);
+    }
+
+    private static DescriptorRegistry loadDescriptorRegistry() {
+        try {
+            var yamlMapper = new ObjectMapper(new YAMLFactory());
+            var keywordsResource = new ClassPathResource("keywords.yml");
+            return yamlMapper.readValue(keywordsResource.getInputStream(), DescriptorRegistry.class);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load descriptor configuration", e);
+        }
     }
 }

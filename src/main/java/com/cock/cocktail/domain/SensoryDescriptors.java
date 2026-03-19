@@ -52,13 +52,6 @@ public class SensoryDescriptors {
         return get(IMPRESSION);
     }
 
-    public Set<String> codeValues(SensoryAxis axis) {
-        return descriptors.stream()
-                .filter(descriptor -> descriptor.axis() == axis)
-                .map(DescriptorCode::value)
-                .collect(Collectors.toUnmodifiableSet());
-    }
-
     public boolean isEmpty() {
         return descriptors.isEmpty();
     }

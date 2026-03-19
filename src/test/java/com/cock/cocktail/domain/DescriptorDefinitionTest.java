@@ -1,4 +1,4 @@
-package com.cock.cocktail.infrastructure.config_based_analyzer;
+package com.cock.cocktail.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,54 +9,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 class DescriptorDefinitionTest {
-
-    @Test
-    @DisplayName("동의어 매칭 - 쿼리에 동의어가 포함되면 매칭 성공")
-    void shouldMatchWhenQueryContainsSynonym() {
-        var descriptor = new DescriptorDefinition(
-                "sweet",
-                "달달한",
-                List.of("달달한", "달콤한", "단"),
-                List.of()
-        );
-        var query = "달콤한 칵테일 추천해줘";
-
-        var isMatched = descriptor.matches(query);
-
-        assertThat(isMatched).isTrue();
-    }
-
-    @Test
-    @DisplayName("동의어 매칭 - 대소문자 구분 없이 매칭")
-    void shouldMatchCaseInsensitively() {
-        var descriptor = new DescriptorDefinition(
-                "sweet",
-                "달달한",
-                List.of("Sweet", "SWEET"),
-                List.of()
-        );
-        var query = "sweet cocktail";
-
-        var isMatched = descriptor.matches(query);
-
-        assertThat(isMatched).isTrue();
-    }
-
-    @Test
-    @DisplayName("동의어 매칭 - 쿼리에 동의어가 없으면 매칭 실패")
-    void shouldNotMatchWhenQueryDoesNotContainSynonym() {
-        var descriptor = new DescriptorDefinition(
-                "sweet",
-                "달달한",
-                List.of("달달한", "달콤한"),
-                List.of()
-        );
-        var query = "신맛 나는 칵테일";
-
-        var isMatched = descriptor.matches(query);
-
-        assertThat(isMatched).isFalse();
-    }
 
     @Test
     @DisplayName("계층 매칭 - 자신이 매칭되면 code 반환")

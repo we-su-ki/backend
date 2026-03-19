@@ -1,6 +1,6 @@
 package com.cock.cocktail.web.dto;
 
-import com.cock.cocktail.domain.SensoryAxis;
+import com.cock.cocktail.domain.DescriptorCode;
 import com.cock.cocktail.domain.SensoryDescriptors;
 
 import java.util.List;
@@ -17,11 +17,17 @@ public record SensoryDescriptorsDto(
 ) {
     public static SensoryDescriptorsDto from(SensoryDescriptors descriptors) {
         return new SensoryDescriptorsDto(
-                List.copyOf(descriptors.codeValues(SensoryAxis.TASTE)),
-                List.copyOf(descriptors.codeValues(SensoryAxis.AROMA)),
-                List.copyOf(descriptors.codeValues(SensoryAxis.MOUTHFEEL)),
-                List.copyOf(descriptors.codeValues(SensoryAxis.SENSATION)),
-                List.copyOf(descriptors.codeValues(SensoryAxis.IMPRESSION))
+                toStringList(descriptors.taste()),
+                toStringList(descriptors.aroma()),
+                toStringList(descriptors.mouthfeel()),
+                toStringList(descriptors.sensation()),
+                toStringList(descriptors.impression())
         );
+    }
+
+    private static List<String> toStringList(java.util.Set<DescriptorCode> descriptorCodes) {
+        return descriptorCodes.stream()
+                .map(DescriptorCode::value)
+                .toList();
     }
 }

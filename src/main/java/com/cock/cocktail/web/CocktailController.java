@@ -18,15 +18,14 @@ public class CocktailController {
 
     @GetMapping("/analyze")
     public SensoryDescriptorsDto analyze(@RequestParam String query) {
-        var sensoryDescriptors = keywordAnalyzer.analyze(query);
-        return SensoryDescriptorsDto.from(sensoryDescriptors);
+        return SensoryDescriptorsDto.from(keywordAnalyzer.analyze(query));
     }
 
     @GetMapping("/recommend")
     public CocktailRecommendationResponse recommend(@RequestParam String query) {
-        var matches = recommendationService.recommend(query);
-        var dtos = RecommendedCocktailDto.from(matches);
-        return CocktailRecommendationResponse.from(dtos);
+        return CocktailRecommendationResponse.from(
+                RecommendedCocktailDto.from(recommendationService.recommend(query))
+        );
     }
 }
 

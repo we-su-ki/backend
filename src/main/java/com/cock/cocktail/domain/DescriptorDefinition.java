@@ -1,4 +1,4 @@
-package com.cock.cocktail.infrastructure.config_based_analyzer;
+package com.cock.cocktail.domain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  * @param synonyms 동의어 목록
  * @param children 하위 descriptor (계층 구조)
  */
-record DescriptorDefinition(
+public record DescriptorDefinition(
         String code,
         String label,
         List<String> synonyms,
@@ -24,12 +24,6 @@ record DescriptorDefinition(
         if (children == null) {
             children = new ArrayList<>();
         }
-    }
-
-    public boolean matches(String query) {
-        var lowerCaseQuery = query.toLowerCase();
-        return synonyms.stream()
-                .anyMatch(synonym -> lowerCaseQuery.contains(synonym.toLowerCase()));
     }
 
     /**
@@ -47,5 +41,11 @@ record DescriptorDefinition(
         }
 
         return matchedCodes;
+    }
+
+    private boolean matches(String query) {
+        var lowerCaseQuery = query.toLowerCase();
+        return synonyms.stream()
+                .anyMatch(synonym -> lowerCaseQuery.contains(synonym.toLowerCase()));
     }
 }

@@ -1,12 +1,15 @@
 package com.cock.cocktail.infrastructure.config_based_analyzer;
 
 import com.cock.cocktail.domain.SensoryAxis;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.List;
+import com.cock.cocktail.domain.DescriptorRegistry;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.io.ClassPathResource;
+
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -17,7 +20,17 @@ class ConfigBasedKeywordAnalyzerTest {
 
     @BeforeEach
     void setUp() {
-        analyzer = new ConfigBasedKeywordAnalyzer();
+        analyzer = new ConfigBasedKeywordAnalyzer(loadDescriptorRegistry());
+    }
+
+    private static DescriptorRegistry loadDescriptorRegistry() {
+        try {
+            var yamlMapper = new ObjectMapper(new YAMLFactory());
+            var keywordsResource = new ClassPathResource("keywords.yml");
+            return yamlMapper.readValue(keywordsResource.getInputStream(), DescriptorRegistry.class);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load descriptor configuration", e);
+        }
     }
 
     @Test
@@ -54,8 +67,8 @@ class ConfigBasedKeywordAnalyzerTest {
         var sensoryDescriptors = analyzer.analyze(query);
 
         assertAll(
-                () -> assertThat(sensoryDescriptors.codeValues(SensoryAxis.TASTE)).contains("sweet"),
-                () -> assertThat(sensoryDescriptors.codeValues(SensoryAxis.AROMA)).contains("lime"),
+                () -> assertThat(sensoryDescriptors.taste().stream().map(d -> d.value()).toList()).contains("sweet"),
+                () -> assertThat(sensoryDescriptors.aroma().stream().map(d -> d.value()).toList()).contains("lime"),
                 () -> assertThat(sensoryDescriptors.mouthfeel()).isEmpty(),
                 () -> assertThat(sensoryDescriptors.sensation()).isEmpty(),
                 () -> assertThat(sensoryDescriptors.impression()).isEmpty()
@@ -70,8 +83,8 @@ class ConfigBasedKeywordAnalyzerTest {
         var sensoryDescriptors = analyzer.analyze(query);
 
         assertAll(
-                () -> assertThat(sensoryDescriptors.codeValues(SensoryAxis.AROMA)).contains("lime"),
-                () -> assertThat(sensoryDescriptors.codeValues(SensoryAxis.AROMA)).doesNotContain("citrus", "fruity")
+                () -> assertThat(sensoryDescriptors.aroma().stream().map(d -> d.value()).toList()).contains("lime"),
+                () -> assertThat(sensoryDescriptors.aroma().stream().map(d -> d.value()).toList()).doesNotContain("citrus", "fruity")
         );
     }
 
@@ -82,7 +95,7 @@ class ConfigBasedKeywordAnalyzerTest {
 
         var sensoryDescriptors = analyzer.analyze(query);
 
-        assertThat(sensoryDescriptors.codeValues(SensoryAxis.AROMA)).contains("fruity");
+        assertThat(sensoryDescriptors.aroma().stream().map(d -> d.value()).toList()).contains("fruity");
     }
 
     @Test
@@ -92,7 +105,7 @@ class ConfigBasedKeywordAnalyzerTest {
 
         var sensoryDescriptors = analyzer.analyze(query);
 
-        assertThat(sensoryDescriptors.codeValues(SensoryAxis.TASTE)).containsExactlyInAnyOrder("sweet", "sour");
+        assertThat(sensoryDescriptors.taste().stream().map(d -> d.value()).toList()).containsExactlyInAnyOrder("sweet", "sour");
     }
 
     @Test
@@ -107,9 +120,9 @@ class ConfigBasedKeywordAnalyzerTest {
         var sensoryDescriptors3 = analyzer.analyze(query3);
 
         assertAll(
-                () -> assertThat(sensoryDescriptors1.codeValues(SensoryAxis.TASTE)).contains("sweet"),
-                () -> assertThat(sensoryDescriptors2.codeValues(SensoryAxis.TASTE)).contains("sweet"),
-                () -> assertThat(sensoryDescriptors3.codeValues(SensoryAxis.TASTE)).contains("sweet")
+                () -> assertThat(sensoryDescriptors1.taste().stream().map(d -> d.value()).toList()).contains("sweet"),
+                () -> assertThat(sensoryDescriptors2.taste().stream().map(d -> d.value()).toList()).contains("sweet"),
+                () -> assertThat(sensoryDescriptors3.taste().stream().map(d -> d.value()).toList()).contains("sweet")
         );
     }
 
@@ -152,7 +165,7 @@ class ConfigBasedKeywordAnalyzerTest {
 
         var sensoryDescriptors = analyzer.analyze(query);
 
-        assertThat(sensoryDescriptors.codeValues(SensoryAxis.TASTE)).contains("sweet");
+        assertThat(sensoryDescriptors.taste().stream().map(d -> d.value()).toList()).contains("sweet");
     }
 
     @Test
@@ -162,7 +175,7 @@ class ConfigBasedKeywordAnalyzerTest {
 
         var sensoryDescriptors = analyzer.analyze(query);
 
-        assertThat(sensoryDescriptors.codeValues(SensoryAxis.TASTE)).containsExactlyInAnyOrder("sweet", "sour");
+        assertThat(sensoryDescriptors.taste().stream().map(d -> d.value()).toList()).containsExactlyInAnyOrder("sweet", "sour");
     }
 
     @Test
@@ -174,57 +187,6 @@ class ConfigBasedKeywordAnalyzerTest {
 
         // sweet이 여러 번 추가될 수 있지만, 현재 구조에서는 각 descriptor마다 한 번씩 추가됨
         // keywords.yml에서 sweet은 하나의 descriptor이므로 중복 없음
-        assertThat(sensoryDescriptors.codeValues(SensoryAxis.TASTE)).contains("sweet");
-    }
-
-    @Test
-    @DisplayName("내부 DescriptorConfig - 모든 필드가 null이어도 빈 리스트로 초기화")
-    void shouldInitializeNestedDescriptorConfigWithEmptyListsWhenAllNull() throws Exception {
-        var config = createNestedDescriptorConfig(null, null, null, null, null);
-
-        assertAll(
-                () -> assertThat(invokeListAccessor(config, "taste")).isEmpty(),
-                () -> assertThat(invokeListAccessor(config, "aroma")).isEmpty(),
-                () -> assertThat(invokeListAccessor(config, "mouthfeel")).isEmpty(),
-                () -> assertThat(invokeListAccessor(config, "sensation")).isEmpty(),
-                () -> assertThat(invokeListAccessor(config, "impression")).isEmpty()
-        );
-    }
-
-    @Test
-    @DisplayName("내부 DescriptorConfig - 필드가 제공되면 그대로 저장")
-    void shouldKeepNestedDescriptorConfigValuesWhenProvided() throws Exception {
-        var tasteDescriptors = List.of(
-                new DescriptorDefinition("sweet", "달달한", List.of("달달한"), List.of())
-        );
-        var config = createNestedDescriptorConfig(tasteDescriptors, List.of(), List.of(), List.of(), List.of());
-
-        var storedTaste = invokeListAccessor(config, "taste");
-
-        assertThat(storedTaste).isEqualTo(tasteDescriptors);
-    }
-
-    private static Object createNestedDescriptorConfig(
-            List<DescriptorDefinition> taste,
-            List<DescriptorDefinition> aroma,
-            List<DescriptorDefinition> mouthfeel,
-            List<DescriptorDefinition> sensation,
-            List<DescriptorDefinition> impression
-    ) throws Exception {
-        var nestedClass = Class.forName(
-                "com.cock.cocktail.infrastructure.config_based_analyzer.ConfigBasedKeywordAnalyzer$DescriptorConfig"
-        );
-        Constructor<?> constructor = nestedClass.getDeclaredConstructor(
-                List.class, List.class, List.class, List.class, List.class
-        );
-        constructor.setAccessible(true);
-        return constructor.newInstance(taste, aroma, mouthfeel, sensation, impression);
-    }
-
-    @SuppressWarnings("unchecked")
-    private static List<DescriptorDefinition> invokeListAccessor(Object target, String methodName) throws Exception {
-        Method accessor = target.getClass().getDeclaredMethod(methodName);
-        accessor.setAccessible(true);
-        return (List<DescriptorDefinition>) accessor.invoke(target);
+        assertThat(sensoryDescriptors.taste().stream().map(d -> d.value()).toList()).contains("sweet");
     }
 }

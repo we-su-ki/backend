@@ -4,6 +4,7 @@ import com.cock.cocktail.domain.MatchedCocktail;
 import com.cock.cocktail.service.CocktailMatcher;
 import com.cock.cocktail.service.CocktailRecommendationService;
 import com.cock.cocktail.service.KeywordAnalyzer;
+import com.cock.cocktail.util.Strings;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,18 +25,9 @@ public class SimpleCocktailRecommendationService implements CocktailRecommendati
 
     @Override
     public List<MatchedCocktail> recommend(String query) {
-        // 1. 입력 검증
-        if (query == null || query.isBlank()) {
-            throw new IllegalArgumentException("query must not be blank");
-        }
+        Strings.requireNotBlank(query, "query must not be blank");
 
-        // 2. 키워드 분석
         var descriptors = keywordAnalyzer.analyze(query);
-
-        // 3. 칵테일 매칭
-        var matches = cocktailMatcher.match(descriptors);
-
-        // 4. 결과 반환
-        return matches;
+        return cocktailMatcher.match(descriptors);
     }
 }
