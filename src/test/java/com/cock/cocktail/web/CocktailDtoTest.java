@@ -25,7 +25,6 @@ class CocktailDtoTest {
     @Test
     @DisplayName("JSON을 CocktailDto로 역직렬화")
     void shouldDeserializeFromJson() throws Exception {
-        // given
         var jsonString = """
                 {
                     "id": 1,
@@ -43,10 +42,8 @@ class CocktailDtoTest {
                 }
                 """;
 
-        // when
         var deserializedCocktail = objectMapper.readValue(jsonString, CocktailDto.class);
 
-        // then
         assertAll(
                 () -> assertThat(deserializedCocktail).isNotNull(),
                 () -> assertThat(deserializedCocktail.id()).isEqualTo(1L),
@@ -62,7 +59,6 @@ class CocktailDtoTest {
     @Test
     @DisplayName("CocktailDto를 JSON으로 직렬화")
     void shouldSerializeToJson() throws Exception {
-        // given
         var cocktailDto = new CocktailDto(
                 1L,
                 "모히또",
@@ -78,10 +74,8 @@ class CocktailDtoTest {
                 )
         );
 
-        // when
         var serializedJson = objectMapper.writeValueAsString(cocktailDto);
 
-        // then
         assertAll(
                 () -> assertThat(serializedJson).contains("\"id\":1"),
                 () -> assertThat(serializedJson).contains("\"name\":\"모히또\""),

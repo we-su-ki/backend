@@ -13,11 +13,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * 감각 축별 descriptor 모음
- * <p>
- * 사용자 쿼리에서 추출된 sensory descriptor들을 감각 축별로 관리합니다.
- */
 public class SensoryDescriptors {
 
     private final List<DescriptorCode> descriptors;

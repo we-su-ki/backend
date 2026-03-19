@@ -16,7 +16,6 @@ class SensoryDescriptorsTest {
     @Test
     @DisplayName("정상 생성 - 5개 축 모두 제공")
     void shouldCreateWithAllAxes() {
-        // given
         var taste = List.of(
                 new DescriptorCode(SensoryAxis.TASTE, "sweet"),
                 new DescriptorCode(SensoryAxis.TASTE, "sour")
@@ -32,7 +31,6 @@ class SensoryDescriptorsTest {
                 new DescriptorCode(SensoryAxis.IMPRESSION, "summer")
         );
 
-        // when
         var descriptors = SensoryDescriptors.builder()
                 .taste(Set.copyOf(taste))
                 .aroma(Set.copyOf(aroma))
@@ -41,7 +39,6 @@ class SensoryDescriptorsTest {
                 .impression(Set.copyOf(impression))
                 .build();
 
-        // then
         assertAll(
                 () -> assertThat(descriptors.codeValues(SensoryAxis.TASTE)).containsExactlyInAnyOrder("sweet", "sour"),
                 () -> assertThat(descriptors.codeValues(SensoryAxis.AROMA)).containsExactlyInAnyOrder("fruity", "lime"),
@@ -57,7 +54,6 @@ class SensoryDescriptorsTest {
         // given & when
         var descriptors = SensoryDescriptors.builder().build();
 
-        // then
         assertAll(
                 () -> assertThat(descriptors.taste()).isEmpty(),
                 () -> assertThat(descriptors.aroma()).isEmpty(),
@@ -79,12 +75,10 @@ class SensoryDescriptorsTest {
     @Test
     @DisplayName("isEmpty - 하나라도 있으면 false")
     void shouldReturnFalseWhenAnyAxisHasDescriptors() {
-        // given
         var descriptors = SensoryDescriptors.builder()
                 .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
                 .build();
 
-        // when & then
         assertThat(descriptors.isEmpty()).isFalse();
     }
 }

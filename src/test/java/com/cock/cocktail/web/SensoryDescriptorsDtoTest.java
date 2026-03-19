@@ -18,7 +18,6 @@ class SensoryDescriptorsDtoTest {
     @Test
     @DisplayName("SensoryDescriptors를 DTO로 변환")
     void shouldConvertFromSensoryDescriptors() {
-        // given
         var sensoryDescriptors = SensoryDescriptors.builder()
                 .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
                 .aroma(Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity")))
@@ -27,10 +26,8 @@ class SensoryDescriptorsDtoTest {
                 .impression(Set.of(new DescriptorCode(SensoryAxis.IMPRESSION, "summer")))
                 .build();
 
-        // when
         var dto = SensoryDescriptorsDto.from(sensoryDescriptors);
 
-        // then
         assertAll(
                 () -> assertThat(dto.taste()).containsExactly("sweet"),
                 () -> assertThat(dto.aroma()).containsExactly("fruity"),
@@ -43,13 +40,10 @@ class SensoryDescriptorsDtoTest {
     @Test
     @DisplayName("빈 SensoryDescriptors를 DTO로 변환")
     void shouldConvertEmptySensoryDescriptors() {
-        // given
         var sensoryDescriptors = SensoryDescriptors.builder().build();
 
-        // when
         var dto = SensoryDescriptorsDto.from(sensoryDescriptors);
 
-        // then
         assertAll(
                 () -> assertThat(dto.taste()).isEmpty(),
                 () -> assertThat(dto.aroma()).isEmpty(),
@@ -62,7 +56,6 @@ class SensoryDescriptorsDtoTest {
     @Test
     @DisplayName("일부 축만 있는 SensoryDescriptors를 DTO로 변환")
     void shouldConvertPartialSensoryDescriptors() {
-        // given
         var sensoryDescriptors = SensoryDescriptors.builder()
                 .taste(Set.of(
                         new DescriptorCode(SensoryAxis.TASTE, "sweet"),
@@ -71,10 +64,8 @@ class SensoryDescriptorsDtoTest {
                 .aroma(Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity")))
                 .build();
 
-        // when
         var dto = SensoryDescriptorsDto.from(sensoryDescriptors);
 
-        // then
         assertAll(
                 () -> assertThat(dto.taste()).containsExactlyInAnyOrder("sweet", "sour"),
                 () -> assertThat(dto.aroma()).containsExactly("fruity"),

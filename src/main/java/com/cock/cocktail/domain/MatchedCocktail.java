@@ -3,11 +3,6 @@ package com.cock.cocktail.domain;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * 매칭된 칵테일 정보
- * <p>
- * 칵테일과 매칭 점수, 추천 이유를 포함합니다.
- */
 public class MatchedCocktail {
 
     private final Cocktail cocktail;

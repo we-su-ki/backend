@@ -38,7 +38,6 @@ class SimpleCocktailMatcherTest {
     @Test
     @DisplayName("단일 descriptor 매칭 테스트")
     void shouldMatchCocktailsWithSingleDescriptor() {
-        // given
         var descriptors = SensoryDescriptors.builder()
                 .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
                 .build();
@@ -54,10 +53,8 @@ class SimpleCocktailMatcherTest {
 
         when(cocktailRepository.findByDescriptors(any())).thenReturn(List.of(mockCocktail));
 
-        // when
         var matches = matcher.match(descriptors);
 
-        // then
         assertAll(
                 () -> assertThat(matches).isNotEmpty(),
                 () -> assertThat(matches).allMatch(match -> match.getScore() > 0.0),
@@ -69,7 +66,6 @@ class SimpleCocktailMatcherTest {
     @Test
     @DisplayName("복수 descriptor 매칭 테스트")
     void shouldMatchCocktailsWithMultipleDescriptors() {
-        // given
         var descriptors = SensoryDescriptors.builder()
                 .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
                 .aroma(Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity")))
@@ -87,10 +83,8 @@ class SimpleCocktailMatcherTest {
 
         when(cocktailRepository.findByDescriptors(any())).thenReturn(List.of(mockCocktail));
 
-        // when
         var matches = matcher.match(descriptors);
 
-        // then
         assertAll(
                 () -> assertThat(matches).isNotEmpty(),
                 () -> assertThat(matches).allMatch(match -> match.getScore() > 0.0)
@@ -100,7 +94,6 @@ class SimpleCocktailMatcherTest {
     @Test
     @DisplayName("상위 N개 선정 테스트 - 최대 3개")
     void shouldReturnTopThreeMatches() {
-        // given
         var descriptors = SensoryDescriptors.builder()
                 .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
                 .build();
@@ -120,10 +113,8 @@ class SimpleCocktailMatcherTest {
 
         when(cocktailRepository.findByDescriptors(any())).thenReturn(mockCocktails);
 
-        // when
         var matches = matcher.match(descriptors);
 
-        // then
         assertThat(matches).hasSizeLessThanOrEqualTo(3);
     }
 
@@ -137,17 +128,14 @@ class SimpleCocktailMatcherTest {
 
         when(cocktailRepository.findByDescriptors(any())).thenReturn(List.of());
 
-        // when
         var matches = matcher.match(descriptors);
 
-        // then
         assertThat(matches).isEmpty();
     }
 
     @Test
     @DisplayName("점수 내림차순 정렬 테스트")
     void shouldSortByScoreDescending() {
-        // given
         var descriptors = SensoryDescriptors.builder()
                 .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
                 .aroma(Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity")))
@@ -171,10 +159,8 @@ class SimpleCocktailMatcherTest {
 
         when(cocktailRepository.findByDescriptors(any())).thenReturn(mockCocktails);
 
-        // when
         var matches = matcher.match(descriptors);
 
-        // then
         if (matches.size() > 1) {
             for (int i = 0; i < matches.size() - 1; i++) {
                 assertThat(matches.get(i).getScore())
@@ -186,7 +172,6 @@ class SimpleCocktailMatcherTest {
     @Test
     @DisplayName("점수 0인 칵테일 제외 테스트")
     void shouldExcludeZeroScoreCocktails() {
-        // given
         var descriptors = SensoryDescriptors.builder()
                 .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
                 .build();
@@ -200,30 +185,24 @@ class SimpleCocktailMatcherTest {
 
         when(cocktailRepository.findByDescriptors(any())).thenReturn(mockCocktails);
 
-        // when
         var matches = matcher.match(descriptors);
 
-        // then
         assertThat(matches).allMatch(match -> match.getScore() > 0.0);
     }
 
     @Test
     @DisplayName("빈 descriptors로 검색 시 빈 리스트 반환")
     void shouldReturnEmptyListForEmptyDescriptors() {
-        // given
         var descriptors = SensoryDescriptors.builder().build();
 
-        // when
         var matches = matcher.match(descriptors);
 
-        // then
         assertThat(matches).isEmpty();
     }
 
     @Test
     @DisplayName("매칭된 descriptors 포함 여부 확인")
     void shouldIncludeMatchedDescriptors() {
-        // given
         var sweetDescriptor = new DescriptorCode(SensoryAxis.TASTE, "sweet");
         var descriptors = SensoryDescriptors.builder()
                 .taste(Set.of(sweetDescriptor))
@@ -238,10 +217,8 @@ class SimpleCocktailMatcherTest {
 
         when(cocktailRepository.findByDescriptors(any())).thenReturn(List.of(mockCocktail));
 
-        // when
         var matches = matcher.match(descriptors);
 
-        // then
         if (!matches.isEmpty()) {
             assertThat(matches.get(0).getMatchedDescriptors()).isNotNull();
         }

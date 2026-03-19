@@ -20,7 +20,6 @@ class MatchScoreCalculatorTest {
     @Test
     @DisplayName("완전 일치 시 점수 1.0")
     void shouldReturnOneWhenPerfectMatch() {
-        // given
         var query = SensoryDescriptors.builder()
                 .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
                 .aroma(Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity")))
@@ -34,10 +33,8 @@ class MatchScoreCalculatorTest {
                 ))
                 .build();
 
-        // when
         var score = calculator.calculate(cocktail, query);
 
-        // then
         assertThat(score).isEqualTo(1.0);
     }
 
@@ -61,7 +58,6 @@ class MatchScoreCalculatorTest {
                 ))
                 .build();
 
-        // when
         var score = calculator.calculate(cocktail, query);
 
         // then - 교집합 2개 / 쿼리 3개 = 0.67
@@ -71,7 +67,6 @@ class MatchScoreCalculatorTest {
     @Test
     @DisplayName("일치하는 descriptor 없으면 0.0")
     void shouldReturnZeroWhenNoMatch() {
-        // given
         var query = SensoryDescriptors.builder()
                 .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
                 .build();
@@ -84,17 +79,14 @@ class MatchScoreCalculatorTest {
                 ))
                 .build();
 
-        // when
         var score = calculator.calculate(cocktail, query);
 
-        // then
         assertThat(score).isEqualTo(0.0);
     }
 
     @Test
     @DisplayName("쿼리가 비어있으면 0.0")
     void shouldReturnZeroWhenQueryIsEmpty() {
-        // given
         var query = SensoryDescriptors.builder().build();
 
         var cocktail = Cocktail.builder()
@@ -104,10 +96,8 @@ class MatchScoreCalculatorTest {
                 ))
                 .build();
 
-        // when
         var score = calculator.calculate(cocktail, query);
 
-        // then
         assertThat(score).isEqualTo(0.0);
     }
 
@@ -132,7 +122,6 @@ class MatchScoreCalculatorTest {
                 ))
                 .build();
 
-        // when
         var score = calculator.calculate(cocktail, query);
 
         // then - 교집합 3개 / 쿼리 5개 = 0.6
@@ -158,7 +147,6 @@ class MatchScoreCalculatorTest {
                 ))
                 .build();
 
-        // when
         var score = calculator.calculate(cocktail, query);
 
         // then - 교집합 1개 (sweet) / 쿼리 2개 = 0.5

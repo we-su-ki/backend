@@ -10,21 +10,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * 칵테일과 쿼리 간 매칭 점수 계산기
- * <p>
- * 재현율(Recall) 기반 점수 계산: 사용자가 원하는 특성을 얼마나 만족하는가
- * score = |쿼리 ∩ 칵테일| / |쿼리|
+ * 재현율(Recall) 기반 점수 계산: score = |쿼리 ∩ 칵테일| / |쿼리|
  */
 @Component
 public class MatchScoreCalculator {
 
-    /**
-     * 칵테일과 쿼리 간 매칭 점수를 계산합니다.
-     *
-     * @param cocktail 매칭할 칵테일
-     * @param query 사용자 쿼리에서 추출된 sensory descriptors
-     * @return 0.0 ~ 1.0 사이의 매칭 점수
-     */
     public double calculate(Cocktail cocktail, SensoryDescriptors query) {
         var queryDescriptors = extractAllDescriptors(query);
 

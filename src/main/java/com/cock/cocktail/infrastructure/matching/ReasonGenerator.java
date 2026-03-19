@@ -10,12 +10,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * 매칭된 descriptor를 기반으로 추천 이유 생성
- * <p>
- * keywords.yml에서 descriptor의 한글 label을 조회하여
- * 자연스러운 문장으로 조합합니다.
- */
 @Component
 public class ReasonGenerator {
 
@@ -25,12 +19,6 @@ public class ReasonGenerator {
         this.codeToLabel = loadCodeToLabelMap();
     }
 
-    /**
-     * 매칭된 descriptors를 기반으로 추천 이유를 생성합니다.
-     *
-     * @param matchedDescriptors 매칭된 descriptor 목록
-     * @return 자연어 추천 이유
-     */
     public String generate(Set<DescriptorCode> matchedDescriptors) {
         if (matchedDescriptors == null || matchedDescriptors.isEmpty()) {
             return "추천 칵테일입니다.";

@@ -41,13 +41,10 @@ class EdgeCaseTest {
     @Test
     @DisplayName("쿼리 descriptor가 빈 경우 - 빈 리스트 반환")
     void shouldReturnEmptyListForEmptyQuery() {
-        // given
         var emptyDescriptors = SensoryDescriptors.builder().build();
 
-        // when
         var matches = cocktailMatcher.match(emptyDescriptors);
 
-        // then
         assertThat(matches).isEmpty();
     }
 
@@ -60,10 +57,8 @@ class EdgeCaseTest {
                 .aroma(Set.of(new DescriptorCode(SensoryAxis.AROMA, "nonexistent456")))
                 .build();
 
-        // when
         var matches = cocktailMatcher.match(nonexistentDescriptors);
 
-        // then
         assertThat(matches).isEmpty();
     }
 
@@ -106,10 +101,8 @@ class EdgeCaseTest {
 
         when(cocktailRepository.findByDescriptors(any())).thenReturn(List.of(mockCocktail));
 
-        // when
         var matches = cocktailMatcher.match(longDescriptors);
 
-        // then
         assertAll(
                 () -> assertThat(matches).isNotNull(),
                 () -> assertThat(matches).hasSizeLessThanOrEqualTo(3),
@@ -120,7 +113,6 @@ class EdgeCaseTest {
     @Test
     @DisplayName("반복 호출 시 동일한 결과 반환 (멱등성)")
     void shouldReturnSameResultsForMultipleCalls() {
-        // given
         var descriptors = SensoryDescriptors.builder()
                 .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
                 .build();
@@ -134,11 +126,9 @@ class EdgeCaseTest {
 
         when(cocktailRepository.findByDescriptors(any())).thenReturn(List.of(mockCocktail));
 
-        // when
         var firstCall = cocktailMatcher.match(descriptors);
         var secondCall = cocktailMatcher.match(descriptors);
 
-        // then
         assertAll(
                 () -> assertThat(firstCall).hasSameSizeAs(secondCall),
                 () -> {
@@ -157,7 +147,6 @@ class EdgeCaseTest {
     @Test
     @DisplayName("점수 경계값 확인 - 0.0 ~ 1.0 범위")
     void shouldScoreBeWithinValidRange() {
-        // given
         var descriptors = SensoryDescriptors.builder()
                 .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
                 .aroma(Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity")))
@@ -175,10 +164,8 @@ class EdgeCaseTest {
 
         when(cocktailRepository.findByDescriptors(any())).thenReturn(List.of(mockCocktail));
 
-        // when
         var matches = cocktailMatcher.match(descriptors);
 
-        // then
         assertThat(matches).allMatch(match -> {
             double score = match.getScore();
             return score >= 0.0 && score <= 1.0;
