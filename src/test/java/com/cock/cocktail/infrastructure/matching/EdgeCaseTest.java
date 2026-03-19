@@ -1,27 +1,42 @@
 package com.cock.cocktail.infrastructure.matching;
 
+import com.cock.cocktail.domain.Cocktail;
 import com.cock.cocktail.domain.DescriptorCode;
 import com.cock.cocktail.domain.SensoryAxis;
 import com.cock.cocktail.domain.SensoryDescriptors;
-import com.cock.cocktail.service.CocktailMatcher;
+import com.cock.cocktail.repository.CocktailRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 /**
  * 칵테일 매칭 엣지 케이스 테스트
  */
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class EdgeCaseTest {
 
-    @Autowired
-    private CocktailMatcher cocktailMatcher;
+    @Mock
+    private CocktailRepository cocktailRepository;
+
+    private SimpleCocktailMatcher cocktailMatcher;
+
+    @BeforeEach
+    void setUp() {
+        var scoreCalculator = new MatchScoreCalculator();
+        var reasonGenerator = new ReasonGenerator();
+        cocktailMatcher = new SimpleCocktailMatcher(cocktailRepository, scoreCalculator, reasonGenerator);
+    }
 
     @Test
     @DisplayName("쿼리 descriptor가 빈 경우 - 빈 리스트 반환")
@@ -78,6 +93,19 @@ class EdgeCaseTest {
                 ))
                 .build();
 
+        var mockCocktail = Cocktail.builder()
+                .id(1L)
+                .name("Complex Cocktail")
+                .recipe("Recipe")
+                .sensoryDescriptors(List.of(
+                        new DescriptorCode(SensoryAxis.TASTE, "sweet"),
+                        new DescriptorCode(SensoryAxis.AROMA, "fruity"),
+                        new DescriptorCode(SensoryAxis.IMPRESSION, "summer")
+                ))
+                .build();
+
+        when(cocktailRepository.findByDescriptors(any())).thenReturn(List.of(mockCocktail));
+
         // when
         var matches = cocktailMatcher.match(longDescriptors);
 
@@ -96,6 +124,15 @@ class EdgeCaseTest {
         var descriptors = SensoryDescriptors.builder()
                 .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
                 .build();
+
+        var mockCocktail = Cocktail.builder()
+                .id(1L)
+                .name("Sweet Cocktail")
+                .recipe("Recipe")
+                .sensoryDescriptors(List.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
+                .build();
+
+        when(cocktailRepository.findByDescriptors(any())).thenReturn(List.of(mockCocktail));
 
         // when
         var firstCall = cocktailMatcher.match(descriptors);
@@ -125,6 +162,18 @@ class EdgeCaseTest {
                 .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
                 .aroma(Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity")))
                 .build();
+
+        var mockCocktail = Cocktail.builder()
+                .id(1L)
+                .name("Test Cocktail")
+                .recipe("Recipe")
+                .sensoryDescriptors(List.of(
+                        new DescriptorCode(SensoryAxis.TASTE, "sweet"),
+                        new DescriptorCode(SensoryAxis.AROMA, "fruity")
+                ))
+                .build();
+
+        when(cocktailRepository.findByDescriptors(any())).thenReturn(List.of(mockCocktail));
 
         // when
         var matches = cocktailMatcher.match(descriptors);

@@ -5,25 +5,35 @@ import com.cock.cocktail.domain.DescriptorCode;
 import com.cock.cocktail.domain.SensoryAxis;
 import com.cock.cocktail.domain.SensoryDescriptors;
 import com.cock.cocktail.repository.CocktailRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class SimpleCocktailMatcherTest {
 
-    @Autowired
+    @Mock
+    private CocktailRepository cocktailRepository;
+
     private SimpleCocktailMatcher matcher;
 
-    @Autowired
-    private CocktailRepository cocktailRepository;
+    @BeforeEach
+    void setUp() {
+        var scoreCalculator = new MatchScoreCalculator();
+        var reasonGenerator = new ReasonGenerator();
+        matcher = new SimpleCocktailMatcher(cocktailRepository, scoreCalculator, reasonGenerator);
+    }
 
     @Test
     @DisplayName("단일 descriptor 매칭 테스트")
@@ -32,6 +42,17 @@ class SimpleCocktailMatcherTest {
         var descriptors = SensoryDescriptors.builder()
                 .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
                 .build();
+
+        var mockCocktail = Cocktail.builder()
+                .id(1L)
+                .name("Mojito")
+                .recipe("Recipe")
+                .sensoryDescriptors(List.of(
+                        new DescriptorCode(SensoryAxis.TASTE, "sweet")
+                ))
+                .build();
+
+        when(cocktailRepository.findByDescriptors(any())).thenReturn(List.of(mockCocktail));
 
         // when
         var matches = matcher.match(descriptors);
@@ -54,6 +75,18 @@ class SimpleCocktailMatcherTest {
                 .aroma(Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity")))
                 .build();
 
+        var mockCocktail = Cocktail.builder()
+                .id(1L)
+                .name("Mojito")
+                .recipe("Recipe")
+                .sensoryDescriptors(List.of(
+                        new DescriptorCode(SensoryAxis.TASTE, "sweet"),
+                        new DescriptorCode(SensoryAxis.AROMA, "fruity")
+                ))
+                .build();
+
+        when(cocktailRepository.findByDescriptors(any())).thenReturn(List.of(mockCocktail));
+
         // when
         var matches = matcher.match(descriptors);
 
@@ -72,6 +105,21 @@ class SimpleCocktailMatcherTest {
                 .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
                 .build();
 
+        var mockCocktails = List.of(
+                Cocktail.builder().id(1L).name("Cocktail1").recipe("Recipe")
+                        .sensoryDescriptors(List.of(new DescriptorCode(SensoryAxis.TASTE, "sweet"))).build(),
+                Cocktail.builder().id(2L).name("Cocktail2").recipe("Recipe")
+                        .sensoryDescriptors(List.of(new DescriptorCode(SensoryAxis.TASTE, "sweet"))).build(),
+                Cocktail.builder().id(3L).name("Cocktail3").recipe("Recipe")
+                        .sensoryDescriptors(List.of(new DescriptorCode(SensoryAxis.TASTE, "sweet"))).build(),
+                Cocktail.builder().id(4L).name("Cocktail4").recipe("Recipe")
+                        .sensoryDescriptors(List.of(new DescriptorCode(SensoryAxis.TASTE, "sweet"))).build(),
+                Cocktail.builder().id(5L).name("Cocktail5").recipe("Recipe")
+                        .sensoryDescriptors(List.of(new DescriptorCode(SensoryAxis.TASTE, "sweet"))).build()
+        );
+
+        when(cocktailRepository.findByDescriptors(any())).thenReturn(mockCocktails);
+
         // when
         var matches = matcher.match(descriptors);
 
@@ -86,6 +134,8 @@ class SimpleCocktailMatcherTest {
         var descriptors = SensoryDescriptors.builder()
                 .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "nonexistent")))
                 .build();
+
+        when(cocktailRepository.findByDescriptors(any())).thenReturn(List.of());
 
         // when
         var matches = matcher.match(descriptors);
@@ -102,6 +152,24 @@ class SimpleCocktailMatcherTest {
                 .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
                 .aroma(Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity")))
                 .build();
+
+        var mockCocktails = List.of(
+                Cocktail.builder().id(1L).name("Perfect Match").recipe("Recipe")
+                        .sensoryDescriptors(List.of(
+                                new DescriptorCode(SensoryAxis.TASTE, "sweet"),
+                                new DescriptorCode(SensoryAxis.AROMA, "fruity")
+                        )).build(),
+                Cocktail.builder().id(2L).name("Partial Match").recipe("Recipe")
+                        .sensoryDescriptors(List.of(
+                                new DescriptorCode(SensoryAxis.TASTE, "sweet")
+                        )).build(),
+                Cocktail.builder().id(3L).name("Another Match").recipe("Recipe")
+                        .sensoryDescriptors(List.of(
+                                new DescriptorCode(SensoryAxis.AROMA, "fruity")
+                        )).build()
+        );
+
+        when(cocktailRepository.findByDescriptors(any())).thenReturn(mockCocktails);
 
         // when
         var matches = matcher.match(descriptors);
@@ -122,6 +190,15 @@ class SimpleCocktailMatcherTest {
         var descriptors = SensoryDescriptors.builder()
                 .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
                 .build();
+
+        var mockCocktails = List.of(
+                Cocktail.builder().id(1L).name("Match").recipe("Recipe")
+                        .sensoryDescriptors(List.of(new DescriptorCode(SensoryAxis.TASTE, "sweet"))).build(),
+                Cocktail.builder().id(2L).name("No Match").recipe("Recipe")
+                        .sensoryDescriptors(List.of(new DescriptorCode(SensoryAxis.TASTE, "bitter"))).build()
+        );
+
+        when(cocktailRepository.findByDescriptors(any())).thenReturn(mockCocktails);
 
         // when
         var matches = matcher.match(descriptors);
@@ -151,6 +228,15 @@ class SimpleCocktailMatcherTest {
         var descriptors = SensoryDescriptors.builder()
                 .taste(Set.of(sweetDescriptor))
                 .build();
+
+        var mockCocktail = Cocktail.builder()
+                .id(1L)
+                .name("Sweet Cocktail")
+                .recipe("Recipe")
+                .sensoryDescriptors(List.of(sweetDescriptor))
+                .build();
+
+        when(cocktailRepository.findByDescriptors(any())).thenReturn(List.of(mockCocktail));
 
         // when
         var matches = matcher.match(descriptors);

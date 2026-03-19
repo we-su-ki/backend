@@ -50,17 +50,16 @@ com.cock.cocktail
 - **정적 팩터리 최소화**: - 생성자와 파라미터가 동일한 정적 팩터리(`of`)는 사용하지 않음
 - **계층 분리**: JSON 직렬화/역직렬화는 웹 계층(DTO) 관심사
 - **무분별 getter/setter 지양**: 객체 간 메시지를 주고받는 형태로 구현
-
-### Domain Modeling Rules
-- 칵테일의 감각 정보는 `Cocktail.sensoryDescriptors: List<DescriptorCode>`로 표현
-- `Cocktail#getSensoryDescriptors()`는 `new SensoryDescriptors(sensoryDescriptors)` 형태 유지
-- `SensoryDescriptors`는 `List<DescriptorCode>`를 받는 생성자에서 축별 그룹핑/정규화 수행
-- `DescriptorCode`는 `@Embeddable` 값 객체로 유지하며, `axis` + `"value"` 조합 사용
+- **Spring Bean 생성자**: `@Service`, `@Component` 등 Spring Bean은 생성자를 직접 정의하지 않고 `@RequiredArgsConstructor` 사용
 
 ### Test Conventions
 - **TDD 방식**: 테스트 먼저 작성해서 완료 조건으로 이용
 - **객체 생성**: 도메인 객체 생성 시 setter 대신 빌더 또는 생성자 사용
 - **Assertion 그룹화**: 여러 개의 assertThat은 assertAll로 감싸서 모든 assertion 실행 보장
+- **infrastructure 테스트**:
+  - SpringBootTest 사용 금지
+  - 대역(mock)을 사용한 단위 테스트로 작성
+  - 의존성 주입이 필요한 경우 생성자 주입 + mock 객체 활용
 
 ### Git Commit Message
 - 한글로 간결하게 핵심만 작성

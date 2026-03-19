@@ -1,26 +1,58 @@
 package com.cock.cocktail.infrastructure.matching;
 
+import com.cock.cocktail.domain.Cocktail;
 import com.cock.cocktail.domain.DescriptorCode;
 import com.cock.cocktail.domain.SensoryAxis;
 import com.cock.cocktail.domain.SensoryDescriptors;
-import com.cock.cocktail.service.CocktailMatcher;
+import com.cock.cocktail.repository.CocktailRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 /**
  * 칵테일 매칭 성능 테스트
  */
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class PerformanceTest {
 
-    @Autowired
-    private CocktailMatcher cocktailMatcher;
+    @Mock
+    private CocktailRepository cocktailRepository;
+
+    private SimpleCocktailMatcher cocktailMatcher;
+
+    @BeforeEach
+    void setUp() {
+        var scoreCalculator = new MatchScoreCalculator();
+        var reasonGenerator = new ReasonGenerator();
+        cocktailMatcher = new SimpleCocktailMatcher(cocktailRepository, scoreCalculator, reasonGenerator);
+
+        // 100개의 mock 칵테일 준비
+        var mockCocktails = new ArrayList<Cocktail>();
+        for (int i = 1; i <= 100; i++) {
+            mockCocktails.add(Cocktail.builder()
+                    .id((long) i)
+                    .name("Cocktail" + i)
+                    .recipe("Recipe" + i)
+                    .sensoryDescriptors(List.of(
+                            new DescriptorCode(SensoryAxis.TASTE, "sweet"),
+                            new DescriptorCode(SensoryAxis.AROMA, "fruity"),
+                            new DescriptorCode(SensoryAxis.MOUTHFEEL, "smooth")
+                    ))
+                    .build());
+        }
+        when(cocktailRepository.findByDescriptors(any())).thenReturn(mockCocktails);
+    }
 
     @Test
     @DisplayName("매칭 성능 - 응답 시간 100ms 이하")

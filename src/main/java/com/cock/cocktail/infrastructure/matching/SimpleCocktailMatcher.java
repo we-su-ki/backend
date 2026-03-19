@@ -6,6 +6,7 @@ import com.cock.cocktail.domain.MatchedCocktail;
 import com.cock.cocktail.domain.SensoryDescriptors;
 import com.cock.cocktail.repository.CocktailRepository;
 import com.cock.cocktail.service.CocktailMatcher;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -21,6 +22,7 @@ import java.util.stream.Stream;
  * 매칭 점수를 계산하여 상위 3개를 추천합니다.
  */
 @Service
+@RequiredArgsConstructor
 public class SimpleCocktailMatcher implements CocktailMatcher {
 
     private static final int MAX_RECOMMENDATIONS = 3;
@@ -28,16 +30,6 @@ public class SimpleCocktailMatcher implements CocktailMatcher {
     private final CocktailRepository cocktailRepository;
     private final MatchScoreCalculator scoreCalculator;
     private final ReasonGenerator reasonGenerator;
-
-    public SimpleCocktailMatcher(
-            CocktailRepository cocktailRepository,
-            MatchScoreCalculator scoreCalculator,
-            ReasonGenerator reasonGenerator
-    ) {
-        this.cocktailRepository = cocktailRepository;
-        this.scoreCalculator = scoreCalculator;
-        this.reasonGenerator = reasonGenerator;
-    }
 
     @Override
     public List<MatchedCocktail> match(SensoryDescriptors descriptors) {
