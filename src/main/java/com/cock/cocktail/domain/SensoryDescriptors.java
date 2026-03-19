@@ -6,11 +6,12 @@ import static com.cock.cocktail.domain.SensoryAxis.MOUTHFEEL;
 import static com.cock.cocktail.domain.SensoryAxis.SENSATION;
 import static com.cock.cocktail.domain.SensoryAxis.TASTE;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 감각 축별 descriptor 모음
@@ -19,34 +20,21 @@ import java.util.stream.Collectors;
  */
 public class SensoryDescriptors {
 
-    private final Map<SensoryAxis, Set<DescriptorCode>> descriptorsByAxis;
+    private final List<DescriptorCode> descriptors;
 
     public static Builder builder() {
         return new Builder();
     }
 
     public SensoryDescriptors(List<DescriptorCode> descriptors) {
-        this(descriptors.stream().collect(
-                Collectors.groupingBy(
-                        DescriptorCode::axis,
-                        Collectors.mapping(descriptor -> descriptor, Collectors.toSet()))
-                )
-        );
-    }
-
-    public SensoryDescriptors(Map<SensoryAxis, Set<DescriptorCode>> descriptorsByAxis) {
-        Objects.requireNonNull(descriptorsByAxis, "descriptorsByAxis must not be null");
-        this.descriptorsByAxis = Map.of(
-                TASTE, normalizeAxis(descriptorsByAxis.get(TASTE), TASTE),
-                AROMA, normalizeAxis(descriptorsByAxis.get(AROMA), AROMA),
-                MOUTHFEEL, normalizeAxis(descriptorsByAxis.get(MOUTHFEEL), MOUTHFEEL),
-                SENSATION, normalizeAxis(descriptorsByAxis.get(SENSATION), SENSATION),
-                IMPRESSION, normalizeAxis(descriptorsByAxis.get(IMPRESSION), IMPRESSION)
-        );
+        Objects.requireNonNull(descriptors, "descriptors must not be null");
+        this.descriptors = List.copyOf(descriptors);
     }
 
     public Set<DescriptorCode> get(SensoryAxis axis) {
-        return descriptorsByAxis.getOrDefault(axis, Set.of());
+        return descriptors.stream()
+                .filter(descriptor -> descriptor.axis() == axis)
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     public Set<DescriptorCode> taste() {
@@ -70,29 +58,14 @@ public class SensoryDescriptors {
     }
 
     public Set<String> codeValues(SensoryAxis axis) {
-        return get(axis).stream()
+        return descriptors.stream()
+                .filter(descriptor -> descriptor.axis() == axis)
                 .map(DescriptorCode::value)
                 .collect(Collectors.toUnmodifiableSet());
     }
 
     public boolean isEmpty() {
-        return descriptorsByAxis.values().stream()
-                .allMatch(Set::isEmpty);
-    }
-
-    private static Set<DescriptorCode> normalizeAxis(Set<DescriptorCode> descriptors, SensoryAxis axis) {
-        if (descriptors == null || descriptors.isEmpty()) {
-            return Set.of();
-        }
-
-        return descriptors.stream()
-                .peek(descriptor -> {
-                    if (descriptor.axis() != axis) {
-                        throw new IllegalArgumentException("Descriptor axis mismatch: expected " + axis
-                                + " but was " + descriptor.axis());
-                    }
-                })
-                .collect(Collectors.toUnmodifiableSet());
+        return descriptors.isEmpty();
     }
 
     public static class Builder {
@@ -103,38 +76,48 @@ public class SensoryDescriptors {
         private Set<DescriptorCode> impression = Set.of();
 
         public Builder taste(Set<DescriptorCode> taste) {
-            this.taste = taste != null ? taste : Set.of();
+            this.taste = validateAxis(taste, TASTE);
             return this;
         }
 
         public Builder aroma(Set<DescriptorCode> aroma) {
-            this.aroma = aroma != null ? aroma : Set.of();
+            this.aroma = validateAxis(aroma, AROMA);
             return this;
         }
 
         public Builder mouthfeel(Set<DescriptorCode> mouthfeel) {
-            this.mouthfeel = mouthfeel != null ? mouthfeel : Set.of();
+            this.mouthfeel = validateAxis(mouthfeel, MOUTHFEEL);
             return this;
         }
 
         public Builder sensation(Set<DescriptorCode> sensation) {
-            this.sensation = sensation != null ? sensation : Set.of();
+            this.sensation = validateAxis(sensation, SENSATION);
             return this;
         }
 
         public Builder impression(Set<DescriptorCode> impression) {
-            this.impression = impression != null ? impression : Set.of();
+            this.impression = validateAxis(impression, IMPRESSION);
             return this;
         }
 
+        private Set<DescriptorCode> validateAxis(Set<DescriptorCode> descriptors, SensoryAxis expectedAxis) {
+            if (descriptors == null) {
+                return Set.of();
+            }
+            descriptors.forEach(descriptor -> {
+                if (descriptor.axis() != expectedAxis) {
+                    throw new IllegalArgumentException("Descriptor axis mismatch: expected " + expectedAxis
+                            + " but was " + descriptor.axis());
+                }
+            });
+            return descriptors;
+        }
+
         public SensoryDescriptors build() {
-            return new SensoryDescriptors(Map.of(
-                    TASTE, taste,
-                    AROMA, aroma,
-                    MOUTHFEEL, mouthfeel,
-                    SENSATION, sensation,
-                    IMPRESSION, impression
-            ));
+            var allDescriptors = Stream.of(taste, aroma, mouthfeel, sensation, impression)
+                    .flatMap(Set::stream)
+                    .toList();
+            return new SensoryDescriptors(allDescriptors);
         }
     }
 }
