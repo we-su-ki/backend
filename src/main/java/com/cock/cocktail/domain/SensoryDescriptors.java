@@ -21,6 +21,10 @@ public class SensoryDescriptors {
 
     private final Map<SensoryAxis, Set<DescriptorCode>> descriptorsByAxis;
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public SensoryDescriptors(List<DescriptorCode> descriptors) {
         this(descriptors.stream().collect(
                 Collectors.groupingBy(
@@ -89,5 +93,48 @@ public class SensoryDescriptors {
                     }
                 })
                 .collect(Collectors.toUnmodifiableSet());
+    }
+
+    public static class Builder {
+        private Set<DescriptorCode> taste = Set.of();
+        private Set<DescriptorCode> aroma = Set.of();
+        private Set<DescriptorCode> mouthfeel = Set.of();
+        private Set<DescriptorCode> sensation = Set.of();
+        private Set<DescriptorCode> impression = Set.of();
+
+        public Builder taste(Set<DescriptorCode> taste) {
+            this.taste = taste != null ? taste : Set.of();
+            return this;
+        }
+
+        public Builder aroma(Set<DescriptorCode> aroma) {
+            this.aroma = aroma != null ? aroma : Set.of();
+            return this;
+        }
+
+        public Builder mouthfeel(Set<DescriptorCode> mouthfeel) {
+            this.mouthfeel = mouthfeel != null ? mouthfeel : Set.of();
+            return this;
+        }
+
+        public Builder sensation(Set<DescriptorCode> sensation) {
+            this.sensation = sensation != null ? sensation : Set.of();
+            return this;
+        }
+
+        public Builder impression(Set<DescriptorCode> impression) {
+            this.impression = impression != null ? impression : Set.of();
+            return this;
+        }
+
+        public SensoryDescriptors build() {
+            return new SensoryDescriptors(Map.of(
+                    TASTE, taste,
+                    AROMA, aroma,
+                    MOUTHFEEL, mouthfeel,
+                    SENSATION, sensation,
+                    IMPRESSION, impression
+            ));
+        }
     }
 }

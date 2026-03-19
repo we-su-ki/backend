@@ -38,13 +38,13 @@ public class ConfigBasedKeywordAnalyzer implements KeywordAnalyzer {
         var sensationDescriptors = extractDescriptors(query, descriptorConfig.sensation(), SENSATION);
         var impressionDescriptors = extractDescriptors(query, descriptorConfig.impression(), IMPRESSION);
 
-        return new SensoryDescriptors(Map.of(
-                TASTE, tasteDescriptors,
-                AROMA, aromaDescriptors,
-                MOUTHFEEL, mouthfeelDescriptors,
-                SENSATION, sensationDescriptors,
-                IMPRESSION, impressionDescriptors
-        ));
+        return SensoryDescriptors.builder()
+                .taste(tasteDescriptors)
+                .aroma(aromaDescriptors)
+                .mouthfeel(mouthfeelDescriptors)
+                .sensation(sensationDescriptors)
+                .impression(impressionDescriptors)
+                .build();
     }
 
     private Set<DescriptorCode> extractDescriptors(

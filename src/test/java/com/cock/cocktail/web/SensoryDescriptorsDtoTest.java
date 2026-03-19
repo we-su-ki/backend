@@ -19,13 +19,13 @@ class SensoryDescriptorsDtoTest {
     @DisplayName("SensoryDescriptors를 DTO로 변환")
     void shouldConvertFromSensoryDescriptors() {
         // given
-        var sensoryDescriptors = new SensoryDescriptors(Map.of(
-                SensoryAxis.TASTE, Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")),
-                SensoryAxis.AROMA, Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity")),
-                SensoryAxis.MOUTHFEEL, Set.of(new DescriptorCode(SensoryAxis.MOUTHFEEL, "smooth")),
-                SensoryAxis.SENSATION, Set.of(new DescriptorCode(SensoryAxis.SENSATION, "carbonated")),
-                SensoryAxis.IMPRESSION, Set.of(new DescriptorCode(SensoryAxis.IMPRESSION, "summer"))
-        ));
+        var sensoryDescriptors = SensoryDescriptors.builder()
+                .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
+                .aroma(Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity")))
+                .mouthfeel(Set.of(new DescriptorCode(SensoryAxis.MOUTHFEEL, "smooth")))
+                .sensation(Set.of(new DescriptorCode(SensoryAxis.SENSATION, "carbonated")))
+                .impression(Set.of(new DescriptorCode(SensoryAxis.IMPRESSION, "summer")))
+                .build();
 
         // when
         var dto = SensoryDescriptorsDto.from(sensoryDescriptors);
@@ -44,7 +44,7 @@ class SensoryDescriptorsDtoTest {
     @DisplayName("빈 SensoryDescriptors를 DTO로 변환")
     void shouldConvertEmptySensoryDescriptors() {
         // given
-        var sensoryDescriptors = new SensoryDescriptors(Map.of());
+        var sensoryDescriptors = SensoryDescriptors.builder().build();
 
         // when
         var dto = SensoryDescriptorsDto.from(sensoryDescriptors);
@@ -63,13 +63,13 @@ class SensoryDescriptorsDtoTest {
     @DisplayName("일부 축만 있는 SensoryDescriptors를 DTO로 변환")
     void shouldConvertPartialSensoryDescriptors() {
         // given
-        var sensoryDescriptors = new SensoryDescriptors(Map.of(
-                SensoryAxis.TASTE, Set.of(
+        var sensoryDescriptors = SensoryDescriptors.builder()
+                .taste(Set.of(
                         new DescriptorCode(SensoryAxis.TASTE, "sweet"),
                         new DescriptorCode(SensoryAxis.TASTE, "sour")
-                ),
-                SensoryAxis.AROMA, Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity"))
-        ));
+                ))
+                .aroma(Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity")))
+                .build();
 
         // when
         var dto = SensoryDescriptorsDto.from(sensoryDescriptors);

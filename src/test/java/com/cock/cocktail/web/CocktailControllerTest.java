@@ -35,10 +35,10 @@ class CocktailControllerTest {
     void shouldAnalyzeQuery() throws Exception {
         // given
         var query = "달달하고 과일향 나는 칵테일";
-        var sensoryDescriptors = new SensoryDescriptors(Map.of(
-                SensoryAxis.TASTE, Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")),
-                SensoryAxis.AROMA, Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity"))
-        ));
+        var sensoryDescriptors = SensoryDescriptors.builder()
+                .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
+                .aroma(Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity")))
+                .build();
         when(keywordAnalyzer.analyze(query)).thenReturn(sensoryDescriptors);
 
         // when & then
@@ -59,7 +59,7 @@ class CocktailControllerTest {
     void shouldReturnEmptyDescriptorsWhenNoMatch() throws Exception {
         // given
         var query = "칵테일 추천해줘";
-        var sensoryDescriptors = new SensoryDescriptors(Map.of());
+        var sensoryDescriptors = SensoryDescriptors.builder().build();
         when(keywordAnalyzer.analyze(query)).thenReturn(sensoryDescriptors);
 
         // when & then
@@ -78,13 +78,13 @@ class CocktailControllerTest {
     void shouldReturnMultipleDescriptors() throws Exception {
         // given
         var query = "달달하고 새콤한 과일향 칵테일";
-        var sensoryDescriptors = new SensoryDescriptors(Map.of(
-                SensoryAxis.TASTE, Set.of(
+        var sensoryDescriptors = SensoryDescriptors.builder()
+                .taste(Set.of(
                         new DescriptorCode(SensoryAxis.TASTE, "sweet"),
                         new DescriptorCode(SensoryAxis.TASTE, "sour")
-                ),
-                SensoryAxis.AROMA, Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity"))
-        ));
+                ))
+                .aroma(Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity")))
+                .build();
         when(keywordAnalyzer.analyze(query)).thenReturn(sensoryDescriptors);
 
         // when & then
@@ -102,13 +102,13 @@ class CocktailControllerTest {
     void shouldReturnAllAxes() throws Exception {
         // given
         var query = "달달하고 과일향 나는 부드럽고 톡 쏘는 여름 칵테일";
-        var sensoryDescriptors = new SensoryDescriptors(Map.of(
-                SensoryAxis.TASTE, Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")),
-                SensoryAxis.AROMA, Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity")),
-                SensoryAxis.MOUTHFEEL, Set.of(new DescriptorCode(SensoryAxis.MOUTHFEEL, "smooth")),
-                SensoryAxis.SENSATION, Set.of(new DescriptorCode(SensoryAxis.SENSATION, "carbonated")),
-                SensoryAxis.IMPRESSION, Set.of(new DescriptorCode(SensoryAxis.IMPRESSION, "summer"))
-        ));
+        var sensoryDescriptors = SensoryDescriptors.builder()
+                .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
+                .aroma(Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity")))
+                .mouthfeel(Set.of(new DescriptorCode(SensoryAxis.MOUTHFEEL, "smooth")))
+                .sensation(Set.of(new DescriptorCode(SensoryAxis.SENSATION, "carbonated")))
+                .impression(Set.of(new DescriptorCode(SensoryAxis.IMPRESSION, "summer")))
+                .build();
         when(keywordAnalyzer.analyze(query)).thenReturn(sensoryDescriptors);
 
         // when & then

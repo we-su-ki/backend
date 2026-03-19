@@ -33,13 +33,13 @@ class SensoryDescriptorsTest {
         );
 
         // when
-        var descriptors = new SensoryDescriptors(Map.of(
-                SensoryAxis.TASTE, Set.copyOf(taste),
-                SensoryAxis.AROMA, Set.copyOf(aroma),
-                SensoryAxis.MOUTHFEEL, Set.copyOf(mouthfeel),
-                SensoryAxis.SENSATION, Set.copyOf(sensation),
-                SensoryAxis.IMPRESSION, Set.copyOf(impression)
-        ));
+        var descriptors = SensoryDescriptors.builder()
+                .taste(Set.copyOf(taste))
+                .aroma(Set.copyOf(aroma))
+                .mouthfeel(Set.copyOf(mouthfeel))
+                .sensation(Set.copyOf(sensation))
+                .impression(Set.copyOf(impression))
+                .build();
 
         // then
         assertAll(
@@ -55,7 +55,7 @@ class SensoryDescriptorsTest {
     @DisplayName("빈 리스트로 생성")
     void shouldCreateWithEmptyLists() {
         // given & when
-        var descriptors = new SensoryDescriptors(Map.of());
+        var descriptors = SensoryDescriptors.builder().build();
 
         // then
         assertAll(
@@ -70,18 +70,19 @@ class SensoryDescriptorsTest {
     @Test
     @DisplayName("axis 불일치 descriptor 포함 시 예외")
     void shouldThrowWhenAxisMismatched() {
-        assertThatThrownBy(() -> new SensoryDescriptors(Map.of(
-                SensoryAxis.TASTE, Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity"))
-        ))).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> SensoryDescriptors.builder()
+                .taste(Set.of(new DescriptorCode(SensoryAxis.AROMA, "fruity")))
+                .build()
+        ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("isEmpty - 하나라도 있으면 false")
     void shouldReturnFalseWhenAnyAxisHasDescriptors() {
         // given
-        var descriptors = new SensoryDescriptors(Map.of(
-                SensoryAxis.TASTE, Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet"))
-        ));
+        var descriptors = SensoryDescriptors.builder()
+                .taste(Set.of(new DescriptorCode(SensoryAxis.TASTE, "sweet")))
+                .build();
 
         // when & then
         assertThat(descriptors.isEmpty()).isFalse();
