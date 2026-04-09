@@ -25,10 +25,9 @@ class DocumentationComplianceTest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달한 칵테일 추천해줘"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails").isArray())
-                .andExpect(jsonPath("$.cocktails").isNotEmpty())
-                .andExpect(jsonPath("$.count").isNumber())
-                .andExpect(jsonPath("$.count").value(greaterThan(0)));
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$").isNotEmpty())
+                .andExpect(jsonPath("$", hasSize(greaterThan(0))));
     }
 
     @Test
@@ -37,9 +36,8 @@ class DocumentationComplianceTest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달하고 톡 쏘는 과일맛이 나는 부드러운 칵테일"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails").isArray())
-                .andExpect(jsonPath("$.cocktails").isNotEmpty())
-                .andExpect(jsonPath("$.count").isNumber());
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$").isNotEmpty());
     }
 
     @Test
@@ -82,25 +80,23 @@ class DocumentationComplianceTest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달한 칵테일"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails").isArray())
-                .andExpect(jsonPath("$.count").isNumber());
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
-    @DisplayName("응답 형식: CocktailRecommendationResponse")
+    @DisplayName("응답 형식: RecommendedCocktailDto")
     void responseFormat_cocktailRecommendation() throws Exception {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달한 칵테일"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails").isArray())
-                .andExpect(jsonPath("$.count").isNumber())
-                .andExpect(jsonPath("$.cocktails[0].id").isNumber())
-                .andExpect(jsonPath("$.cocktails[0].name").isString())
-                .andExpect(jsonPath("$.cocktails[0].ingredients").isArray())
-                .andExpect(jsonPath("$.cocktails[0].recipe").isString())
-                .andExpect(jsonPath("$.cocktails[0].score").isNumber())
-                .andExpect(jsonPath("$.cocktails[0].reason").isString())
-                .andExpect(jsonPath("$.cocktails[0].matchedKeywords").isArray());
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0].id").isNumber())
+                .andExpect(jsonPath("$[0].name").isString())
+                .andExpect(jsonPath("$[0].ingredients").isArray())
+                .andExpect(jsonPath("$[0].recipe").isString())
+                .andExpect(jsonPath("$[0].score").isNumber())
+                .andExpect(jsonPath("$[0].reason").isString())
+                .andExpect(jsonPath("$[0].matchedKeywords").isArray());
     }
 
     @Test
@@ -109,8 +105,8 @@ class DocumentationComplianceTest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달한 칵테일"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails[0].ingredients[0].name").isString())
-                .andExpect(jsonPath("$.cocktails[0].ingredients[0].amount").isString());
+                .andExpect(jsonPath("$[0].ingredients[0].name").isString())
+                .andExpect(jsonPath("$[0].ingredients[0].amount").isString());
     }
 
     @Test
@@ -130,7 +126,7 @@ class DocumentationComplianceTest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달한"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails", hasSize(lessThanOrEqualTo(3))));
+                .andExpect(jsonPath("$", hasSize(lessThanOrEqualTo(3))));
     }
 
     @Test
@@ -139,8 +135,8 @@ class DocumentationComplianceTest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달한 칵테일"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails[0].score").exists())
-                .andExpect(jsonPath("$.cocktails[*].score").exists());
+                .andExpect(jsonPath("$[0].score").exists())
+                .andExpect(jsonPath("$[*].score").exists());
     }
 
     @Test
@@ -149,8 +145,7 @@ class DocumentationComplianceTest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "완전히존재하지않는맛"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails", empty()))
-                .andExpect(jsonPath("$.count", is(0)));
+                .andExpect(jsonPath("$", empty()));
     }
 
     @Test

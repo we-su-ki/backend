@@ -27,7 +27,7 @@ class EdgeCaseE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", longQuery))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails").isArray());
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
@@ -36,7 +36,7 @@ class EdgeCaseE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달한!@#$%^&*()칵테일"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails").isArray());
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
@@ -45,7 +45,7 @@ class EdgeCaseE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달한sweet123칵테일"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails").isArray());
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
@@ -54,8 +54,7 @@ class EdgeCaseE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "완전히존재하지않는맛"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails", empty()))
-                .andExpect(jsonPath("$.count", is(0)));
+                .andExpect(jsonPath("$", empty()));
     }
 
     @Test
@@ -64,7 +63,7 @@ class EdgeCaseE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달한"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails", hasSize(lessThanOrEqualTo(3))));
+                .andExpect(jsonPath("$", hasSize(lessThanOrEqualTo(3))));
     }
 
     @Test
@@ -73,7 +72,7 @@ class EdgeCaseE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "DaLDaLHan"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails").isArray());
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
@@ -92,7 +91,7 @@ class EdgeCaseE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "  달달한  "))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails").isArray());
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
@@ -101,7 +100,7 @@ class EdgeCaseE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달한 달달한 달달한"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails").isArray());
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
@@ -110,7 +109,7 @@ class EdgeCaseE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달한\n칵테일"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails").isArray());
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
@@ -119,7 +118,7 @@ class EdgeCaseE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달한\t칵테일"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails").isArray());
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
@@ -128,7 +127,7 @@ class EdgeCaseE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달한 🍹 칵테일"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails").isArray());
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
@@ -137,7 +136,7 @@ class EdgeCaseE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails").isArray());
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
@@ -146,7 +145,7 @@ class EdgeCaseE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "12345"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails").isArray());
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
@@ -155,6 +154,6 @@ class EdgeCaseE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달한&sweet=true"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails").isArray());
+                .andExpect(jsonPath("$").isArray());
     }
 }

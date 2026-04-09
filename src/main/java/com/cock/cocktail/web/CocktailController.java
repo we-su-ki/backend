@@ -4,7 +4,6 @@ import com.cock.cocktail.repository.CocktailRepository;
 import com.cock.cocktail.service.CocktailRecommendationService;
 import com.cock.cocktail.service.KeywordAnalyzer;
 import com.cock.cocktail.web.dto.CocktailListItemDto;
-import com.cock.cocktail.web.dto.CocktailRecommendationResponse;
 import com.cock.cocktail.web.dto.RecommendedCocktailDto;
 import com.cock.cocktail.web.dto.SensoryDescriptorsDto;
 import lombok.RequiredArgsConstructor;
@@ -34,10 +33,8 @@ public class CocktailController {
     }
 
     @GetMapping("/recommend")
-    public CocktailRecommendationResponse recommend(@RequestParam String query) {
-        return CocktailRecommendationResponse.from(
-                RecommendedCocktailDto.from(recommendationService.recommend(query))
-        );
+    public List<RecommendedCocktailDto> recommend(@RequestParam String query) {
+        return RecommendedCocktailDto.from(recommendationService.recommend(query));
     }
 }
 

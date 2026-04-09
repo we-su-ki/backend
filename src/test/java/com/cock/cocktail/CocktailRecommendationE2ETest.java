@@ -31,13 +31,12 @@ class CocktailRecommendationE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달한 칵테일"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails").isArray())
-                .andExpect(jsonPath("$.count").isNumber())
-                .andExpect(jsonPath("$.cocktails[*].id").exists())
-                .andExpect(jsonPath("$.cocktails[*].name").exists())
-                .andExpect(jsonPath("$.cocktails[*].score").exists())
-                .andExpect(jsonPath("$.cocktails[*].reason").exists())
-                .andExpect(jsonPath("$.cocktails[*].matchedKeywords").exists());
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[*].id").exists())
+                .andExpect(jsonPath("$[*].name").exists())
+                .andExpect(jsonPath("$[*].score").exists())
+                .andExpect(jsonPath("$[*].reason").exists())
+                .andExpect(jsonPath("$[*].matchedKeywords").exists());
     }
 
     @Test
@@ -46,8 +45,7 @@ class CocktailRecommendationE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달하고 과일향 나는 부드러운 칵테일"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails").isArray())
-                .andExpect(jsonPath("$.count").isNumber());
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
@@ -56,8 +54,7 @@ class CocktailRecommendationE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "칵테일 추천해줘"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails", empty()))
-                .andExpect(jsonPath("$.count", is(0)));
+                .andExpect(jsonPath("$", empty()));
     }
 
     @Test
@@ -66,8 +63,7 @@ class CocktailRecommendationE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "완전히존재하지않는맛"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails", empty()))
-                .andExpect(jsonPath("$.count", is(0)));
+                .andExpect(jsonPath("$", empty()));
     }
 
     @Test
@@ -76,11 +72,10 @@ class CocktailRecommendationE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달한 과일향 칵테일"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails").isArray())
-                .andExpect(jsonPath("$.count").exists())
-                .andExpect(jsonPath("$.cocktails[?(@.score > 0)]").exists())
-                .andExpect(jsonPath("$.cocktails[?(@.reason)]").exists())
-                .andExpect(jsonPath("$.cocktails[?(@.matchedKeywords)]").exists());
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[?(@.score > 0)]").exists())
+                .andExpect(jsonPath("$[?(@.reason)]").exists())
+                .andExpect(jsonPath("$[?(@.matchedKeywords)]").exists());
     }
 
     @Test
@@ -89,7 +84,7 @@ class CocktailRecommendationE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달한"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails", hasSize(lessThanOrEqualTo(3))));
+                .andExpect(jsonPath("$", hasSize(lessThanOrEqualTo(3))));
     }
 
     @Test
@@ -98,7 +93,7 @@ class CocktailRecommendationE2ETest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달한 칵테일"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails[*].ingredients").exists())
-                .andExpect(jsonPath("$.cocktails[*].recipe").exists());
+                .andExpect(jsonPath("$[*].ingredients").exists())
+                .andExpect(jsonPath("$[*].recipe").exists());
     }
 }

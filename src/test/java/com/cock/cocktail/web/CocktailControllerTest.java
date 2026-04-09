@@ -155,14 +155,13 @@ class CocktailControllerTest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "달달한 칵테일"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails", hasSize(1)))
-                .andExpect(jsonPath("$.count", is(1)))
-                .andExpect(jsonPath("$.cocktails[0].id", is(1)))
-                .andExpect(jsonPath("$.cocktails[0].name", is("Mojito")))
-                .andExpect(jsonPath("$.cocktails[0].score", is(0.85)))
-                .andExpect(jsonPath("$.cocktails[0].reason", is("달달한 특징을 가진 칵테일입니다.")))
-                .andExpect(jsonPath("$.cocktails[0].matchedKeywords", hasSize(1)))
-                .andExpect(jsonPath("$.cocktails[0].matchedKeywords[0]", is("sweet")));
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].name", is("Mojito")))
+                .andExpect(jsonPath("$[0].score", is(0.85)))
+                .andExpect(jsonPath("$[0].reason", is("달달한 특징을 가진 칵테일입니다.")))
+                .andExpect(jsonPath("$[0].matchedKeywords", hasSize(1)))
+                .andExpect(jsonPath("$[0].matchedKeywords[0]", is("sweet")));
     }
 
     @Test
@@ -173,8 +172,7 @@ class CocktailControllerTest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", "칵테일 추천해줘"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cocktails", empty()))
-                .andExpect(jsonPath("$.count", is(0)));
+                .andExpect(jsonPath("$", empty()));
     }
 
     @Test
