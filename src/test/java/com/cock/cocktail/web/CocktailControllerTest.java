@@ -6,6 +6,7 @@ import com.cock.cocktail.domain.Ingredient;
 import com.cock.cocktail.domain.MatchedCocktail;
 import com.cock.cocktail.domain.SensoryAxis;
 import com.cock.cocktail.domain.SensoryDescriptors;
+import com.cock.cocktail.repository.CocktailRepository;
 import com.cock.cocktail.service.CocktailRecommendationService;
 import com.cock.cocktail.service.KeywordAnalyzer;
 import org.junit.jupiter.api.DisplayName;
@@ -30,6 +31,9 @@ class CocktailControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockitoBean
+    private CocktailRepository cocktailRepository;
 
     @MockitoBean
     private KeywordAnalyzer keywordAnalyzer;

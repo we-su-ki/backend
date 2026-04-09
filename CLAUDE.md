@@ -1,6 +1,6 @@
-# Claude Code Instructions
+# CLAUDE.md
 
-This file contains instructions and context for Claude Code when working on the cocktail-be project.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
 

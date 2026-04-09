@@ -19,6 +19,12 @@ public class Cocktail {
 
     private String name;
 
+    private String imageUrl;
+
+    @Embedded
+    @Builder.Default
+    private FlavorVector flavorVector = new FlavorVector();
+
     @ElementCollection
     @CollectionTable(name = "cocktail_ingredients", joinColumns = @JoinColumn(name = "cocktail_id"))
     @Builder.Default
@@ -27,12 +33,16 @@ public class Cocktail {
     @Column(length = 1000)
     private String recipe;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "cocktail_sensory_descriptors", joinColumns = @JoinColumn(name = "cocktail_id"))
     @Builder.Default
     private List<DescriptorCode> sensoryDescriptors = new ArrayList<>();
 
     public SensoryDescriptors getSensoryDescriptors() {
         return new SensoryDescriptors(sensoryDescriptors);
+    }
+
+    public TasteProfile getTasteProfile() {
+        return flavorVector.computeTasteProfile();
     }
 }
