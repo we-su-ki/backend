@@ -9,15 +9,23 @@ public record CocktailListItemDto(
         String name,
         String imageUrl,
         List<IngredientDto> ingredients,
-        TasteProfileDto tasteProfile
+        TasteProfileDto tasteProfile,
+        String recipe,
+        double score
 ) {
     public static CocktailListItemDto from(Cocktail cocktail) {
+        return from(cocktail, 0.0);
+    }
+
+    public static CocktailListItemDto from(Cocktail cocktail, double score) {
         return new CocktailListItemDto(
                 cocktail.getId(),
                 cocktail.getName(),
                 cocktail.getImageUrl(),
                 cocktail.getIngredients().stream().map(IngredientDto::from).toList(),
-                TasteProfileDto.from(cocktail.getTasteProfile())
+                TasteProfileDto.from(cocktail.getTasteProfile()),
+                cocktail.getRecipe(),
+                score
         );
     }
 }

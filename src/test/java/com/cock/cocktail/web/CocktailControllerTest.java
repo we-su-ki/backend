@@ -6,7 +6,11 @@ import com.cock.cocktail.domain.Ingredient;
 import com.cock.cocktail.domain.MatchedCocktail;
 import com.cock.cocktail.domain.SensoryAxis;
 import com.cock.cocktail.domain.SensoryDescriptors;
+import com.cock.cocktail.domain.FlavorVector;
+import com.cock.cocktail.domain.TasteMatch;
+import com.cock.cocktail.domain.TasteQuery;
 import com.cock.cocktail.repository.CocktailRepository;
+import com.cock.cocktail.service.CocktailMatchService;
 import com.cock.cocktail.service.CocktailRecommendationService;
 import com.cock.cocktail.service.KeywordAnalyzer;
 import org.junit.jupiter.api.DisplayName;
@@ -40,6 +44,9 @@ class CocktailControllerTest {
 
     @MockitoBean
     private CocktailRecommendationService recommendationService;
+
+    @MockitoBean
+    private CocktailMatchService matchService;
 
     @Test
     @DisplayName("GET /api/v1/cocktails/analyze - 정상 요청")
@@ -190,5 +197,41 @@ class CocktailControllerTest {
         mockMvc.perform(get("/api/v1/cocktails/recommend")
                         .param("query", ""))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("GET /api/v1/cocktails/match - 정상 요청")
+    void shouldMatchCocktailsByTasteQuery() throws Exception {
+        var cocktail = Cocktail.builder()
+                .id(1L)
+                .name("Mojito")
+                .ingredients(List.of(new Ingredient("럼", "50ml")))
+                .recipe("Recipe")
+                .sensoryDescriptors(List.of())
+                .flavorVector(FlavorVector.builder().sweet(0.9).build())
+                .build();
+
+        when(matchService.match(new TasteQuery(4.0, null, null, null, null, null)))
+                .thenReturn(List.of(new TasteMatch(cocktail, 0.92)));
+
+        mockMvc.perform(get("/api/v1/cocktails/match")
+                        .param("sweet", "4.0"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].name", is("Mojito")))
+                .andExpect(jsonPath("$[0].score", is(0.92)))
+                .andExpect(jsonPath("$[0].recipe", is("Recipe")));
+    }
+
+    @Test
+    @DisplayName("GET /api/v1/cocktails/match - 파라미터 없으면 빈 결과")
+    void shouldReturnEmptyWhenNoQueryParams() throws Exception {
+        when(matchService.match(new TasteQuery(null, null, null, null, null, null)))
+                .thenReturn(List.of());
+
+        mockMvc.perform(get("/api/v1/cocktails/match"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", empty()));
     }
 }
