@@ -1,4 +1,4 @@
-package com.cock.cocktail.exception;
+package com.cock.cocktail.web;
 
 import com.cock.cocktail.web.dto.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;

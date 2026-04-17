@@ -1,4 +1,4 @@
-package com.cock.cocktail.service;
+package com.cock.cocktail.application;
 
 import com.cock.cocktail.domain.IngredientAmount;
 import com.cock.cocktail.domain.taste.FlavorVector;

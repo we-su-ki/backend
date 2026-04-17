@@ -7,7 +7,7 @@ import com.cock.cocktail.domain.taste.FlavorVector;
 import com.cock.cocktail.domain.taste.TasteMatch;
 import com.cock.cocktail.domain.taste.TasteQuery;
 import com.cock.cocktail.repository.CocktailRepository;
-import com.cock.cocktail.service.CocktailMatchStrategy;
+import com.cock.cocktail.application.CocktailMatchStrategy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest({CocktailController.class, com.cock.cocktail.exception.GlobalExceptionHandler.class})
+@WebMvcTest({CocktailController.class, GlobalExceptionHandler.class})
 class CocktailControllerTest {
 
     @Autowired

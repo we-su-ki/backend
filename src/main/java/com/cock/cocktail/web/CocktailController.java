@@ -1,9 +1,8 @@
 package com.cock.cocktail.web;
 
-import com.cock.cocktail.domain.taste.TasteMatch;
 import com.cock.cocktail.domain.taste.TasteQuery;
 import com.cock.cocktail.repository.CocktailRepository;
-import com.cock.cocktail.service.CocktailMatchStrategy;
+import com.cock.cocktail.application.CocktailMatchStrategy;
 import com.cock.cocktail.web.dto.CocktailListItemDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

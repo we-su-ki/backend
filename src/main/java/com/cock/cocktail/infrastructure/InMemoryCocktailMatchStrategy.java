@@ -4,7 +4,7 @@ import com.cock.cocktail.domain.taste.TasteMatch;
 import com.cock.cocktail.domain.taste.TasteProfile;
 import com.cock.cocktail.domain.taste.TasteQuery;
 import com.cock.cocktail.repository.CocktailRepository;
-import com.cock.cocktail.service.CocktailMatchStrategy;
+import com.cock.cocktail.application.CocktailMatchStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

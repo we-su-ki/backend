@@ -1,6 +1,5 @@
-package com.cock.cocktail.exception;
+package com.cock.cocktail.web;
 
-import com.cock.cocktail.web.dto.ErrorResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;

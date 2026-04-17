@@ -1,7 +1,7 @@
 package com.cock.cocktail.web;
 
 import com.cock.cocktail.repository.IngredientRepository;
-import com.cock.cocktail.service.FlavorVectorResolver;
+import com.cock.cocktail.application.FlavorVectorResolver;
 import com.cock.cocktail.web.dto.IngredientDto;
 import com.cock.cocktail.web.dto.PredictRequest;
 import com.cock.cocktail.web.dto.TasteProfileDto;

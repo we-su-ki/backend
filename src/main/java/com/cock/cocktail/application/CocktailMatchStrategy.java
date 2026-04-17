@@ -1,4 +1,4 @@
-package com.cock.cocktail.service;
+package com.cock.cocktail.application;
 
 import com.cock.cocktail.domain.taste.TasteMatch;
 import com.cock.cocktail.domain.taste.TasteQuery;
