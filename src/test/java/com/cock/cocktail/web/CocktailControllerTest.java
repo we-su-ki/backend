@@ -49,7 +49,7 @@ class CocktailControllerTest {
         when(matchStrategy.match(new TasteQuery(4.0, null, null, null, null, null)))
                 .thenReturn(List.of(new TasteMatch(cocktail, 0.92)));
 
-        mockMvc.perform(get("/api/v1/cocktails/match")
+        mockMvc.perform(get("/cocktails/match")
                         .param("sweet", "4.0"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -65,7 +65,7 @@ class CocktailControllerTest {
         when(matchStrategy.match(new TasteQuery(null, null, null, null, null, null)))
                 .thenReturn(List.of());
 
-        mockMvc.perform(get("/api/v1/cocktails/match"))
+        mockMvc.perform(get("/cocktails/match"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", empty()));
     }
