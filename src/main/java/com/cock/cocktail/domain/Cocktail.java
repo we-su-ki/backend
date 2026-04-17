@@ -1,5 +1,6 @@
 package com.cock.cocktail.domain;
 
+import com.cock.cocktail.ingredient.CocktailIngredient;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,10 +26,9 @@ public class Cocktail {
     @Builder.Default
     private FlavorVector flavorVector = new FlavorVector();
 
-    @ElementCollection
-    @CollectionTable(name = "cocktail_ingredients", joinColumns = @JoinColumn(name = "cocktail_id"))
+    @OneToMany(mappedBy = "cocktail")
     @Builder.Default
-    private List<Ingredient> ingredients = new ArrayList<>();
+    private List<CocktailIngredient> cocktailIngredients = new ArrayList<>();
 
     @Column(length = 1000)
     private String recipe;

@@ -106,7 +106,7 @@ class DocumentationComplianceTest {
                         .param("query", "달달한 칵테일"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].ingredients[0].name").isString())
-                .andExpect(jsonPath("$[0].ingredients[0].amount").isString());
+                .andExpect(jsonPath("$[0].ingredients[0].amount").isNumber());
     }
 
     @Test

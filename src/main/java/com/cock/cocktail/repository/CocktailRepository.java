@@ -11,7 +11,7 @@ import java.util.Set;
 
 public interface CocktailRepository extends Repository<Cocktail, Long> {
 
-    @Query("SELECT DISTINCT c FROM Cocktail c JOIN FETCH c.ingredients")
+    @Query("SELECT DISTINCT c FROM Cocktail c JOIN FETCH c.cocktailIngredients ci JOIN FETCH ci.ingredient")
     List<Cocktail> findAll();
 
     @Query("SELECT DISTINCT c FROM Cocktail c JOIN FETCH c.sensoryDescriptors d WHERE d IN :descriptors")

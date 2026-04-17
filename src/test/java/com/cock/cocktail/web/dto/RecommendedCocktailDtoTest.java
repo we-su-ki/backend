@@ -2,9 +2,10 @@ package com.cock.cocktail.web.dto;
 
 import com.cock.cocktail.domain.Cocktail;
 import com.cock.cocktail.domain.DescriptorCode;
-import com.cock.cocktail.domain.Ingredient;
 import com.cock.cocktail.domain.MatchedCocktail;
 import com.cock.cocktail.domain.SensoryAxis;
+import com.cock.cocktail.ingredient.CocktailIngredient;
+import com.cock.cocktail.ingredient.Ingredient;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -22,9 +23,9 @@ class RecommendedCocktailDtoTest {
         var cocktail = Cocktail.builder()
                 .id(1L)
                 .name("Mojito")
-                .ingredients(List.of(
-                        new Ingredient("럼", "50ml"),
-                        new Ingredient("라임", "1개")
+                .cocktailIngredients(List.of(
+                        new CocktailIngredient(null, new Ingredient("럼"), 50),
+                        new CocktailIngredient(null, new Ingredient("라임"), 0)
                 ))
                 .recipe("재료를 섞어서...")
                 .sensoryDescriptors(List.of(
@@ -50,7 +51,7 @@ class RecommendedCocktailDtoTest {
                 () -> assertThat(dto.name()).isEqualTo("Mojito"),
                 () -> assertThat(dto.ingredients()).hasSize(2),
                 () -> assertThat(dto.ingredients().get(0).name()).isEqualTo("럼"),
-                () -> assertThat(dto.ingredients().get(0).amount()).isEqualTo("50ml"),
+                () -> assertThat(dto.ingredients().get(0).amount()).isEqualTo(50),
                 () -> assertThat(dto.recipe()).isEqualTo("재료를 섞어서..."),
                 () -> assertThat(dto.score()).isEqualTo(0.85),
                 () -> assertThat(dto.reason()).isEqualTo("달달한, 과일향 특징을 가진 칵테일입니다."),
@@ -64,7 +65,7 @@ class RecommendedCocktailDtoTest {
         var cocktail = Cocktail.builder()
                 .id(1L)
                 .name("Test Cocktail")
-                .ingredients(List.of())
+                .cocktailIngredients(List.of())
                 .recipe("Recipe")
                 .sensoryDescriptors(List.of())
                 .build();

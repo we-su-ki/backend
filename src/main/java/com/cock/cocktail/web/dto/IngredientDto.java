@@ -1,12 +1,9 @@
 package com.cock.cocktail.web.dto;
 
-import com.cock.cocktail.domain.Ingredient;
+import com.cock.cocktail.ingredient.Ingredient;
 
-public record IngredientDto(
-        String name,
-        String amount
-) {
+public record IngredientDto(String name) {
     public static IngredientDto from(Ingredient ingredient) {
-        return new IngredientDto(ingredient.name(), ingredient.amount());
+        return new IngredientDto(ingredient.getName());
     }
 }

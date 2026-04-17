@@ -2,7 +2,8 @@ package com.cock.cocktail.web;
 
 import com.cock.cocktail.domain.Cocktail;
 import com.cock.cocktail.domain.DescriptorCode;
-import com.cock.cocktail.domain.Ingredient;
+import com.cock.cocktail.ingredient.CocktailIngredient;
+import com.cock.cocktail.ingredient.Ingredient;
 import com.cock.cocktail.domain.MatchedCocktail;
 import com.cock.cocktail.domain.SensoryAxis;
 import com.cock.cocktail.domain.SensoryDescriptors;
@@ -145,7 +146,7 @@ class CocktailControllerTest {
         var cocktail = Cocktail.builder()
                 .id(1L)
                 .name("Mojito")
-                .ingredients(List.of(new Ingredient("럼", "50ml")))
+                .cocktailIngredients(List.of(new CocktailIngredient(null, new Ingredient("럼"), 50)))
                 .recipe("Recipe")
                 .sensoryDescriptors(List.of())
                 .build();
@@ -205,7 +206,7 @@ class CocktailControllerTest {
         var cocktail = Cocktail.builder()
                 .id(1L)
                 .name("Mojito")
-                .ingredients(List.of(new Ingredient("럼", "50ml")))
+                .cocktailIngredients(List.of(new CocktailIngredient(null, new Ingredient("럼"), 50)))
                 .recipe("Recipe")
                 .sensoryDescriptors(List.of())
                 .flavorVector(FlavorVector.builder().sweet(0.9).build())

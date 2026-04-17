@@ -7,7 +7,7 @@ import java.util.List;
 public record RecommendedCocktailDto(
         Long id,
         String name,
-        List<IngredientDto> ingredients,
+        List<CocktailIngredientDto> ingredients,
         String recipe,
         double score,
         String reason,
@@ -15,8 +15,8 @@ public record RecommendedCocktailDto(
 ) {
     public static RecommendedCocktailDto from(MatchedCocktail matched) {
         var cocktail = matched.cocktail();
-        var ingredients = cocktail.getIngredients().stream()
-                .map(IngredientDto::from)
+        var ingredients = cocktail.getCocktailIngredients().stream()
+                .map(CocktailIngredientDto::from)
                 .toList();
         var matchedKeywords = matched.matchedDescriptors().stream()
                 .map(com.cock.cocktail.domain.DescriptorCode::value)

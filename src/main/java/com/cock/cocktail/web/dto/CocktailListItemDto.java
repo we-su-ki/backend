@@ -8,7 +8,7 @@ public record CocktailListItemDto(
         Long id,
         String name,
         String imageUrl,
-        List<IngredientDto> ingredients,
+        List<CocktailIngredientDto> ingredients,
         TasteProfileDto tasteProfile,
         String recipe,
         double score
@@ -22,7 +22,7 @@ public record CocktailListItemDto(
                 cocktail.getId(),
                 cocktail.getName(),
                 cocktail.getImageUrl(),
-                cocktail.getIngredients().stream().map(IngredientDto::from).toList(),
+                cocktail.getCocktailIngredients().stream().map(CocktailIngredientDto::from).toList(),
                 TasteProfileDto.from(cocktail.getTasteProfile()),
                 cocktail.getRecipe(),
                 score
