@@ -17,6 +17,7 @@ public class CocktailController {
     private final CocktailRepository cocktailRepository;
     private final CocktailMatchStrategy matchStrategy;
 
+    // TODO: 페이지네이션
     @GetMapping
     public List<CocktailListItemDto> list() {
         return cocktailRepository.findAll().stream()

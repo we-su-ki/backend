@@ -1,176 +1,247 @@
-# 칵테일 레시피 추천 서비스
+# Cocktail BE API Guide
 
-사용자가 자연어로 원하는 맛이나 분위기를 입력하면 적합한 칵테일 레시피를 AI가 추천해주는 서비스
+## API 목록
 
-## 기술 스택
+| Method | Path                   | 설명                |
+|--------|------------------------|-------------------|
+| `GET`  | `/cocktails`           | 전체 칵테일 목록 조회      |
+| `GET`  | `/cocktails/match`     | 맛 프로필 조건으로 칵테일 추천 |
+| `GET`  | `/ingredients`         | 전체 재료 목록 조회       |
+| `POST` | `/ingredients/predict` | 재료 조합으로 맛 프로필 예측  |
 
-- **Java**: 21
-- **Spring Boot**: 3.5.0
-- **Spring Data JPA**: H2 Database
-- **Build Tool**: Gradle
-- **Test**: JUnit 5, MockMvc
+### 에러 응답
 
-## 프로젝트 구조
-
-```
-src/main/java/com/cock/cocktail/
-├── web/                            # 웹 계층
-│   ├── CocktailController.java
-│   └── dto/
-├── service/                        # 서비스 인터페이스
-│   ├── KeywordAnalyzer.java
-│   ├── CocktailMatcher.java
-│   └── CocktailRecommendationService.java
-├── infrastructure/                 # 구현체
-│   ├── config_based_analyzer/
-│   ├── matching/
-│   └── recommendation/
-├── domain/                         # 도메인 모델
-│   ├── Cocktail.java
-│   ├── SensoryDescriptors.java
-│   └── MatchedCocktail.java
-├── repository/
-│   └── CocktailRepository.java
-└── exception/
-    └── GlobalExceptionHandler.java
-```
-
-## 시작하기
-
-### 1. 프로젝트 클론
-
-```bash
-git clone <repository-url>
-cd cocktail-be
-```
-
-### 2. 빌드
-
-```bash
-./gradlew build
-```
-
-### 3. 실행
-
-```bash
-./gradlew bootRun
-```
-
-서버가 `http://localhost:8080`에서 시작됩니다.
-
-## API 사용 예시
-
-### 1. 키워드 분석
-
-사용자 입력에서 감각 디스크립터를 추출합니다.
-
-```bash
-curl "http://localhost:8080/api/v1/cocktails/analyze?query=달달한%20칵테일"
-```
-
-**응답:**
 ```json
 {
-  "taste": ["sweet"],
-  "aroma": [],
-  "mouthfeel": [],
-  "sensation": [],
-  "impression": []
+  "error": "Bad Request",
+  "message": "Required parameter 'sweet' is missing",
+  "timestamp": "2026-04-17T16:40:12.345"
 }
 ```
 
-### 2. 칵테일 추천
+---
 
-사용자 쿼리 기반으로 칵테일을 추천합니다.
+## 1. 전체 칵테일 목록 조회
+
+> **GET /cocktails**
+
+전체 칵테일 데이터를 반환합니다.
+
+### 요청 예시
 
 ```bash
-curl "http://localhost:8080/api/v1/cocktails/recommend?query=달달하고%20과일향%20나는%20칵테일"
+curl -s http://localhost:8080/cocktails | jq
 ```
 
-**응답:**
+### 응답 예시
+
+```json
+[
+  {
+    "id": 1,
+    "name": "모히또",
+    "imageUrl": "https://.../mojito.jpg",
+    "ingredients": [
+      { "name": "화이트 럼", "amount": 50 },
+      { "name": "라임 주스", "amount": 20 },
+      { "name": "민트 잎", "amount": 0 },
+      { "name": "설탕", "amount": 0 },
+      { "name": "탄산수", "amount": 100 }
+    ],
+    "tasteProfile": {
+      "sweet": 0.3,
+      "body": 0.2,
+      "bitter": 0.1,
+      "abv": 0.5,
+      "smoky": 0.0,
+      "sour": 0.6
+    },
+    "recipe": "글라스에 민트 잎과 설탕을 넣고 으깬다\n라임 주스와 럼을 추가한다\n얼음을 채우고 탄산수를 부은 뒤 가볍게 섞는다",
+    "score": 0.0
+  }
+]
+```
+
+### 응답 필드
+
+| 필드                     | 타입       | 설명                |
+|------------------------|----------|-------------------|
+| `id`                   | `number` | 칵테일 ID            |
+| `name`                 | `string` | 칵테일 이름            |
+| `imageUrl`             | `string` | 이미지 URL           |
+| `ingredients`          | `array`  | 재료 목록             |
+| `ingredients[].name`   | `string` | 재료 이름             |
+| `ingredients[].amount` | `number` | 재료 양              |
+| `tasteProfile`         | `object` | 맛 프로필             |
+| `recipe`               | `string` | 제조 방법. 줄바꿈 포함 가능  |
+| `score`                | `number` | 목록 조회에서는 항상 `0.0` |
+
+### 프론트 참고
+
+- 현재 정렬은 별도로 보장하지 않습니다.
+- `recipe`는 줄바꿈 문자열을 포함합니다.
+
+---
+
+## 2. 맛 기준 칵테일 추천
+
+> **GET /cocktails/match**
+
+맛 축 6개 중 원하는 값만 골라 전달하면, 해당 조건과 가까운 칵테일 최대 5개를 반환합니다.
+
+### 사용 가능한 쿼리 파라미터
+
+| 이름       | 타입       | 설명   |
+|----------|----------|------|
+| `sweet`  | `number` | 단맛   |
+| `body`   | `number` | 바디감  |
+| `bitter` | `number` | 쓴맛   |
+| `abv`    | `number` | 도수감  |
+| `smoky`  | `number` | 스모키함 |
+| `sour`   | `number` | 산미   |
+
+### 요청 예시 1
+
+```bash
+curl -s "http://localhost:8080/cocktails/match?sweet=4.0" | jq
+```
+
+### 요청 예시 2
+
+```bash
+curl -s "http://localhost:8080/cocktails/match?sweet=4.0&sour=2.0&abv=3.0" | jq
+```
+
+추천 결과에서 이름과 점수만 보기
+
+```bash
+curl -s "http://localhost:8080/cocktails/match?sweet=4.0&sour=2.0" \
+  | jq '.[] | {name, score}'
+```
+
+### 응답 예시
+
+```json
+[
+  {
+    "id": 3,
+    "name": "피나콜라다",
+    "imageUrl": "https://.../pina-colada.jpg",
+    "ingredients": [
+      { "name": "화이트 럼", "amount": 50 },
+      { "name": "파인애플 주스", "amount": 80 },
+      { "name": "코코넛 크림", "amount": 30 }
+    ],
+    "tasteProfile": {
+      "sweet": 0.7,
+      "body": 0.7,
+      "bitter": 0.0,
+      "abv": 0.5,
+      "smoky": 0.0,
+      "sour": 0.0
+    },
+    "recipe": "블렌더에 모든 재료와 얼음을 넣는다\n부드럽게 갈아준다\n글라스에 따르고 파인애플로 장식한다",
+    "score": 0.92
+  }
+]
+```
+
+### 응답 필드
+
+| 필드                     | 타입       | 설명               |
+|------------------------|----------|------------------|
+| `id`                   | `number` | 칵테일 ID           |
+| `name`                 | `string` | 칵테일 이름           |
+| `imageUrl`             | `string` | 이미지 URL          |
+| `ingredients`          | `array`  | 재료 목록            |
+| `ingredients[].name`   | `string` | 재료 이름            |
+| `ingredients[].amount` | `number` | 재료 양             |
+| `tasteProfile`         | `object` | 맛 프로필            |
+| `recipe`               | `string` | 제조 방법. 줄바꿈 포함 가능 |
+| `score`                | `number` | 추천 점수            |
+
+### 참고
+
+- 전달한 파라미터만 비교합니다. 6개 축 중 일부만 보내도 됩니다.
+- 점수는 `0.0 ~ 1.0` 범위의 유사도입니다.
+- 점수가 높은 순으로 최대 5개 반환합니다.
+- 쿼리 파라미터를 하나도 보내지 않으면 빈 배열을 반환합니다.
+
+---
+
+## 3. 전체 재료 목록 조회
+
+> **GET /ingredients**
+
+전체 재료 목록을 반환합니다.
+
+### 요청 예시
+
+```bash
+curl -s http://localhost:8080/ingredients | jq
+```
+
+### 응답 예시
+
+```json
+[
+  { "id": 1, "name": "화이트 럼" },
+  { "id": 2, "name": "라임 주스" },
+  { "id": 3, "name": "민트 잎" }
+]
+```
+
+### 참고
+
+- `POST /ingredients/predict`에 필요한 `id`를 이 응답으로 바로 사용할 수 있습니다.
+
+---
+
+## 4. 재료 조합으로 맛 프로필 예측
+
+> **POST /ingredients/predict**
+
+재료 목록을 보내면 맛 프로필을 반환합니다.
+
+### 요청 바디
+
 ```json
 {
-  "cocktails": [
-    {
-      "id": 3,
-      "name": "피나콜라다",
-      "ingredients": [
-        {"name": "화이트 럼", "amount": "50ml"},
-        {"name": "파인애플 주스", "amount": "80ml"},
-        {"name": "코코넛 크림", "amount": "30ml"}
-      ],
-      "recipe": "블렌더에 모든 재료와 얼음을 넣는다\n부드럽게 갈아준다\n글라스에 따르고 파인애플로 장식한다",
-      "score": 1.0,
-      "reason": "달달한, 과일향 특징을 가진 칵테일입니다.",
-      "matchedKeywords": ["fruity", "sweet"]
-    }
-  ],
-  "count": 1
+  "ingredients": [
+    { "id": 1, "amount": 50 },
+    { "id": 2, "amount": 20 }
+  ]
 }
 ```
 
-## 테스트 실행
+| 필드                     | 타입       | 설명    |
+|------------------------|----------|-------|
+| `ingredients`          | `array`  | 재료 목록 |
+| `ingredients[].id`     | `number` | 재료 ID |
+| `ingredients[].amount` | `number` | 재료 양  |
 
-### 전체 테스트
-
-```bash
-./gradlew test
-```
-
-### 특정 테스트 클래스 실행
+### 요청 예시
 
 ```bash
-./gradlew test --tests CocktailControllerTest
-./gradlew test --tests DataIntegrityTest
-./gradlew test --tests EdgeCaseE2ETest
+curl -s -X POST http://localhost:8080/ingredients/predict \
+  -H "Content-Type: application/json" \
+  -d '{
+    "ingredients": [
+      { "id": 1, "amount": 50 },
+      { "id": 2, "amount": 20 }
+    ]
+  }' | jq
 ```
 
-### 테스트 통계
+### 응답 예시
 
-- **총 테스트**: 163개
-- **단위 테스트**: 110개
-- **통합 테스트**: 53개
-- **통과율**: 100%
-
-## API 엔드포인트
-
-자세한 API 명세는 [API.md](API.md)를 참조하세요.
-
-| Method | Endpoint | 설명 |
-|--------|----------|------|
-| GET | `/api/v1/cocktails/analyze` | 키워드 분석 |
-| GET | `/api/v1/cocktails/recommend` | 칵테일 추천 |
-
-## 주요 기능
-
-### 1. 자연어 키워드 분석
-- 사용자 입력에서 감각 디스크립터 추출
-- 5가지 감각 축: taste, aroma, mouthfeel, sensation, impression
-- 동의어 처리 지원
-
-### 2. 칵테일 매칭 엔진
-- Recall 기반 점수 계산: `score = |쿼리 ∩ 칵테일| / |쿼리|`
-- 최대 3개 칵테일 추천
-- 점수 내림차순 정렬
-
-### 3. 추천 이유 생성
-- 매칭된 키워드 기반 자연어 설명 생성
-- 예: "달달한, 과일향 특징을 가진 칵테일입니다."
-
-## 성능
-
-- 서버 시작 시간: ~2초
-- API 평균 응답 시간: 6ms
-- 첫 요청 응답 시간: 47ms (워밍업)
-
-## 개발 원칙
-
-- **TDD (Test-Driven Development)**: 테스트 먼저 작성
-- **객체지향 설계**: 객체지향 생활 체조 준수
-- **Hexagonal Architecture**: 인터페이스 기반 설계
-- **불변성**: record 타입 적극 활용
-- **코드 품질**: 불필요한 주석 제거, 코드로 표현
-
-## 라이센스
-
-MIT License
+```json
+{
+  "sweet": 0.1,
+  "body": 0.2,
+  "bitter": 0.3,
+  "abv": 0.0,
+  "smoky": 0.0,
+  "sour": 0.5
+}
+```
