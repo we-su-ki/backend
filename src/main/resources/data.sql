@@ -26,13 +26,6 @@ INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (1, 
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (1, 3, 0);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (1, 4, 0);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (1, 5, 100);
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (1, 'TASTE', 'sour');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (1, 'MOUTHFEEL', 'clean');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (1, 'SENSATION', 'carbonated');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (1, 'AROMA', 'mint');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (1, 'AROMA', 'citrus');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (1, 'IMPRESSION', 'summer');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (1, 'IMPRESSION', 'light_drinking');
 
 INSERT INTO cocktail (id, name, image_url, recipe, abv, carbonated, sweetness, sourness, bitterness, body, apple, banana, cherry, citrus, fruity, lemon, orange, pear, raisins, zest, earthy, barley, buttery, butterscotch, candy, chocolate, cinnamon, cocoa, corn, honey, tea, toffee, clove, coffee, floral, licorice, malty, mint, nutmeg, peaty, peppery, roses, spices, sugar, tobacco, vanilla, wood, sherry, bitter, brine, creamy, ginger, herbal, maple, nutty, oak, salty, smokey, sour, spicy, sweet, caramel)
 VALUES (2, '마가리타', '/images/margarita.jpg', '글라스 입구에 소금을 묻힌다
@@ -50,11 +43,6 @@ INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (2, 
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (2, 7, 25);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (2, 8, 25);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (2, 9, 0);
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (2, 'TASTE', 'sour');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (2, 'MOUTHFEEL', 'clean');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (2, 'SENSATION', 'mild');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (2, 'AROMA', 'citrus');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (2, 'IMPRESSION', 'party');
 
 INSERT INTO cocktail (id, name, image_url, recipe, abv, carbonated, sweetness, sourness, bitterness, body, apple, banana, cherry, citrus, fruity, lemon, orange, pear, raisins, zest, earthy, barley, buttery, butterscotch, candy, chocolate, cinnamon, cocoa, corn, honey, tea, toffee, clove, coffee, floral, licorice, malty, mint, nutmeg, peaty, peppery, roses, spices, sugar, tobacco, vanilla, wood, sherry, bitter, brine, creamy, ginger, herbal, maple, nutty, oak, salty, smokey, sour, spicy, sweet, caramel)
 VALUES (3, '피나콜라다', '/images/pina-colada.jpg', '블렌더에 모든 재료와 얼음을 넣는다
@@ -70,13 +58,6 @@ INSERT INTO ingredient (id, name) VALUES (12, '코코넛 크림');
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (3, 10, 50);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (3, 11, 80);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (3, 12, 30);
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (3, 'TASTE', 'sweet');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (3, 'MOUTHFEEL', 'smooth');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (3, 'MOUTHFEEL', 'heavy');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (3, 'SENSATION', 'mild');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (3, 'AROMA', 'fruity');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (3, 'AROMA', 'coconut');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (3, 'IMPRESSION', 'summer');
 
 INSERT INTO cocktail (id, name, image_url, recipe, abv, carbonated, sweetness, sourness, bitterness, body, apple, banana, cherry, citrus, fruity, lemon, orange, pear, raisins, zest, earthy, barley, buttery, butterscotch, candy, chocolate, cinnamon, cocoa, corn, honey, tea, toffee, clove, coffee, floral, licorice, malty, mint, nutmeg, peaty, peppery, roses, spices, sugar, tobacco, vanilla, wood, sherry, bitter, brine, creamy, ginger, herbal, maple, nutty, oak, salty, smokey, sour, spicy, sweet, caramel)
 VALUES (4, '코스모폴리탄', '/images/cosmopolitan.jpg', '셰이커에 모든 재료와 얼음을 넣는다
@@ -94,13 +75,6 @@ INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (4, 
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (4, 14, 15);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (4, 15, 30);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (4, 16, 15);
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (4, 'TASTE', 'sour');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (4, 'TASTE', 'sweet');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (4, 'MOUTHFEEL', 'clean');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (4, 'SENSATION', 'mild');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (4, 'AROMA', 'berry');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (4, 'IMPRESSION', 'romantic');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (4, 'IMPRESSION', 'party');
 
 INSERT INTO cocktail (id, name, image_url, recipe, abv, carbonated, sweetness, sourness, bitterness, body, apple, banana, cherry, citrus, fruity, lemon, orange, pear, raisins, zest, earthy, barley, buttery, butterscotch, candy, chocolate, cinnamon, cocoa, corn, honey, tea, toffee, clove, coffee, floral, licorice, malty, mint, nutmeg, peaty, peppery, roses, spices, sugar, tobacco, vanilla, wood, sherry, bitter, brine, creamy, ginger, herbal, maple, nutty, oak, salty, smokey, sour, spicy, sweet, caramel)
 VALUES (5, '위스키 사워', '/images/whiskey-sour.jpg', '셰이커에 재료를 넣고 먼저 드라이 셰이크한다
@@ -118,11 +92,6 @@ INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (5, 
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (5, 18, 25);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (5, 19, 15);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (5, 20, 0);
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (5, 'TASTE', 'sour');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (5, 'MOUTHFEEL', 'smooth');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (5, 'SENSATION', 'mild');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (5, 'AROMA', 'citrus');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (5, 'IMPRESSION', 'light_drinking');
 
 INSERT INTO cocktail (id, name, image_url, recipe, abv, carbonated, sweetness, sourness, bitterness, body, apple, banana, cherry, citrus, fruity, lemon, orange, pear, raisins, zest, earthy, barley, buttery, butterscotch, candy, chocolate, cinnamon, cocoa, corn, honey, tea, toffee, clove, coffee, floral, licorice, malty, mint, nutmeg, peaty, peppery, roses, spices, sugar, tobacco, vanilla, wood, sherry, bitter, brine, creamy, ginger, herbal, maple, nutty, oak, salty, smokey, sour, spicy, sweet, caramel)
 VALUES (6, '올드 패션드', '/images/old-fashioned.jpg', '글라스에 설탕과 비터스를 넣고 으깬다
@@ -140,11 +109,6 @@ INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (6, 
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (6, 22, 0);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (6, 23, 0);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (6, 24, 0);
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (6, 'TASTE', 'bitter');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (6, 'MOUTHFEEL', 'heavy');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (6, 'SENSATION', 'strong');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (6, 'AROMA', 'orange');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (6, 'IMPRESSION', 'classic');
 
 INSERT INTO cocktail (id, name, image_url, recipe, abv, carbonated, sweetness, sourness, bitterness, body, apple, banana, cherry, citrus, fruity, lemon, orange, pear, raisins, zest, earthy, barley, buttery, butterscotch, candy, chocolate, cinnamon, cocoa, corn, honey, tea, toffee, clove, coffee, floral, licorice, malty, mint, nutmeg, peaty, peppery, roses, spices, sugar, tobacco, vanilla, wood, sherry, bitter, brine, creamy, ginger, herbal, maple, nutty, oak, salty, smokey, sour, spicy, sweet, caramel)
 VALUES (7, '아페롤 스프리츠', '/images/aperol-spritz.jpg', '와인 글라스에 얼음을 채운다
@@ -162,13 +126,6 @@ INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (7, 
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (7, 26, 90);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (7, 27, 30);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (7, 28, 0);
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (7, 'TASTE', 'bitter');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (7, 'TASTE', 'sour');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (7, 'MOUTHFEEL', 'clean');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (7, 'SENSATION', 'carbonated');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (7, 'AROMA', 'orange');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (7, 'IMPRESSION', 'summer');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (7, 'IMPRESSION', 'light_drinking');
 
 INSERT INTO cocktail (id, name, image_url, recipe, abv, carbonated, sweetness, sourness, bitterness, body, apple, banana, cherry, citrus, fruity, lemon, orange, pear, raisins, zest, earthy, barley, buttery, butterscotch, candy, chocolate, cinnamon, cocoa, corn, honey, tea, toffee, clove, coffee, floral, licorice, malty, mint, nutmeg, peaty, peppery, roses, spices, sugar, tobacco, vanilla, wood, sherry, bitter, brine, creamy, ginger, herbal, maple, nutty, oak, salty, smokey, sour, spicy, sweet, caramel)
 VALUES (8, '에스프레소 마티니', '/images/espresso-martini.jpg', '셰이커에 모든 재료와 얼음을 넣는다
@@ -186,12 +143,6 @@ INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (8, 
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (8, 30, 25);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (8, 31, 30);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (8, 32, 10);
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (8, 'TASTE', 'bitter');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (8, 'TASTE', 'sweet');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (8, 'MOUTHFEEL', 'smooth');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (8, 'SENSATION', 'mild');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (8, 'AROMA', 'coffee');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (8, 'IMPRESSION', 'party');
 
 INSERT INTO cocktail (id, name, image_url, recipe, abv, carbonated, sweetness, sourness, bitterness, body, apple, banana, cherry, citrus, fruity, lemon, orange, pear, raisins, zest, earthy, barley, buttery, butterscotch, candy, chocolate, cinnamon, cocoa, corn, honey, tea, toffee, clove, coffee, floral, licorice, malty, mint, nutmeg, peaty, peppery, roses, spices, sugar, tobacco, vanilla, wood, sherry, bitter, brine, creamy, ginger, herbal, maple, nutty, oak, salty, smokey, sour, spicy, sweet, caramel)
 VALUES (9, '진 토닉', '/images/gin-tonic.jpg', '하이볼 글라스에 얼음을 채운다
@@ -207,11 +158,6 @@ INSERT INTO ingredient (id, name) VALUES (35, '라임');
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (9, 33, 50);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (9, 34, 150);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (9, 35, 0);
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (9, 'TASTE', 'bitter');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (9, 'MOUTHFEEL', 'clean');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (9, 'SENSATION', 'carbonated');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (9, 'AROMA', 'herbal');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (9, 'IMPRESSION', 'light_drinking');
 
 INSERT INTO cocktail (id, name, image_url, recipe, abv, carbonated, sweetness, sourness, bitterness, body, apple, banana, cherry, citrus, fruity, lemon, orange, pear, raisins, zest, earthy, barley, buttery, butterscotch, candy, chocolate, cinnamon, cocoa, corn, honey, tea, toffee, clove, coffee, floral, licorice, malty, mint, nutmeg, peaty, peppery, roses, spices, sugar, tobacco, vanilla, wood, sherry, bitter, brine, creamy, ginger, herbal, maple, nutty, oak, salty, smokey, sour, spicy, sweet, caramel)
 VALUES (10, '다이키리', '/images/daiquiri.jpg', '셰이커에 모든 재료와 얼음을 넣는다
@@ -227,12 +173,6 @@ INSERT INTO ingredient (id, name) VALUES (38, '설탕 시럽');
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (10, 36, 60);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (10, 37, 20);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (10, 38, 15);
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (10, 'TASTE', 'sour');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (10, 'TASTE', 'sweet');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (10, 'MOUTHFEEL', 'clean');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (10, 'SENSATION', 'mild');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (10, 'AROMA', 'citrus');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (10, 'IMPRESSION', 'light_drinking');
 
 INSERT INTO cocktail (id, name, image_url, recipe, abv, carbonated, sweetness, sourness, bitterness, body, apple, banana, cherry, citrus, fruity, lemon, orange, pear, raisins, zest, earthy, barley, buttery, butterscotch, candy, chocolate, cinnamon, cocoa, corn, honey, tea, toffee, clove, coffee, floral, licorice, malty, mint, nutmeg, peaty, peppery, roses, spices, sugar, tobacco, vanilla, wood, sherry, bitter, brine, creamy, ginger, herbal, maple, nutty, oak, salty, smokey, sour, spicy, sweet, caramel)
 VALUES (11, '모스코 뮬', '/images/moscow-mule.jpg', '구리 머그에 얼음을 채운다
@@ -248,12 +188,6 @@ INSERT INTO ingredient (id, name) VALUES (41, '진저비어');
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (11, 39, 50);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (11, 40, 15);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (11, 41, 120);
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (11, 'TASTE', 'sour');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (11, 'MOUTHFEEL', 'clean');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (11, 'SENSATION', 'carbonated');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (11, 'AROMA', 'ginger');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (11, 'AROMA', 'citrus');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (11, 'IMPRESSION', 'summer');
 
 INSERT INTO cocktail (id, name, image_url, recipe, abv, carbonated, sweetness, sourness, bitterness, body, apple, banana, cherry, citrus, fruity, lemon, orange, pear, raisins, zest, earthy, barley, buttery, butterscotch, candy, chocolate, cinnamon, cocoa, corn, honey, tea, toffee, clove, coffee, floral, licorice, malty, mint, nutmeg, peaty, peppery, roses, spices, sugar, tobacco, vanilla, wood, sherry, bitter, brine, creamy, ginger, herbal, maple, nutty, oak, salty, smokey, sour, spicy, sweet, caramel)
 VALUES (12, '네그로니', '/images/negroni.jpg', '올드 패션드 글라스에 얼음을 넣는다
@@ -269,11 +203,6 @@ INSERT INTO ingredient (id, name) VALUES (44, '스위트 베르무트');
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (12, 42, 30);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (12, 43, 30);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (12, 44, 30);
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (12, 'TASTE', 'bitter');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (12, 'MOUTHFEEL', 'heavy');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (12, 'SENSATION', 'strong');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (12, 'AROMA', 'herbal');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (12, 'IMPRESSION', 'classic');
 
 INSERT INTO cocktail (id, name, image_url, recipe, abv, carbonated, sweetness, sourness, bitterness, body, apple, banana, cherry, citrus, fruity, lemon, orange, pear, raisins, zest, earthy, barley, buttery, butterscotch, candy, chocolate, cinnamon, cocoa, corn, honey, tea, toffee, clove, coffee, floral, licorice, malty, mint, nutmeg, peaty, peppery, roses, spices, sugar, tobacco, vanilla, wood, sherry, bitter, brine, creamy, ginger, herbal, maple, nutty, oak, salty, smokey, sour, spicy, sweet, caramel)
 VALUES (13, '블루 하와이', '/images/blue-hawaii.jpg', '셰이커에 모든 재료와 얼음을 넣는다
@@ -291,13 +220,6 @@ INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (13,
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (13, 46, 20);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (13, 47, 60);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (13, 48, 20);
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (13, 'TASTE', 'sweet');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (13, 'MOUTHFEEL', 'smooth');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (13, 'SENSATION', 'mild');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (13, 'AROMA', 'fruity');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (13, 'AROMA', 'coconut');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (13, 'IMPRESSION', 'summer');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (13, 'IMPRESSION', 'party');
 
 INSERT INTO cocktail (id, name, image_url, recipe, abv, carbonated, sweetness, sourness, bitterness, body, apple, banana, cherry, citrus, fruity, lemon, orange, pear, raisins, zest, earthy, barley, buttery, butterscotch, candy, chocolate, cinnamon, cocoa, corn, honey, tea, toffee, clove, coffee, floral, licorice, malty, mint, nutmeg, peaty, peppery, roses, spices, sugar, tobacco, vanilla, wood, sherry, bitter, brine, creamy, ginger, herbal, maple, nutty, oak, salty, smokey, sour, spicy, sweet, caramel)
 VALUES (14, '상그리아', '/images/sangria.jpg', '큰 피처에 와인을 붓는다
@@ -317,13 +239,6 @@ INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (14,
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (14, 51, 100);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (14, 52, 0);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (14, 53, 0);
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (14, 'TASTE', 'sweet');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (14, 'TASTE', 'sour');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (14, 'MOUTHFEEL', 'smooth');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (14, 'SENSATION', 'mild');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (14, 'AROMA', 'fruity');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (14, 'IMPRESSION', 'party');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (14, 'IMPRESSION', 'summer');
 
 INSERT INTO cocktail (id, name, image_url, recipe, abv, carbonated, sweetness, sourness, bitterness, body, apple, banana, cherry, citrus, fruity, lemon, orange, pear, raisins, zest, earthy, barley, buttery, butterscotch, candy, chocolate, cinnamon, cocoa, corn, honey, tea, toffee, clove, coffee, floral, licorice, malty, mint, nutmeg, peaty, peppery, roses, spices, sugar, tobacco, vanilla, wood, sherry, bitter, brine, creamy, ginger, herbal, maple, nutty, oak, salty, smokey, sour, spicy, sweet, caramel)
 VALUES (15, '민트 줄렙', '/images/mint-julep.jpg', '글라스에 민트 잎과 설탕, 물을 넣고 으깬다
@@ -341,8 +256,3 @@ INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (15,
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (15, 55, 0);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (15, 56, 0);
 INSERT INTO cocktail_ingredient (cocktail_id, ingredient_id, amount) VALUES (15, 57, 0);
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (15, 'TASTE', 'sweet');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (15, 'MOUTHFEEL', 'clean');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (15, 'SENSATION', 'mild');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (15, 'AROMA', 'mint');
-INSERT INTO cocktail_sensory_descriptors (cocktail_id, axis, "value") VALUES (15, 'IMPRESSION', 'summer');

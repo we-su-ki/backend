@@ -1,7 +1,5 @@
 package com.cock.cocktail.domain;
 
-import com.cock.cocktail.domain.descriptor.DescriptorCode;
-import com.cock.cocktail.domain.descriptor.SensoryDescriptors;
 import com.cock.cocktail.domain.taste.FlavorVector;
 import com.cock.cocktail.domain.taste.TasteProfile;
 import jakarta.persistence.*;
@@ -35,15 +33,6 @@ public class Cocktail {
 
     @Column(length = 1000)
     private String recipe;
-
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "cocktail_sensory_descriptors", joinColumns = @JoinColumn(name = "cocktail_id"))
-    @Builder.Default
-    private List<DescriptorCode> sensoryDescriptors = new ArrayList<>();
-
-    public SensoryDescriptors getSensoryDescriptors() {
-        return new SensoryDescriptors(sensoryDescriptors);
-    }
 
     public TasteProfile getTasteProfile() {
         return flavorVector.computeTasteProfile();
