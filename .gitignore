@@ -43,5 +43,5 @@ out/
 data/
 
 ### Docs ###
-/docs/*.md
-/docs/**/*.md
+docs/
+CLAUDE.md
