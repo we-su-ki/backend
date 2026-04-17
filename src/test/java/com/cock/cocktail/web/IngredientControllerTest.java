@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -37,15 +38,22 @@ class IngredientControllerTest {
     @Test
     @DisplayName("GET /ingredients - 재료 목록 반환")
     void shouldReturnIngredientList() throws Exception {
+        var rum = new Ingredient("럼");
+        ReflectionTestUtils.setField(rum, "id", 1L);
+        var limeJuice = new Ingredient("라임 주스");
+        ReflectionTestUtils.setField(limeJuice, "id", 2L);
+
         when(ingredientRepository.findAll()).thenReturn(List.of(
-                new Ingredient("럼"),
-                new Ingredient("라임 주스")
+                rum,
+                limeJuice
         ));
 
         mockMvc.perform(get("/ingredients"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].name", is("럼")))
+                .andExpect(jsonPath("$[1].id", is(2)))
                 .andExpect(jsonPath("$[1].name", is("라임 주스")));
     }
 
