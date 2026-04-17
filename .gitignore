@@ -41,3 +41,7 @@ out/
 
 ### Database ###
 data/
+
+### Docs ###
+/docs/*.md
+/docs/**/*.md
