@@ -1,8 +1,9 @@
 package com.cock.cocktail.web;
 
+import com.cock.cocktail.domain.taste.TasteMatch;
 import com.cock.cocktail.domain.taste.TasteQuery;
 import com.cock.cocktail.repository.CocktailRepository;
-import com.cock.cocktail.service.cocktail.CocktailMatchService;
+import com.cock.cocktail.service.CocktailMatchStrategy;
 import com.cock.cocktail.web.dto.CocktailListItemDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ import java.util.List;
 public class CocktailController {
 
     private final CocktailRepository cocktailRepository;
-    private final CocktailMatchService matchService;
+    private final CocktailMatchStrategy matchStrategy;
 
     @GetMapping
     public List<CocktailListItemDto> list() {
@@ -26,8 +27,9 @@ public class CocktailController {
 
     @GetMapping("/match")
     public List<CocktailListItemDto> match(TasteQuery query) {
-        return matchService.match(query).stream()
-                .map(m -> CocktailListItemDto.from(m.cocktail(), m.score()))
+        var tasteMatches = matchStrategy.match(query);
+        return tasteMatches.stream()
+                .map(CocktailListItemDto::from)
                 .toList();
     }
 }

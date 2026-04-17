@@ -1,6 +1,7 @@
 package com.cock.cocktail.web.dto;
 
 import com.cock.cocktail.domain.Cocktail;
+import com.cock.cocktail.domain.taste.TasteMatch;
 
 import java.util.List;
 
@@ -27,5 +28,9 @@ public record CocktailListItemDto(
                 cocktail.getRecipe(),
                 score
         );
+    }
+
+    public static CocktailListItemDto from(TasteMatch tm) {
+        return from(tm.cocktail(), tm.score());
     }
 }

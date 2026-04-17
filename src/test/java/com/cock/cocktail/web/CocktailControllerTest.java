@@ -7,7 +7,7 @@ import com.cock.cocktail.domain.taste.FlavorVector;
 import com.cock.cocktail.domain.taste.TasteMatch;
 import com.cock.cocktail.domain.taste.TasteQuery;
 import com.cock.cocktail.repository.CocktailRepository;
-import com.cock.cocktail.service.cocktail.CocktailMatchService;
+import com.cock.cocktail.service.CocktailMatchStrategy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ class CocktailControllerTest {
     private CocktailRepository cocktailRepository;
 
     @MockitoBean
-    private CocktailMatchService matchService;
+    private CocktailMatchStrategy matchStrategy;
 
     @Test
     @DisplayName("GET /api/v1/cocktails/match - 정상 요청")
@@ -46,7 +46,7 @@ class CocktailControllerTest {
                 .flavorVector(FlavorVector.builder().sweet(0.9).build())
                 .build();
 
-        when(matchService.match(new TasteQuery(4.0, null, null, null, null, null)))
+        when(matchStrategy.match(new TasteQuery(4.0, null, null, null, null, null)))
                 .thenReturn(List.of(new TasteMatch(cocktail, 0.92)));
 
         mockMvc.perform(get("/api/v1/cocktails/match")
@@ -62,7 +62,7 @@ class CocktailControllerTest {
     @Test
     @DisplayName("GET /api/v1/cocktails/match - 파라미터 없으면 빈 결과")
     void shouldReturnEmptyWhenNoQueryParams() throws Exception {
-        when(matchService.match(new TasteQuery(null, null, null, null, null, null)))
+        when(matchStrategy.match(new TasteQuery(null, null, null, null, null, null)))
                 .thenReturn(List.of());
 
         mockMvc.perform(get("/api/v1/cocktails/match"))
