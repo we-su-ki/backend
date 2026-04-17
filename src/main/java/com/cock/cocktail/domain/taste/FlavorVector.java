@@ -14,67 +14,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class FlavorVector {
 
-    private static final double[][] WEIGHTS = {
-            {0.0, 0.1, 0.0, 1.0, 0.0, 0.0}, // abv
-            {0.0, 0.3, 0.0, 0.0, 0.0, 0.1}, // carbonated
-            {0.9, 0.3, 0.0, 0.0, 0.0, 0.0}, // sweetness
-            {0.0, 0.1, 0.1, 0.0, 0.0, 1.0}, // sourness
-            {0.0, 0.2, 1.0, 0.0, 0.0, 0.0}, // bitterness
-            {0.2, 1.0, 0.0, 0.0, 0.0, 0.0}, // body
-            {0.6, 0.2, 0.0, 0.0, 0.0, 0.2}, // apple
-            {0.7, 0.4, 0.0, 0.0, 0.0, 0.1}, // banana
-            {0.7, 0.2, 0.1, 0.0, 0.0, 0.2}, // cherry
-            {0.3, 0.1, 0.1, 0.0, 0.0, 0.7}, // citrus
-            {0.6, 0.2, 0.0, 0.0, 0.0, 0.2}, // fruity
-            {0.2, 0.1, 0.1, 0.0, 0.0, 1.0}, // lemon
-            {0.5, 0.2, 0.1, 0.0, 0.0, 0.5}, // orange
-            {0.6, 0.2, 0.0, 0.0, 0.0, 0.2}, // pear
-            {0.7, 0.4, 0.1, 0.0, 0.0, 0.1}, // raisins
-            {0.2, 0.1, 0.3, 0.0, 0.0, 0.6}, // zest
-            {0.1, 0.3, 0.3, 0.0, 0.2, 0.0}, // earthy
-            {0.2, 0.6, 0.2, 0.0, 0.0, 0.0}, // barley
-            {0.5, 0.8, 0.0, 0.0, 0.0, 0.0}, // buttery
-            {0.9, 0.5, 0.0, 0.0, 0.0, 0.0}, // butterscotch
-            {0.9, 0.2, 0.0, 0.0, 0.0, 0.0}, // candy
-            {0.5, 0.7, 0.3, 0.0, 0.1, 0.0}, // chocolate
-            {0.3, 0.3, 0.2, 0.2, 0.0, 0.0}, // cinnamon
-            {0.2, 0.6, 0.7, 0.0, 0.1, 0.0}, // cocoa
-            {0.3, 0.5, 0.1, 0.0, 0.0, 0.0}, // corn
-            {0.9, 0.3, 0.0, 0.0, 0.0, 0.0}, // honey
-            {0.1, 0.3, 0.6, 0.0, 0.0, 0.0}, // tea
-            {0.8, 0.5, 0.1, 0.0, 0.0, 0.0}, // toffee
-            {0.2, 0.3, 0.3, 0.3, 0.2, 0.0}, // clove
-            {0.1, 0.6, 0.9, 0.0, 0.2, 0.0}, // coffee
-            {0.3, 0.1, 0.0, 0.0, 0.0, 0.0}, // floral
-            {0.3, 0.3, 0.4, 0.0, 0.1, 0.0}, // licorice
-            {0.3, 0.7, 0.2, 0.0, 0.0, 0.0}, // malty
-            {0.2, 0.1, 0.2, 0.0, 0.0, 0.1}, // mint
-            {0.2, 0.3, 0.3, 0.2, 0.1, 0.0}, // nutmeg
-            {0.0, 0.4, 0.2, 0.0, 1.0, 0.0}, // peaty
-            {0.0, 0.2, 0.2, 0.6, 0.0, 0.0}, // peppery
-            {0.3, 0.1, 0.0, 0.0, 0.0, 0.0}, // roses
-            {0.2, 0.3, 0.3, 0.3, 0.1, 0.0}, // spices
-            {1.0, 0.1, 0.0, 0.0, 0.0, 0.0}, // sugar
-            {0.0, 0.5, 0.3, 0.0, 0.8, 0.0}, // tobacco
-            {0.8, 0.4, 0.0, 0.0, 0.0, 0.0}, // vanilla
-            {0.1, 0.5, 0.2, 0.0, 0.6, 0.0}, // wood
-            {0.4, 0.5, 0.1, 0.0, 0.5, 0.1}, // sherry
-            {0.0, 0.2, 1.0, 0.0, 0.0, 0.0}, // bitter
-            {0.0, 0.2, 0.2, 0.0, 0.0, 0.2}, // brine
-            {0.4, 0.9, 0.0, 0.0, 0.0, 0.0}, // creamy
-            {0.2, 0.3, 0.2, 0.4, 0.0, 0.1}, // ginger
-            {0.1, 0.2, 0.4, 0.0, 0.0, 0.1}, // herbal
-            {0.9, 0.4, 0.0, 0.0, 0.0, 0.0}, // maple
-            {0.3, 0.7, 0.2, 0.0, 0.0, 0.0}, // nutty
-            {0.1, 0.6, 0.3, 0.0, 0.6, 0.0}, // oak
-            {0.0, 0.1, 0.1, 0.0, 0.0, 0.0}, // salty
-            {0.0, 0.3, 0.2, 0.0, 1.0, 0.0}, // smokey
-            {0.0, 0.1, 0.1, 0.0, 0.0, 1.0}, // sour
-            {0.0, 0.2, 0.2, 0.5, 0.0, 0.0}, // spicy
-            {0.9, 0.3, 0.0, 0.0, 0.0, 0.0}, // sweet
-            {0.8, 0.4, 0.1, 0.0, 0.0, 0.0}, // caramel
-    };
-
     private double abv;
     private double carbonated;
     private double sweetness;
@@ -135,31 +74,28 @@ public class FlavorVector {
     private double caramel;
 
     public TasteProfile computeTasteProfile() {
-        double[] values = {
-                abv, carbonated, sweetness, sourness, bitterness, body,
-                apple, banana, cherry, citrus, fruity, lemon, orange, pear, raisins, zest,
-                earthy, barley,
-                buttery, butterscotch, candy, chocolate, cinnamon, cocoa, corn, honey, tea, toffee,
-                clove, coffee,
-                floral, licorice, malty, mint, nutmeg,
-                peaty, peppery, roses, spices, sugar, tobacco, vanilla, wood, sherry,
-                bitter, brine, creamy, ginger, herbal, maple, nutty, oak,
-                salty, smokey, sour, spicy, sweet, caramel
-        };
-        double[] axes = new double[6];
-        for (int i = 0; i < values.length; i++) {
-            for (int j = 0; j < 6; j++) {
-                axes[j] += values[i] * WEIGHTS[i][j];
-            }
+        double sweet = 0, body = 0, bitter = 0, abv = 0, smoky = 0, sour = 0;
+
+        for (var descriptor : FlavorDescriptor.values()) {
+            double value = descriptor.valueFrom(this);
+            var tasteProfile = descriptor.tasteProfile();
+
+            sweet += value * tasteProfile.sweet();
+            body += value * tasteProfile.body();
+            bitter += value * tasteProfile.bitter();
+            abv += value * tasteProfile.abv();
+            smoky += value * tasteProfile.smoky();
+            sour += value * tasteProfile.sour();
         }
-        return new TasteProfile(
-                clamp(axes[0]),
-                clamp(axes[1]),
-                clamp(axes[2]),
-                clamp(axes[3]),
-                clamp(axes[4]),
-                clamp(axes[5])
-        );
+
+        return TasteProfile.builder()
+                    .sweet(clamp(sweet))
+                    .body(clamp(body))
+                    .bitter(clamp(bitter))
+                    .abv(clamp(abv))
+                    .smoky(clamp(smoky))
+                    .sour(clamp(sour))
+                .build();
     }
 
     private double clamp(double value) {
