@@ -1,8 +1,8 @@
 package com.cock.cocktail.infrastructure.matching;
 
-import com.cock.cocktail.domain.DescriptorCode;
-import com.cock.cocktail.domain.DescriptorDefinition;
-import com.cock.cocktail.domain.DescriptorRegistry;
+import com.cock.cocktail.domain.descriptor.DescriptorCode;
+import com.cock.cocktail.domain.descriptor.DescriptorDefinition;
+import com.cock.cocktail.domain.descriptor.DescriptorRegistry;
 import org.springframework.stereotype.Component;
 
 import java.util.*;

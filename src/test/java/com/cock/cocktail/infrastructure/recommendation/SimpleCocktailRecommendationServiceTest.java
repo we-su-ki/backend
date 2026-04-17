@@ -1,11 +1,11 @@
 package com.cock.cocktail.infrastructure.recommendation;
 
 import com.cock.cocktail.domain.Cocktail;
-import com.cock.cocktail.domain.DescriptorCode;
+import com.cock.cocktail.domain.descriptor.DescriptorCode;
 import com.cock.cocktail.domain.MatchedCocktail;
-import com.cock.cocktail.domain.SensoryAxis;
-import com.cock.cocktail.domain.SensoryDescriptors;
-import com.cock.cocktail.service.CocktailMatcher;
+import com.cock.cocktail.domain.descriptor.SensoryAxis;
+import com.cock.cocktail.domain.descriptor.SensoryDescriptors;
+import com.cock.cocktail.service.cocktail.CocktailMatcher;
 import com.cock.cocktail.service.KeywordAnalyzer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

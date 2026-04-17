@@ -1,6 +1,6 @@
 package com.cock.cocktail.web.dto;
 
-import com.cock.cocktail.ingredient.Ingredient;
+import com.cock.cocktail.domain.Ingredient;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

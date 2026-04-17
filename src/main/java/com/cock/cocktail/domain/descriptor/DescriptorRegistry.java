@@ -1,4 +1,4 @@
-package com.cock.cocktail.domain;
+package com.cock.cocktail.domain.descriptor;
 
 import java.util.ArrayList;
 import java.util.List;

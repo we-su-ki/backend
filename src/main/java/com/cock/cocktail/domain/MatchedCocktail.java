@@ -1,5 +1,6 @@
 package com.cock.cocktail.domain;
 
+import com.cock.cocktail.domain.descriptor.DescriptorCode;
 import java.util.Objects;
 import java.util.Set;
 

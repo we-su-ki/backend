@@ -1,6 +1,6 @@
 package com.cock.cocktail.web.dto;
 
-import com.cock.cocktail.domain.TasteProfile;
+import com.cock.cocktail.domain.taste.TasteProfile;
 
 public record TasteProfileDto(
         double sweet,

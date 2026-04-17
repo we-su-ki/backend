@@ -1,4 +1,4 @@
-package com.cock.cocktail.domain;
+package com.cock.cocktail.domain.taste;
 
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;

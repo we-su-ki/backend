@@ -1,5 +1,7 @@
-package com.cock.cocktail.domain;
+package com.cock.cocktail.repository;
 
+import com.cock.cocktail.domain.descriptor.DescriptorCode;
+import com.cock.cocktail.domain.descriptor.SensoryAxis;
 import com.cock.cocktail.repository.CocktailRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

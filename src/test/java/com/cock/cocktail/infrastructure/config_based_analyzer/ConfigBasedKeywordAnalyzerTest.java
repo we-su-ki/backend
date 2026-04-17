@@ -1,7 +1,7 @@
 package com.cock.cocktail.infrastructure.config_based_analyzer;
 
-import com.cock.cocktail.domain.SensoryAxis;
-import com.cock.cocktail.domain.DescriptorRegistry;
+import com.cock.cocktail.domain.descriptor.SensoryAxis;
+import com.cock.cocktail.domain.descriptor.DescriptorRegistry;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.junit.jupiter.api.BeforeEach;

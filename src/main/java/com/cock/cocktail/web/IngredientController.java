@@ -1,6 +1,6 @@
 package com.cock.cocktail.web;
 
-import com.cock.cocktail.ingredient.IngredientRepository;
+import com.cock.cocktail.repository.IngredientRepository;
 import com.cock.cocktail.web.dto.IngredientDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

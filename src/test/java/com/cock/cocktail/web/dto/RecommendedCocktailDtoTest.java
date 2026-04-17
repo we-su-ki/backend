@@ -1,11 +1,11 @@
 package com.cock.cocktail.web.dto;
 
 import com.cock.cocktail.domain.Cocktail;
-import com.cock.cocktail.domain.DescriptorCode;
+import com.cock.cocktail.domain.descriptor.DescriptorCode;
 import com.cock.cocktail.domain.MatchedCocktail;
-import com.cock.cocktail.domain.SensoryAxis;
-import com.cock.cocktail.ingredient.CocktailIngredient;
-import com.cock.cocktail.ingredient.Ingredient;
+import com.cock.cocktail.domain.descriptor.SensoryAxis;
+import com.cock.cocktail.domain.CocktailIngredient;
+import com.cock.cocktail.domain.Ingredient;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,7 +1,7 @@
 package com.cock.cocktail.web;
 
-import com.cock.cocktail.ingredient.Ingredient;
-import com.cock.cocktail.ingredient.IngredientRepository;
+import com.cock.cocktail.domain.Ingredient;
+import com.cock.cocktail.repository.IngredientRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

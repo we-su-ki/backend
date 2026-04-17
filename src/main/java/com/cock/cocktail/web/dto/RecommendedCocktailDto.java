@@ -19,7 +19,7 @@ public record RecommendedCocktailDto(
                 .map(CocktailIngredientDto::from)
                 .toList();
         var matchedKeywords = matched.matchedDescriptors().stream()
-                .map(com.cock.cocktail.domain.DescriptorCode::value)
+                .map(com.cock.cocktail.domain.descriptor.DescriptorCode::value)
                 .toList();
 
         return new RecommendedCocktailDto(

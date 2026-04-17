@@ -1,6 +1,5 @@
-package com.cock.cocktail.ingredient;
+package com.cock.cocktail.domain;
 
-import com.cock.cocktail.domain.Cocktail;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

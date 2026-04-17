@@ -1,4 +1,4 @@
-package com.cock.cocktail.domain;
+package com.cock.cocktail.domain.descriptor;
 
 /**
  * 감각 속성의 축

@@ -1,7 +1,7 @@
-package com.cock.cocktail.service;
+package com.cock.cocktail.service.cocktail;
 
 import com.cock.cocktail.domain.MatchedCocktail;
-import com.cock.cocktail.domain.SensoryDescriptors;
+import com.cock.cocktail.domain.descriptor.SensoryDescriptors;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.cock.cocktail.repository;
 
 import com.cock.cocktail.domain.Cocktail;
-import com.cock.cocktail.domain.DescriptorCode;
+import com.cock.cocktail.domain.descriptor.DescriptorCode;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

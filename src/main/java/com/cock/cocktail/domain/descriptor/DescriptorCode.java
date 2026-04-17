@@ -1,4 +1,4 @@
-package com.cock.cocktail.domain;
+package com.cock.cocktail.domain.descriptor;
 
 import com.cock.cocktail.util.Strings;
 import jakarta.persistence.Column;

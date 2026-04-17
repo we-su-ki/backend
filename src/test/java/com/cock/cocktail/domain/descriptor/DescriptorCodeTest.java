@@ -1,4 +1,4 @@
-package com.cock.cocktail.domain;
+package com.cock.cocktail.domain.descriptor;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

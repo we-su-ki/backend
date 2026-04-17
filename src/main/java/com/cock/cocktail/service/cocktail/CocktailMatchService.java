@@ -1,7 +1,7 @@
-package com.cock.cocktail.service;
+package com.cock.cocktail.service.cocktail;
 
-import com.cock.cocktail.domain.TasteMatch;
-import com.cock.cocktail.domain.TasteQuery;
+import com.cock.cocktail.domain.taste.TasteMatch;
+import com.cock.cocktail.domain.taste.TasteQuery;
 import com.cock.cocktail.repository.CocktailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

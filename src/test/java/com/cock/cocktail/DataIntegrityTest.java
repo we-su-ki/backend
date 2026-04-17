@@ -1,7 +1,7 @@
 package com.cock.cocktail;
 
-import com.cock.cocktail.domain.SensoryAxis;
-import com.cock.cocktail.service.CocktailRecommendationService;
+import com.cock.cocktail.domain.descriptor.SensoryAxis;
+import com.cock.cocktail.service.cocktail.CocktailRecommendationService;
 import com.cock.cocktail.service.KeywordAnalyzer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

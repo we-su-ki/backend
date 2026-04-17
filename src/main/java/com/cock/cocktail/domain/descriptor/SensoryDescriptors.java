@@ -1,10 +1,10 @@
-package com.cock.cocktail.domain;
+package com.cock.cocktail.domain.descriptor;
 
-import static com.cock.cocktail.domain.SensoryAxis.AROMA;
-import static com.cock.cocktail.domain.SensoryAxis.IMPRESSION;
-import static com.cock.cocktail.domain.SensoryAxis.MOUTHFEEL;
-import static com.cock.cocktail.domain.SensoryAxis.SENSATION;
-import static com.cock.cocktail.domain.SensoryAxis.TASTE;
+import static com.cock.cocktail.domain.descriptor.SensoryAxis.AROMA;
+import static com.cock.cocktail.domain.descriptor.SensoryAxis.IMPRESSION;
+import static com.cock.cocktail.domain.descriptor.SensoryAxis.MOUTHFEEL;
+import static com.cock.cocktail.domain.descriptor.SensoryAxis.SENSATION;
+import static com.cock.cocktail.domain.descriptor.SensoryAxis.TASTE;
 
 import java.util.ArrayList;
 import java.util.List;

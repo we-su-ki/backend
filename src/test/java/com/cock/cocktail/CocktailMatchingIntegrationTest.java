@@ -1,6 +1,6 @@
 package com.cock.cocktail;
 
-import com.cock.cocktail.service.CocktailMatcher;
+import com.cock.cocktail.service.cocktail.CocktailMatcher;
 import com.cock.cocktail.service.KeywordAnalyzer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -160,8 +160,8 @@ class CocktailMatchingIntegrationTest {
         }
     }
 
-    private java.util.Set<com.cock.cocktail.domain.DescriptorCode> extractAll(
-            com.cock.cocktail.domain.SensoryDescriptors descriptors) {
+    private java.util.Set<com.cock.cocktail.domain.descriptor.DescriptorCode> extractAll(
+            com.cock.cocktail.domain.descriptor.SensoryDescriptors descriptors) {
         return java.util.stream.Stream.of(
                 descriptors.taste(),
                 descriptors.aroma(),

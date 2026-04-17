@@ -1,8 +1,8 @@
 package com.cock.cocktail.infrastructure.recommendation;
 
 import com.cock.cocktail.domain.MatchedCocktail;
-import com.cock.cocktail.service.CocktailMatcher;
-import com.cock.cocktail.service.CocktailRecommendationService;
+import com.cock.cocktail.service.cocktail.CocktailMatcher;
+import com.cock.cocktail.service.cocktail.CocktailRecommendationService;
 import com.cock.cocktail.service.KeywordAnalyzer;
 import com.cock.cocktail.util.Strings;
 import lombok.RequiredArgsConstructor;

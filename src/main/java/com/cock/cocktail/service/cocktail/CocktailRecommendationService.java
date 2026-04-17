@@ -1,4 +1,4 @@
-package com.cock.cocktail.service;
+package com.cock.cocktail.service.cocktail;
 
 import com.cock.cocktail.domain.MatchedCocktail;
 

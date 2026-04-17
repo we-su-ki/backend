@@ -1,6 +1,6 @@
 package com.cock.cocktail.infrastructure.config_based;
 
-import com.cock.cocktail.domain.DescriptorRegistry;
+import com.cock.cocktail.domain.descriptor.DescriptorRegistry;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.springframework.context.annotation.Bean;

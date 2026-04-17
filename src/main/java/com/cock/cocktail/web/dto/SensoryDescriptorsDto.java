@@ -1,7 +1,7 @@
 package com.cock.cocktail.web.dto;
 
-import com.cock.cocktail.domain.DescriptorCode;
-import com.cock.cocktail.domain.SensoryDescriptors;
+import com.cock.cocktail.domain.descriptor.DescriptorCode;
+import com.cock.cocktail.domain.descriptor.SensoryDescriptors;
 
 import java.util.List;
 

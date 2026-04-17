@@ -1,18 +1,18 @@
 package com.cock.cocktail.web;
 
 import com.cock.cocktail.domain.Cocktail;
-import com.cock.cocktail.domain.DescriptorCode;
-import com.cock.cocktail.ingredient.CocktailIngredient;
-import com.cock.cocktail.ingredient.Ingredient;
+import com.cock.cocktail.domain.descriptor.DescriptorCode;
+import com.cock.cocktail.domain.CocktailIngredient;
+import com.cock.cocktail.domain.Ingredient;
 import com.cock.cocktail.domain.MatchedCocktail;
-import com.cock.cocktail.domain.SensoryAxis;
-import com.cock.cocktail.domain.SensoryDescriptors;
-import com.cock.cocktail.domain.FlavorVector;
-import com.cock.cocktail.domain.TasteMatch;
-import com.cock.cocktail.domain.TasteQuery;
+import com.cock.cocktail.domain.descriptor.SensoryAxis;
+import com.cock.cocktail.domain.descriptor.SensoryDescriptors;
+import com.cock.cocktail.domain.taste.FlavorVector;
+import com.cock.cocktail.domain.taste.TasteMatch;
+import com.cock.cocktail.domain.taste.TasteQuery;
 import com.cock.cocktail.repository.CocktailRepository;
-import com.cock.cocktail.service.CocktailMatchService;
-import com.cock.cocktail.service.CocktailRecommendationService;
+import com.cock.cocktail.service.cocktail.CocktailMatchService;
+import com.cock.cocktail.service.cocktail.CocktailRecommendationService;
 import com.cock.cocktail.service.KeywordAnalyzer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.Matchers.*;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

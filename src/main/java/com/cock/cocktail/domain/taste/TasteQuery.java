@@ -1,4 +1,4 @@
-package com.cock.cocktail.domain;
+package com.cock.cocktail.domain.taste;
 
 public record TasteQuery(
         Double sweet,

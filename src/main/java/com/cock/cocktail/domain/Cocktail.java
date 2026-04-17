@@ -1,6 +1,9 @@
 package com.cock.cocktail.domain;
 
-import com.cock.cocktail.ingredient.CocktailIngredient;
+import com.cock.cocktail.domain.descriptor.DescriptorCode;
+import com.cock.cocktail.domain.descriptor.SensoryDescriptors;
+import com.cock.cocktail.domain.taste.FlavorVector;
+import com.cock.cocktail.domain.taste.TasteProfile;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,5 +1,7 @@
 package com.cock.cocktail.domain;
 
+import com.cock.cocktail.domain.descriptor.DescriptorCode;
+import com.cock.cocktail.domain.descriptor.SensoryAxis;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

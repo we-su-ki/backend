@@ -1,8 +1,8 @@
 package com.cock.cocktail.infrastructure.matching;
 
 import com.cock.cocktail.domain.Cocktail;
-import com.cock.cocktail.domain.DescriptorCode;
-import com.cock.cocktail.domain.SensoryDescriptors;
+import com.cock.cocktail.domain.descriptor.DescriptorCode;
+import com.cock.cocktail.domain.descriptor.SensoryDescriptors;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;

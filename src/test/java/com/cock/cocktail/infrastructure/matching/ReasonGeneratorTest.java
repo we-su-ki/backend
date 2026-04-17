@@ -1,8 +1,8 @@
 package com.cock.cocktail.infrastructure.matching;
 
-import com.cock.cocktail.domain.DescriptorCode;
-import com.cock.cocktail.domain.SensoryAxis;
-import com.cock.cocktail.domain.DescriptorRegistry;
+import com.cock.cocktail.domain.descriptor.DescriptorCode;
+import com.cock.cocktail.domain.descriptor.SensoryAxis;
+import com.cock.cocktail.domain.descriptor.DescriptorRegistry;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.junit.jupiter.api.DisplayName;

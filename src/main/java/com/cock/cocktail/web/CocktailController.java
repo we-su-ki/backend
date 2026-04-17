@@ -1,9 +1,9 @@
 package com.cock.cocktail.web;
 
-import com.cock.cocktail.domain.TasteQuery;
+import com.cock.cocktail.domain.taste.TasteQuery;
 import com.cock.cocktail.repository.CocktailRepository;
-import com.cock.cocktail.service.CocktailMatchService;
-import com.cock.cocktail.service.CocktailRecommendationService;
+import com.cock.cocktail.service.cocktail.CocktailMatchService;
+import com.cock.cocktail.service.cocktail.CocktailRecommendationService;
 import com.cock.cocktail.service.KeywordAnalyzer;
 import com.cock.cocktail.web.dto.CocktailListItemDto;
 import com.cock.cocktail.web.dto.RecommendedCocktailDto;
