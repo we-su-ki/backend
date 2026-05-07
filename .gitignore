@@ -43,6 +43,9 @@ out/
 ### Database ###
 data/
 
+### Local config ###
+src/main/resources/application-local.properties
+
 ### Docs ###
 docs/
 CLAUDE.md

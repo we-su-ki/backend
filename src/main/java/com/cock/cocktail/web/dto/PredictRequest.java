@@ -1,6 +1,6 @@
 package com.cock.cocktail.web.dto;
 
-import com.cock.cocktail.domain.IngredientAmount;
+import com.cock.cocktail.application.IngredientAmount;
 
 import java.util.List;
 

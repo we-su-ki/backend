@@ -3,33 +3,40 @@ package com.cock.cocktail.web.dto;
 import com.cock.cocktail.domain.Ingredient;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class IngredientDtoTest {
 
     @Test
     @DisplayName("Ingredient → IngredientDto 변환")
     void shouldConvertFromIngredient() {
-        var ingredient = new Ingredient("럼");
-        ReflectionTestUtils.setField(ingredient, "id", 1L);
+        var ingredient = Ingredient.builder()
+                .id(1L)
+                .name("Rum")
+                .build();
 
         var dto = IngredientDto.from(ingredient);
 
-        assertThat(dto.id()).isEqualTo(1L);
-        assertThat(dto.name()).isEqualTo("럼");
+        assertAll(
+                () -> assertThat(dto.id()).isEqualTo(1L),
+                () -> assertThat(dto.name()).isEqualTo("Rum")
+        );
     }
 
     @Test
-    @DisplayName("빈 이름 Ingredient 변환")
-    void shouldConvertIngredientWithEmptyName() {
-        var ingredient = new Ingredient("");
-        ReflectionTestUtils.setField(ingredient, "id", 2L);
+    @DisplayName("name이 null인 Ingredient 변환")
+    void shouldConvertIngredientWithNullName() {
+        var ingredient = Ingredient.builder()
+                .id(2L)
+                .build();
 
         var dto = IngredientDto.from(ingredient);
 
-        assertThat(dto.id()).isEqualTo(2L);
-        assertThat(dto.name()).isEmpty();
+        assertAll(
+                () -> assertThat(dto.id()).isEqualTo(2L),
+                () -> assertThat(dto.name()).isNull()
+        );
     }
 }

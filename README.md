@@ -9,12 +9,12 @@
 | `GET`  | `/ingredients`         | 전체 재료 목록 조회       |
 | `POST` | `/ingredients/predict` | 재료 조합으로 맛 프로필 예측  |
 
-### 에러 응답
+### 에러 응답 예시
 
 ```json
 {
   "error": "Bad Request",
-  "message": "Required parameter 'sweet' is missing",
+  "message": "Required parameter 'sweetness' is missing",
   "timestamp": "2026-04-17T16:40:12.345"
 }
 ```
@@ -30,7 +30,7 @@
 ### 요청 예시
 
 ```bash
-curl -s http://localhost:8080/cocktails | jq
+curl -s http://localhost:8080/cocktails
 ```
 
 ### 응답 예시
@@ -38,48 +38,83 @@ curl -s http://localhost:8080/cocktails | jq
 ```json
 [
   {
-    "id": 1,
-    "name": "모히또",
-    "imageUrl": "https://.../mojito.jpg",
+    "name": "Abbey",
+    "imageUrl": "https://cdn.diffordsguide.com/cocktail/NAmyA8/lifestyle/1/1024x.webp?v=1737701571",
+    "glassRaw": "Serve in a Coupe glass",
+    "garnishRaw": "EXPRESS lemon zest twist over the cocktail and use as garnish.",
+    "methodRaw": "SHAKE all ingredients with ice. FINE STRAIN into chilled glass.",
+    "methodCategory": "Shake",
     "ingredients": [
-      { "name": "화이트 럼", "amount": 50 },
-      { "name": "라임 주스", "amount": 20 },
-      { "name": "민트 잎", "amount": 0 },
-      { "name": "설탕", "amount": 0 },
-      { "name": "탄산수", "amount": 100 }
+      { "name": "Hayman's London Dry Gin", "ml": 45 },
+      { "name": "Americano bianco", "ml": 22.5 },
+      { "name": "Orange juice (freshly squeezed)", "ml": 22.5 },
+      { "name": "Angostura Aromatic Bitters", "ml": 0.8 }
     ],
+    "scoreStrength": 7,
+    "scoreSweetSour": 7,
+    "reviewText": "A dry, orangey, herbal, gin-laced aperitivo, closely related to the better known Bronx .",
+    "sourceUrl": "https://www.diffordsguide.com/cocktails/recipe/3/abbey",
     "tasteProfile": {
-      "sweet": 0.3,
-      "body": 0.2,
-      "bitter": 0.1,
-      "abv": 0.5,
-      "smoky": 0.0,
-      "sour": 0.6
+      "abv": 0.0,
+      "sweetness": 0.0,
+      "sourness": 0.0,
+      "bitterness": 0.0,
+      "umamiSalty": 0.0,
+      "fruity": 0.0,
+      "citrus": 0.0,
+      "floral": 0.0,
+      "herbal": 0.0,
+      "spicy": 0.0,
+      "woodySmoky": 0.0,
+      "body": 0.0,
+      "fizzy": 0.0
     },
-    "recipe": "글라스에 민트 잎과 설탕을 넣고 으깬다\n라임 주스와 럼을 추가한다\n얼음을 채우고 탄산수를 부은 뒤 가볍게 섞는다",
-    "score": 0.0
+    "matchScore": 0.0
   }
 ]
 ```
 
 ### 응답 필드
 
-| 필드                     | 타입       | 설명                |
-|------------------------|----------|-------------------|
-| `id`                   | `number` | 칵테일 ID            |
-| `name`                 | `string` | 칵테일 이름            |
-| `imageUrl`             | `string` | 이미지 URL           |
-| `ingredients`          | `array`  | 재료 목록             |
-| `ingredients[].name`   | `string` | 재료 이름             |
-| `ingredients[].amount` | `number` | 재료 양              |
-| `tasteProfile`         | `object` | 맛 프로필             |
-| `recipe`               | `string` | 제조 방법. 줄바꿈 포함 가능  |
-| `score`                | `number` | 목록 조회에서는 항상 `0.0` |
+| 필드                   | 타입       | 설명                   | 비고                |
+|----------------------|----------|----------------------|-------------------|
+| `name`               | `string` | 칵테일 이름 (PK)          |                   |
+| `imageUrl`           | `string` | 이미지 URL              |                   |
+| `glassRaw`           | `string` | 잔 종류                 |                   |
+| `garnishRaw`         | `string` | 가니시                  |                   |
+| `methodRaw`          | `string` | 제조 방법                | 줄바꿈 포함 가능         |
+| `methodCategory`     | `string` | 제조 방법 카테고리           | Shake, Build 등    |
+| `ingredients`        | `array`  | 재료 목록                |                   |
+| `ingredients[].name` | `string` | 재료 이름                |                   |
+| `ingredients[].ml`   | `number` | 재료 용량 (ml)           |                   |
+| `scoreStrength`      | `number` | 도수 점수 (1~10)         | null 가능           |
+| `scoreSweetSour`     | `number` | 단맛/신맛 점수 (1~10)      | null 가능           |
+| `reviewText`         | `string` | 리뷰 텍스트               | null 가능           |
+| `sourceUrl`          | `string` | 출처 URL               | null 가능           |
+| `tasteProfile`       | `object` | 맛 프로필 (13개 축, 아래 참고) |                   |
+| `matchScore`         | `number` | 추천 유사도 점수            | 목록 조회에서는 항상 `0.0` |
+
+### tasteProfile 필드
+
+| 필드            | 타입       | 설명      |
+|---------------|----------|---------|
+| `abv`         | `number` | 도수감     |
+| `sweetness`   | `number` | 단맛      |
+| `sourness`    | `number` | 산미      |
+| `bitterness`  | `number` | 쓴맛      |
+| `umamiSalty`  | `number` | 감칠맛/짠맛  |
+| `fruity`      | `number` | 과일향     |
+| `citrus`      | `number` | 시트러스    |
+| `floral`      | `number` | 꽃향      |
+| `herbal`      | `number` | 허브향     |
+| `spicy`       | `number` | 스파이시    |
+| `woodySmoky`  | `number` | 우디/스모키  |
+| `body`        | `number` | 바디감     |
+| `fizzy`       | `number` | 탄산감     |
 
 ### 프론트 참고
 
 - 현재 정렬은 별도로 보장하지 않습니다.
-- `recipe`는 줄바꿈 문자열을 포함합니다.
 
 ---
 
@@ -87,36 +122,36 @@ curl -s http://localhost:8080/cocktails | jq
 
 > **GET /cocktails/match**
 
-맛 축 6개 중 원하는 값만 골라 전달하면, 해당 조건과 가까운 칵테일 최대 5개를 반환합니다.
+원하는 맛 축 값만 골라 전달하면, 해당 조건과 가까운 칵테일 최대 5개를 반환합니다.
 
 ### 사용 가능한 쿼리 파라미터
 
-| 이름       | 타입       | 설명   |
-|----------|----------|------|
-| `sweet`  | `number` | 단맛   |
-| `body`   | `number` | 바디감  |
-| `bitter` | `number` | 쓴맛   |
-| `abv`    | `number` | 도수감  |
-| `smoky`  | `number` | 스모키함 |
-| `sour`   | `number` | 산미   |
+| 이름           | 타입       | 설명     |
+|--------------|----------|--------|
+| `abv`        | `number` | 도수감    |
+| `sweetness`  | `number` | 단맛     |
+| `sourness`   | `number` | 산미     |
+| `bitterness` | `number` | 쓴맛     |
+| `umamiSalty` | `number` | 감칠맛/짠맛 |
+| `fruity`     | `number` | 과일향    |
+| `citrus`     | `number` | 시트러스   |
+| `floral`     | `number` | 꽃향     |
+| `herbal`     | `number` | 허브향    |
+| `spicy`      | `number` | 스파이시   |
+| `woodySmoky` | `number` | 우디/스모키 |
+| `body`       | `number` | 바디감    |
+| `fizzy`      | `number` | 탄산감    |
 
 ### 요청 예시 1
 
 ```bash
-curl -s "http://localhost:8080/cocktails/match?sweet=4.0" | jq
+curl -s "http://localhost:8080/cocktails/match?sweetness=4.0&fruity=2.0"
 ```
 
 ### 요청 예시 2
 
 ```bash
-curl -s "http://localhost:8080/cocktails/match?sweet=4.0&sour=2.0&abv=3.0" | jq
-```
-
-추천 결과에서 이름과 점수만 보기
-
-```bash
-curl -s "http://localhost:8080/cocktails/match?sweet=4.0&sour=2.0" \
-  | jq '.[] | {name, score}'
+curl -s "http://localhost:8080/cocktails/match?sweetness=4.0&sourness=2.0&abv=3.0"
 ```
 
 ### 응답 예시
@@ -124,47 +159,51 @@ curl -s "http://localhost:8080/cocktails/match?sweet=4.0&sour=2.0" \
 ```json
 [
   {
-    "id": 3,
-    "name": "피나콜라다",
-    "imageUrl": "https://.../pina-colada.jpg",
+    "name": "Abbey",
+    "imageUrl": "https://cdn.diffordsguide.com/cocktail/NAmyA8/lifestyle/1/1024x.webp?v=1737701571",
+    "glassRaw": "Serve in a Coupe glass",
+    "garnishRaw": "EXPRESS lemon zest twist over the cocktail and use as garnish.",
+    "methodRaw": "SHAKE all ingredients with ice. FINE STRAIN into chilled glass.",
+    "methodCategory": "Shake",
     "ingredients": [
-      { "name": "화이트 럼", "amount": 50 },
-      { "name": "파인애플 주스", "amount": 80 },
-      { "name": "코코넛 크림", "amount": 30 }
+      { "name": "Hayman's London Dry Gin", "ml": 45 },
+      { "name": "Americano bianco", "ml": 22.5 },
+      { "name": "Orange juice (freshly squeezed)", "ml": 22.5 },
+      { "name": "Angostura Aromatic Bitters", "ml": 0.8 }
     ],
+    "scoreStrength": 7,
+    "scoreSweetSour": 7,
+    "reviewText": "A dry, orangey, herbal, gin-laced aperitivo, closely related to the better known Bronx .",
+    "sourceUrl": "https://www.diffordsguide.com/cocktails/recipe/3/abbey",
     "tasteProfile": {
-      "sweet": 0.7,
-      "body": 0.7,
-      "bitter": 0.0,
-      "abv": 0.5,
-      "smoky": 0.0,
-      "sour": 0.0
+      "abv": 0.0,
+      "sweetness": 0.0,
+      "sourness": 0.0,
+      "bitterness": 0.0,
+      "umamiSalty": 0.0,
+      "fruity": 0.0,
+      "citrus": 0.0,
+      "floral": 0.0,
+      "herbal": 0.0,
+      "spicy": 0.0,
+      "woodySmoky": 0.0,
+      "body": 0.0,
+      "fizzy": 0.0
     },
-    "recipe": "블렌더에 모든 재료와 얼음을 넣는다\n부드럽게 갈아준다\n글라스에 따르고 파인애플로 장식한다",
-    "score": 0.92
+    "matchScore": 0.92
   }
 ]
 ```
 
 ### 응답 필드
 
-| 필드                     | 타입       | 설명               |
-|------------------------|----------|------------------|
-| `id`                   | `number` | 칵테일 ID           |
-| `name`                 | `string` | 칵테일 이름           |
-| `imageUrl`             | `string` | 이미지 URL          |
-| `ingredients`          | `array`  | 재료 목록            |
-| `ingredients[].name`   | `string` | 재료 이름            |
-| `ingredients[].amount` | `number` | 재료 양             |
-| `tasteProfile`         | `object` | 맛 프로필            |
-| `recipe`               | `string` | 제조 방법. 줄바꿈 포함 가능 |
-| `score`                | `number` | 추천 점수            |
+[1. 전체 칵테일 목록 조회](#1-전체-칵테일-목록-조회)의 응답 필드와 동일
 
 ### 참고
 
-- 전달한 파라미터만 비교합니다. 6개 축 중 일부만 보내도 됩니다.
-- 점수는 `0.0 ~ 1.0` 범위의 유사도입니다.
-- 점수가 높은 순으로 최대 5개 반환합니다.
+- 전달한 파라미터만 비교합니다. 13개 축 중 일부만 보내도 됩니다.
+- 추천 유사도 점수(matchScore)는 `0.0 ~ 1.0` 범위의 유사도입니다.
+- 추천 유사도 점수(matchScore)가 높은 순으로 최대 5개 반환합니다.
 - 쿼리 파라미터를 하나도 보내지 않으면 빈 배열을 반환합니다.
 
 ---
@@ -178,16 +217,16 @@ curl -s "http://localhost:8080/cocktails/match?sweet=4.0&sour=2.0" \
 ### 요청 예시
 
 ```bash
-curl -s http://localhost:8080/ingredients | jq
+curl -s http://localhost:8080/ingredients
 ```
 
 ### 응답 예시
 
 ```json
 [
-  { "id": 1, "name": "화이트 럼" },
-  { "id": 2, "name": "라임 주스" },
-  { "id": 3, "name": "민트 잎" }
+  { "id": 1, "name": "Amaretto" },
+  { "id": 2, "name": "Angostura Bitters" },
+  { "id": 3, "name": "Apricot Brandy" }
 ]
 ```
 
@@ -200,6 +239,8 @@ curl -s http://localhost:8080/ingredients | jq
 ## 4. 재료 조합으로 맛 프로필 예측
 
 > **POST /ingredients/predict**
+> 
+> Content-Type: application/json
 
 재료 목록을 보내면 맛 프로필을 반환합니다.
 
@@ -214,11 +255,11 @@ curl -s http://localhost:8080/ingredients | jq
 }
 ```
 
-| 필드                     | 타입       | 설명    |
-|------------------------|----------|-------|
-| `ingredients`          | `array`  | 재료 목록 |
-| `ingredients[].id`     | `number` | 재료 ID |
-| `ingredients[].amount` | `number` | 재료 양  |
+| 필드                     | 타입       | 설명       |
+|------------------------|----------|----------|
+| `ingredients`          | `array`  | 재료 목록    |
+| `ingredients[].id`     | `number` | 재료 ID    |
+| `ingredients[].amount` | `number` | 재료 양(ml) |
 
 ### 요청 예시
 
@@ -230,18 +271,25 @@ curl -s -X POST http://localhost:8080/ingredients/predict \
       { "id": 1, "amount": 50 },
       { "id": 2, "amount": 20 }
     ]
-  }' | jq
+  }'
 ```
 
 ### 응답 예시
 
 ```json
 {
-  "sweet": 0.1,
-  "body": 0.2,
-  "bitter": 0.3,
   "abv": 0.0,
-  "smoky": 0.0,
-  "sour": 0.5
+  "sweetness": 5.17,
+  "sourness": 4.61,
+  "bitterness": 5.57,
+  "umamiSalty": 1.55,
+  "fruity": 4.49,
+  "citrus": 4.83,
+  "floral": 1.14,
+  "herbal": 3.28,
+  "spicy": 2.42,
+  "woodySmoky": 1.83,
+  "body": 3.71,
+  "fizzy": 4.24
 }
 ```

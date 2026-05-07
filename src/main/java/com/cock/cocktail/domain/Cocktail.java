@@ -1,7 +1,7 @@
 package com.cock.cocktail.domain;
 
-import com.cock.cocktail.domain.taste.FlavorVector;
 import com.cock.cocktail.domain.taste.TasteProfile;
+import com.cock.cocktail.infrastructure.CocktailIngredientListConverter;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,25 +16,42 @@ import java.util.List;
 public class Cocktail {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     private String name;
 
+    @Column(name = "image_url")
     private String imageUrl;
 
-    @Embedded
+    @Column(name = "glass_raw")
+    private String glassRaw;
+
+    @Column(name = "garnish_raw")
+    private String garnishRaw;
+
+    @Column(name = "method_raw")
+    private String methodRaw;
+
+    @Column(name = "method_category")
+    private String methodCategory;
+
+    @Convert(converter = CocktailIngredientListConverter.class)
+    @Column(name = "ingredients_ml", columnDefinition = "jsonb")
     @Builder.Default
-    private FlavorVector flavorVector = new FlavorVector();
+    private List<CocktailIngredient> ingredients = new ArrayList<>();
 
-    @OneToMany(mappedBy = "cocktail")
+    @Column(name = "score_strength")
+    private Long scoreStrength;
+
+    @Column(name = "score_sweet_sour")
+    private Long scoreSweetSour;
+
+    @Column(name = "review_text")
+    private String reviewText;
+
+    @Column(name = "source_url")
+    private String sourceUrl;
+
+    // DB 컬럼(target_*)이 추가되면 @Transient 제거 후 @Embedded + @AttributeOverrides 적용
+    @Transient
     @Builder.Default
-    private List<CocktailIngredient> cocktailIngredients = new ArrayList<>();
-
-    @Column(length = 1000)
-    private String recipe;
-
-    public TasteProfile getTasteProfile() {
-        return flavorVector.computeTasteProfile();
-    }
+    private TasteProfile tasteProfile = TasteProfile.empty();
 }

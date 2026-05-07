@@ -1,11 +1,8 @@
 package com.cock.cocktail.web;
 
 import com.cock.cocktail.domain.Cocktail;
-import com.cock.cocktail.domain.CocktailIngredient;
-import com.cock.cocktail.domain.Ingredient;
-import com.cock.cocktail.domain.taste.FlavorVector;
 import com.cock.cocktail.domain.taste.TasteMatch;
-import com.cock.cocktail.domain.taste.TasteQuery;
+import com.cock.cocktail.domain.taste.TasteProfile;
 import com.cock.cocktail.repository.CocktailRepository;
 import com.cock.cocktail.application.CocktailMatchStrategy;
 import org.junit.jupiter.api.DisplayName;
@@ -18,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -36,37 +34,52 @@ class CocktailControllerTest {
     private CocktailMatchStrategy matchStrategy;
 
     @Test
-    @DisplayName("GET /api/v1/cocktails/match - 정상 요청")
-    void shouldMatchCocktailsByTasteQuery() throws Exception {
-        var cocktail = Cocktail.builder()
-                .id(1L)
-                .name("Mojito")
-                .cocktailIngredients(List.of(new CocktailIngredient(null, new Ingredient("럼"), 50)))
-                .recipe("Recipe")
-                .flavorVector(FlavorVector.builder().sweet(0.9).build())
-                .build();
+    @DisplayName("GET /cocktails - 칵테일 목록 반환")
+    void shouldReturnCocktailList() throws Exception {
+        when(cocktailRepository.findAll()).thenReturn(List.of(
+                Cocktail.builder().name("Mojito").imageUrl("https://example.com/mojito.jpg").build(),
+                Cocktail.builder().name("Margarita").build()
+        ));
 
-        when(matchStrategy.match(new TasteQuery(4.0, null, null, null, null, null)))
-                .thenReturn(List.of(new TasteMatch(cocktail, 0.92)));
-
-        mockMvc.perform(get("/cocktails/match")
-                        .param("sweet", "4.0"))
+        mockMvc.perform(get("/cocktails"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].name", is("Mojito")))
-                .andExpect(jsonPath("$[0].score", is(0.92)))
-                .andExpect(jsonPath("$[0].recipe", is("Recipe")));
+                .andExpect(jsonPath("$[0].imageUrl", is("https://example.com/mojito.jpg")))
+                .andExpect(jsonPath("$[1].name", is("Margarita")));
     }
 
     @Test
-    @DisplayName("GET /api/v1/cocktails/match - 파라미터 없으면 빈 결과")
+    @DisplayName("GET /cocktails - 빈 목록")
+    void shouldReturnEmptyCocktailList() throws Exception {
+        when(cocktailRepository.findAll()).thenReturn(List.of());
+
+        mockMvc.perform(get("/cocktails"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", empty()));
+    }
+
+    @Test
+    @DisplayName("GET /cocktails/match - 파라미터 없으면 빈 결과")
     void shouldReturnEmptyWhenNoQueryParams() throws Exception {
-        when(matchStrategy.match(new TasteQuery(null, null, null, null, null, null)))
-                .thenReturn(List.of());
+        when(matchStrategy.match(any(TasteProfile.class))).thenReturn(List.of());
 
         mockMvc.perform(get("/cocktails/match"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", empty()));
+    }
+
+    @Test
+    @DisplayName("GET /cocktails/match - 매칭 결과와 matchScore 반환")
+    void shouldReturnMatchedCocktailsWithScore() throws Exception {
+        var cocktail = Cocktail.builder().name("Mojito").build();
+        when(matchStrategy.match(any(TasteProfile.class)))
+                .thenReturn(List.of(new TasteMatch(cocktail, 0.92)));
+
+        mockMvc.perform(get("/cocktails/match").param("sweetness", "7.0"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].name", is("Mojito")))
+                .andExpect(jsonPath("$[0].matchScore", is(0.92)));
     }
 }

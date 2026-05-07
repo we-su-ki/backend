@@ -1,28 +1,28 @@
 package com.cock.cocktail.domain;
 
+import com.cock.cocktail.domain.taste.FlavorVector;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.*;
 
 @Entity
+@Table(name = "ingredients")
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Ingredient {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ingredient_id")
     private Long id;
 
+    @Column(name = "name_eng")
     private String name;
 
-    @OneToMany(mappedBy = "ingredient")
-    private List<CocktailIngredient> cocktailIngredients = new ArrayList<>();
+    @Column(name = "category")
+    private String category;
 
-    public Ingredient(String name) {
-        this.name = name;
-    }
+    @Embedded
+    @Builder.Default
+    private FlavorVector flavorVector = new FlavorVector();
 }
