@@ -238,15 +238,17 @@ curl -s http://localhost:8080/ingredients
   "ingredients": [
     { "id": 1, "amount": 50 },
     { "id": 2, "amount": 20 }
-  ]
+  ],
+  "methodCategory": "Shake"
 }
 ```
 
-| 필드                     | 타입       | 설명       |
-|------------------------|----------|----------|
-| `ingredients`          | `array`  | 재료 목록    |
-| `ingredients[].id`     | `number` | 재료 ID    |
-| `ingredients[].amount` | `number` | 재료 양(ml) |
+| 필드                     | 타입       | 설명                                                         | 비고                          |
+|------------------------|----------|------------------------------------------------------------|-----------------------------|
+| `ingredients`          | `array`  | 재료 목록                                                      |                             |
+| `ingredients[].id`     | `number` | 재료 ID                                                      |                             |
+| `ingredients[].amount` | `number` | 재료 양(ml)                                                   |                             |
+| `methodCategory`       | `string` | 제조 방법 카테고리(`Blend`, `Build`, `Float`, `Shake`, `Stir` 중 1) | null 또는 알 수 없는 값은 `NONE` 처리 |
 
 ### 요청 예시
 
@@ -257,7 +259,8 @@ curl -s -X POST http://localhost:8080/ingredients/predict \
     "ingredients": [
       { "id": 1, "amount": 50 },
       { "id": 2, "amount": 20 }
-    ]
+    ],
+    "methodCategory": "Shake"
   }'
 ```
 

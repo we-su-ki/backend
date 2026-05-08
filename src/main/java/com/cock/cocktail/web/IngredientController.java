@@ -27,7 +27,7 @@ public class IngredientController {
 
     @PostMapping("/predict")
     public TasteProfileDto predict(@RequestBody PredictRequest request) {
-        var tasteProfile = tasteProfilePredictor.predict(request.ingredients());
+        var tasteProfile = tasteProfilePredictor.predict(request.ingredients(), request.methodCategory());
         return TasteProfileDto.from(tasteProfile);
     }
 }

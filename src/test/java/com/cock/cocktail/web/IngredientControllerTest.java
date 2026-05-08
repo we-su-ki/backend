@@ -2,6 +2,7 @@ package com.cock.cocktail.web;
 
 import com.cock.cocktail.domain.Ingredient;
 import com.cock.cocktail.application.IngredientAmount;
+import com.cock.cocktail.domain.MethodCategory;
 import com.cock.cocktail.domain.taste.TasteProfile;
 import com.cock.cocktail.repository.IngredientRepository;
 import com.cock.cocktail.application.TasteProfilePredictor;
@@ -65,12 +66,12 @@ class IngredientControllerTest {
     @DisplayName("POST /ingredients/predict - TasteProfile 반환")
     void shouldReturnTasteProfile() throws Exception {
         var ingredients = List.of(new IngredientAmount(1L, 50), new IngredientAmount(2L, 20));
-        when(tasteProfilePredictor.predict(ingredients)).thenReturn(TasteProfile.builder().sweetness(5.0).sourness(3.0).build());
+        when(tasteProfilePredictor.predict(ingredients, MethodCategory.Shake)).thenReturn(TasteProfile.builder().sweetness(5.0).sourness(3.0).build());
 
         mockMvc.perform(post("/ingredients/predict")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                                {"ingredients":[{"id":1,"amount":50},{"id":2,"amount":20}]}
+                                {"ingredients":[{"id":1,"amount":50},{"id":2,"amount":20}],"methodCategory":"Shake"}
                                 """))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.abv").isNumber())
@@ -91,7 +92,7 @@ class IngredientControllerTest {
     @Test
     @DisplayName("POST /ingredients/predict - 빈 재료 목록")
     void shouldHandleEmptyIngredients() throws Exception {
-        when(tasteProfilePredictor.predict(List.of())).thenReturn(TasteProfile.empty());
+        when(tasteProfilePredictor.predict(List.of(), MethodCategory.NONE)).thenReturn(TasteProfile.empty());
 
         mockMvc.perform(post("/ingredients/predict")
                         .contentType(MediaType.APPLICATION_JSON)
