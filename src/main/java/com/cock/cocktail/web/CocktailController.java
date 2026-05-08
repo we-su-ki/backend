@@ -1,9 +1,11 @@
 package com.cock.cocktail.web;
 
-import com.cock.cocktail.domain.taste.TasteProfile;
-import com.cock.cocktail.repository.CocktailRepository;
 import com.cock.cocktail.application.CocktailMatchStrategy;
+import com.cock.cocktail.application.TasteProfileTranslator;
+import com.cock.cocktail.domain.taste.TasteMatch;
+import com.cock.cocktail.repository.CocktailRepository;
 import com.cock.cocktail.web.dto.CocktailListItemDto;
+import com.cock.cocktail.web.dto.RecommendRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,7 @@ public class CocktailController {
 
     private final CocktailRepository cocktailRepository;
     private final CocktailMatchStrategy matchStrategy;
+    private final TasteProfileTranslator tasteProfileTranslator;
 
     // TODO: 페이지네이션
     @GetMapping
@@ -25,10 +28,11 @@ public class CocktailController {
                 .toList();
     }
 
-    @GetMapping("/match")
-    public List<CocktailListItemDto> match(TasteProfile query) {
-        var tasteMatches = matchStrategy.match(query);
-        return tasteMatches.stream()
+    @PostMapping("/recommend")
+    public List<CocktailListItemDto> recommend(@RequestBody RecommendRequest request) {
+        var tasteProfile = tasteProfileTranslator.translate(request.query());
+        var recommendedCocktails = matchStrategy.match(tasteProfile);
+        return recommendedCocktails.stream()
                 .map(CocktailListItemDto::from)
                 .toList();
     }

@@ -4,7 +4,7 @@ import com.cock.cocktail.domain.Ingredient;
 import com.cock.cocktail.application.IngredientAmount;
 import com.cock.cocktail.domain.taste.TasteProfile;
 import com.cock.cocktail.repository.IngredientRepository;
-import com.cock.cocktail.application.FlavorVectorResolver;
+import com.cock.cocktail.application.TasteProfilePredictor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ class IngredientControllerTest {
     private IngredientRepository ingredientRepository;
 
     @MockitoBean
-    private FlavorVectorResolver flavorVectorResolver;
+    private TasteProfilePredictor tasteProfilePredictor;
 
     @Test
     @DisplayName("GET /ingredients - 재료 목록 반환")
@@ -65,7 +65,7 @@ class IngredientControllerTest {
     @DisplayName("POST /ingredients/predict - TasteProfile 반환")
     void shouldReturnTasteProfile() throws Exception {
         var ingredients = List.of(new IngredientAmount(1L, 50), new IngredientAmount(2L, 20));
-        when(flavorVectorResolver.resolve(ingredients)).thenReturn(TasteProfile.builder().sweetness(5.0).sourness(3.0).build());
+        when(tasteProfilePredictor.predict(ingredients)).thenReturn(TasteProfile.builder().sweetness(5.0).sourness(3.0).build());
 
         mockMvc.perform(post("/ingredients/predict")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -91,7 +91,7 @@ class IngredientControllerTest {
     @Test
     @DisplayName("POST /ingredients/predict - 빈 재료 목록")
     void shouldHandleEmptyIngredients() throws Exception {
-        when(flavorVectorResolver.resolve(List.of())).thenReturn(TasteProfile.empty());
+        when(tasteProfilePredictor.predict(List.of())).thenReturn(TasteProfile.empty());
 
         mockMvc.perform(post("/ingredients/predict")
                         .contentType(MediaType.APPLICATION_JSON)

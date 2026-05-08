@@ -2,12 +2,12 @@
 
 ## API 목록
 
-| Method | Path                   | 설명                |
-|--------|------------------------|-------------------|
-| `GET`  | `/cocktails`           | 전체 칵테일 목록 조회      |
-| `GET`  | `/cocktails/match`     | 맛 프로필 조건으로 칵테일 추천 |
-| `GET`  | `/ingredients`         | 전체 재료 목록 조회       |
-| `POST` | `/ingredients/predict` | 재료 조합으로 맛 프로필 예측  |
+| Method | Path                      | 설명               |
+|--------|---------------------------|------------------|
+| `GET`  | `/cocktails`              | 전체 칵테일 목록 조회     |
+| `POST` | `/cocktails/recommend`    | 자연어로 칵테일 추천      |
+| `GET`  | `/ingredients`            | 전체 재료 목록 조회      |
+| `POST` | `/ingredients/predict`    | 재료 조합으로 맛 프로필 예측 |
 
 ### 에러 응답 예시
 
@@ -118,40 +118,30 @@ curl -s http://localhost:8080/cocktails
 
 ---
 
-## 2. 맛 기준 칵테일 추천
+## 2. 자연어로 칵테일 추천
 
-> **GET /cocktails/match**
+> **POST /cocktails/recommend**
+>
+> Content-Type: application/json
 
-원하는 맛 축 값만 골라 전달하면, 해당 조건과 가까운 칵테일 최대 5개를 반환합니다.
+자연어로 원하는 맛을 표현하면, LLM이 맛 벡터로 변환한 뒤 가까운 칵테일 최대 5개를 반환합니다.
 
-### 사용 가능한 쿼리 파라미터
+### 요청 바디
 
-| 이름           | 타입       | 설명     |
-|--------------|----------|--------|
-| `abv`        | `number` | 도수감    |
-| `sweetness`  | `number` | 단맛     |
-| `sourness`   | `number` | 산미     |
-| `bitterness` | `number` | 쓴맛     |
-| `umamiSalty` | `number` | 감칠맛/짠맛 |
-| `fruity`     | `number` | 과일향    |
-| `citrus`     | `number` | 시트러스   |
-| `floral`     | `number` | 꽃향     |
-| `herbal`     | `number` | 허브향    |
-| `spicy`      | `number` | 스파이시   |
-| `woodySmoky` | `number` | 우디/스모키 |
-| `body`       | `number` | 바디감    |
-| `fizzy`      | `number` | 탄산감    |
-
-### 요청 예시 1
-
-```bash
-curl -s "http://localhost:8080/cocktails/match?sweetness=4.0&fruity=2.0"
+```json
+{ "query": "여름처럼 상큼하고 시원한 칵테일" }
 ```
 
-### 요청 예시 2
+| 필드      | 타입       | 설명          |
+|---------|----------|-------------|
+| `query` | `string` | 자연어 맛 표현 문장 |
+
+### 요청 예시
 
 ```bash
-curl -s "http://localhost:8080/cocktails/match?sweetness=4.0&sourness=2.0&abv=3.0"
+curl -s -X POST http://localhost:8080/cocktails/recommend \
+  -H "Content-Type: application/json" \
+  -d '{"query": "여름처럼 상큼하고 시원한 칵테일"}'
 ```
 
 ### 응답 예시
@@ -201,10 +191,7 @@ curl -s "http://localhost:8080/cocktails/match?sweetness=4.0&sourness=2.0&abv=3.
 
 ### 참고
 
-- 전달한 파라미터만 비교합니다. 13개 축 중 일부만 보내도 됩니다.
-- 추천 유사도 점수(matchScore)는 `0.0 ~ 1.0` 범위의 유사도입니다.
-- 추천 유사도 점수(matchScore)가 높은 순으로 최대 5개 반환합니다.
-- 쿼리 파라미터를 하나도 보내지 않으면 빈 배열을 반환합니다.
+- `matchScore`는 `0.0 ~ 1.0` 범위의 유사도이며, 높은 순으로 최대 5개 반환합니다.
 
 ---
 

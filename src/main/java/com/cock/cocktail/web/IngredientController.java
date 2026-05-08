@@ -1,7 +1,7 @@
 package com.cock.cocktail.web;
 
 import com.cock.cocktail.repository.IngredientRepository;
-import com.cock.cocktail.application.FlavorVectorResolver;
+import com.cock.cocktail.application.TasteProfilePredictor;
 import com.cock.cocktail.web.dto.IngredientDto;
 import com.cock.cocktail.web.dto.PredictRequest;
 import com.cock.cocktail.web.dto.TasteProfileDto;
@@ -16,7 +16,7 @@ import java.util.List;
 public class IngredientController {
 
     private final IngredientRepository ingredientRepository;
-    private final FlavorVectorResolver flavorVectorResolver;
+    private final TasteProfilePredictor tasteProfilePredictor;
 
     @GetMapping
     public List<IngredientDto> list() {
@@ -27,7 +27,7 @@ public class IngredientController {
 
     @PostMapping("/predict")
     public TasteProfileDto predict(@RequestBody PredictRequest request) {
-        var tasteProfile = flavorVectorResolver.resolve(request.ingredients());
+        var tasteProfile = tasteProfilePredictor.predict(request.ingredients());
         return TasteProfileDto.from(tasteProfile);
     }
 }

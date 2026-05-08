@@ -1,6 +1,6 @@
 package com.cock.cocktail.infrastructure;
 
-import com.cock.cocktail.application.FlavorVectorResolver;
+import com.cock.cocktail.application.TasteProfilePredictor;
 import com.cock.cocktail.application.IngredientAmount;
 import com.cock.cocktail.domain.taste.TasteProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,17 +14,17 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class AIFlavorVectorResolver implements FlavorVectorResolver {
+public class AITasteProfilePredictor implements TasteProfilePredictor {
 
     private final RestTemplate restTemplate;
 
     @Value("${api.flavor-resolver.url}")
-    private String aiServerUrl;
+    private String predictorEndpoint;
 
     @Override
-    public TasteProfile resolve(List<IngredientAmount> ingredients) {
+    public TasteProfile predict(List<IngredientAmount> ingredients) {
         var request = Map.of("ingredients", ingredients);
-        var attributes = restTemplate.postForObject(aiServerUrl, request, TasteProfileAttributes.class);
+        var attributes = restTemplate.postForObject(predictorEndpoint, request, TasteProfileAttributes.class);
         return attributes == null ? TasteProfile.empty() : attributes.toTasteProfile();
     }
 
