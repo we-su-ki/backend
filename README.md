@@ -143,6 +143,10 @@ curl -s -X POST http://localhost:8080/cocktails/recommend \
   -H "Content-Type: application/json" \
   -d '{"query": "여름처럼 상큼하고 시원한 칵테일"}'
 ```
+한 줄
+```bash
+curl -s -X POST http://localhost:8080/cocktails/recommend -H "Content-Type: application/json" -d '{"query": "여름처럼 상큼하고 시원한 칵테일"}'
+```
 
 ### 응답 예시
 
@@ -262,6 +266,10 @@ curl -s -X POST http://localhost:8080/ingredients/predict \
     ],
     "methodCategory": "Shake"
   }'
+```
+한 줄
+```bash
+curl -s -X POST http://localhost:8080/ingredients/predict -H "Content-Type: application/json" -d '{"ingredients":[{"id":1,"amount":50},{"id":2,"amount":20}],"methodCategory":"Shake"}'
 ```
 
 ### 응답 예시
