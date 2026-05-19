@@ -7,17 +7,20 @@ import com.cock.cocktail.domain.taste.TasteMatch;
 import java.util.List;
 
 public record CocktailListItemDto(
+        Long id,
         String name,
-        String imageUrl,
         String glassRaw,
         String garnishRaw,
         String methodRaw,
         String methodCategory,
+        String imageUrl,
+        Boolean isAlcohol,
+        Double pureAlcoholGrams,
+        Double proofInsideBracketProof,
         List<CocktailIngredient> ingredients,
-        Long scoreStrength,
-        Long scoreSweetSour,
+        Double scoreStrength,
+        Double scoreSweetSour,
         String reviewText,
-        String sourceUrl,
         TasteProfileDto tasteProfile,
         double matchScore
 ) {
@@ -27,17 +30,20 @@ public record CocktailListItemDto(
 
     public static CocktailListItemDto from(Cocktail cocktail, double matchScore) {
         return new CocktailListItemDto(
+                cocktail.getId(),
                 cocktail.getName(),
-                cocktail.getImageUrl(),
                 cocktail.getGlassRaw(),
                 cocktail.getGarnishRaw(),
                 cocktail.getMethodRaw(),
                 cocktail.getMethodCategory(),
+                cocktail.getImageUrl(),
+                cocktail.getIsAlcohol(),
+                cocktail.getPureAlcoholGrams(),
+                cocktail.getProofInsideBracketProof(),
                 cocktail.getIngredients(),
                 cocktail.getScoreStrength(),
                 cocktail.getScoreSweetSour(),
                 cocktail.getReviewText(),
-                cocktail.getSourceUrl(),
                 TasteProfileDto.from(cocktail.getTasteProfile()),
                 matchScore
         );

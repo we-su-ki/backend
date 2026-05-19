@@ -28,7 +28,6 @@ class FlavorVectorTest {
                 () -> assertThat(profile.sweetness()).isEqualTo(2.0),
                 () -> assertThat(profile.sourness()).isEqualTo(0.0),
                 () -> assertThat(profile.bitterness()).isEqualTo(0.0),
-                () -> assertThat(profile.abv()).isEqualTo(0.0),
                 () -> assertThat(profile.woodySmoky()).isEqualTo(0.0),
                 () -> assertThat(profile.body()).isEqualTo(0.0)
         );
@@ -38,14 +37,12 @@ class FlavorVectorTest {
     @DisplayName("여러 축이 독립적으로 계산된다")
     void shouldMapMultipleFieldsIndependently() {
         var profile = FlavorVector.builder()
-                .abv(40.0)
                 .citrus(3.0)
                 .oak(2.5)
                 .build()
                 .computeTasteProfile();
 
         assertAll(
-                () -> assertThat(profile.abv()).isEqualTo(40.0),
                 () -> assertThat(profile.citrus()).isEqualTo(3.0),
                 () -> assertThat(profile.woodySmoky()).isEqualTo(2.5)
         );

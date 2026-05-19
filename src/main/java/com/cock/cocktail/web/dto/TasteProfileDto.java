@@ -3,7 +3,6 @@ package com.cock.cocktail.web.dto;
 import com.cock.cocktail.domain.taste.TasteProfile;
 
 public record TasteProfileDto(
-        double abv,
         double sweetness,
         double sourness,
         double bitterness,
@@ -19,7 +18,6 @@ public record TasteProfileDto(
 ) {
     public static TasteProfileDto from(TasteProfile profile) {
         return new TasteProfileDto(
-                v(profile.abv()),
                 v(profile.sweetness()),
                 v(profile.sourness()),
                 v(profile.bitterness()),

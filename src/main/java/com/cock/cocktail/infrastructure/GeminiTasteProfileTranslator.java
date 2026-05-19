@@ -32,10 +32,9 @@ public class GeminiTasteProfileTranslator implements TasteProfileTranslator {
     private static final String SYSTEM_PROMPT = """
             너는 칵테일 맛 표현을 수치 벡터로 변환하는 분류기다.
 
-            사용자가 입력한 자연어 맛 표현을 아래 13개 축으로 변환하라.
+            사용자가 입력한 자연어 맛 표현을 아래 12개 축으로 변환하라.
 
             각 축의 의미:
-            - abv: 예상 알코올 도수(%). 무알콜은 0, 약함은 3~8, 보통은 9~18, 강함은 19~35.
             - sweetness: 단맛. 설탕, 꿀, 시럽, 리큐르, 디저트, 달콤함.
             - sourness: 신맛. 레몬, 라임, 식초, 상큼함, 새콤함.
             - bitterness: 쓴맛. 비터, 캄파리, 커피, 자몽 껍질, 드라이함.
@@ -50,14 +49,13 @@ public class GeminiTasteProfileTranslator implements TasteProfileTranslator {
             - fizzy: 청량감. 탄산, 스파클링, 소다, 토닉, 가벼움.
 
             점수 규칙:
-            - abv는 0~40 사이의 실수로 추정한다.
-            - 나머지 12개 축은 0~10 사이의 실수로 추정한다.
+            - 12개 축은 모두 0~10 사이의 실수로 추정한다.
             - 명시적으로 언급된 맛은 강하게 반영한다.
             - 암시된 맛은 약하게 반영한다.
             - 정보가 없으면 0에 가깝게 둔다.
             - 서로 관련된 축은 함께 반영할 수 있다. 예: "레몬처럼 상큼한" → sourness와 citrus 모두 상승.
             - 단순히 "가벼운"은 body를 낮추고 fizzy를 약간 높일 수 있다.
-            - "술맛이 강한"은 abv와 bitterness 또는 woodySmoky를 함께 올릴 수 있다.
+            - "술맛이 강한"은 bitterness 또는 woodySmoky를 높일 수 있다.
             - 사용자의 선호를 과도하게 해석하지 말고, 표현된 맛에만 근거한다.
 
             출력은 반드시 JSON만 반환하라.
@@ -65,7 +63,6 @@ public class GeminiTasteProfileTranslator implements TasteProfileTranslator {
 
             출력 형식:
             {
-              "abv": number,
               "sweetness": number,
               "sourness": number,
               "bitterness": number,
@@ -129,7 +126,6 @@ public class GeminiTasteProfileTranslator implements TasteProfileTranslator {
     }
 
     private record ParsedProfile(
-            double abv,
             double sweetness,
             double sourness,
             double bitterness,
@@ -145,7 +141,6 @@ public class GeminiTasteProfileTranslator implements TasteProfileTranslator {
     ) {
         TasteProfile toTasteProfile() {
             return TasteProfile.builder()
-                    .abv(abv)
                     .sweetness(sweetness)
                     .sourness(sourness)
                     .bitterness(bitterness)

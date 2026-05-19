@@ -38,7 +38,6 @@ public class CocktailMatchStrategyImpl implements CocktailMatchStrategy {
         double sumSquares = 0.0;
         int count = 0;
 
-        if (query.abv() != null)        { sumSquares += sq(v(profile.abv())        - query.abv());        count++; }
         if (query.sweetness() != null)  { sumSquares += sq(v(profile.sweetness())  - query.sweetness());  count++; }
         if (query.sourness() != null)   { sumSquares += sq(v(profile.sourness())   - query.sourness());   count++; }
         if (query.bitterness() != null) { sumSquares += sq(v(profile.bitterness()) - query.bitterness()); count++; }

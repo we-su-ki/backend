@@ -1,7 +1,8 @@
 package com.cock.cocktail.infrastructure;
 
-import com.cock.cocktail.application.TasteProfilePredictor;
 import com.cock.cocktail.application.IngredientAmount;
+import com.cock.cocktail.application.TasteProfilePrediction;
+import com.cock.cocktail.application.TasteProfilePredictor;
 import com.cock.cocktail.domain.MethodCategory;
 import com.cock.cocktail.domain.taste.TasteProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,14 +26,14 @@ public class AITasteProfilePredictor implements TasteProfilePredictor {
     private String predictorEndpoint;
 
     @Override
-    public TasteProfile predict(List<IngredientAmount> ingredients, MethodCategory methodCategory) {
+    public TasteProfilePrediction predict(List<IngredientAmount> ingredients, MethodCategory methodCategory) {
         var request = Map.of("ingredients", ingredients, "methodCategory", methodCategory.canonicalName());
         var attributes = restTemplate.postForObject(predictorEndpoint, request, TasteProfileAttributes.class);
         if (attributes == null) throw new NullPointerException("맛 예측 API의 응답이 null입니다.");
 
-        var tasteProfile = attributes.toTasteProfile();
-        log.info("AI 맛 예측 - ingredients: {}, methodCategory: '{}' -> 결과: {}", ingredients, methodCategory, tasteProfile);
-        return tasteProfile;
+        var prediction = attributes.toPrediction();
+        log.info("AI 맛 예측 - ingredients: {}, methodCategory: '{}' -> 결과: {}", ingredients, methodCategory, prediction);
+        return prediction;
     }
 
     private record TasteProfileAttributes(
@@ -50,9 +51,8 @@ public class AITasteProfilePredictor implements TasteProfilePredictor {
             @JsonProperty("Body")        double body,
             @JsonProperty("Fizzy")       double fizzy
     ) {
-        TasteProfile toTasteProfile() {
-            return TasteProfile.builder()
-                    .abv(abv)
+        TasteProfilePrediction toPrediction() {
+            var tasteProfile = TasteProfile.builder()
                     .sweetness(sweetness)
                     .sourness(sourness)
                     .bitterness(bitterness)
@@ -66,6 +66,7 @@ public class AITasteProfilePredictor implements TasteProfilePredictor {
                     .body(body)
                     .fizzy(fizzy)
                     .build();
+            return new TasteProfilePrediction(tasteProfile, abv);
         }
     }
 }

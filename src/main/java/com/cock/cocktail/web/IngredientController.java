@@ -4,7 +4,7 @@ import com.cock.cocktail.repository.IngredientRepository;
 import com.cock.cocktail.application.TasteProfilePredictor;
 import com.cock.cocktail.web.dto.IngredientDto;
 import com.cock.cocktail.web.dto.PredictRequest;
-import com.cock.cocktail.web.dto.TasteProfileDto;
+import com.cock.cocktail.web.dto.PredictResultDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +26,7 @@ public class IngredientController {
     }
 
     @PostMapping("/predict")
-    public TasteProfileDto predict(@RequestBody PredictRequest request) {
-        var tasteProfile = tasteProfilePredictor.predict(request.ingredients(), request.methodCategory());
-        return TasteProfileDto.from(tasteProfile);
+    public PredictResultDto predict(@RequestBody PredictRequest request) {
+        return PredictResultDto.from(tasteProfilePredictor.predict(request.ingredients(), request.methodCategory()));
     }
 }

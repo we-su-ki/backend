@@ -71,7 +71,6 @@ public class FlavorVector {
 
     public TasteProfile computeTasteProfile() {
         return TasteProfile.builder()
-                .abv(v(abv))
                 .sweetness(max(sweetness, sweet, honey, sugar, candy, butterscotch, toffee, caramel, maple, vanilla))
                 .sourness(max(sourness, sour, lemon, zest))
                 .bitterness(max(bitterness, bitter, coffee, cocoa, tea))

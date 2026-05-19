@@ -9,12 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class TasteProfileTest {
 
     @Test
-    @DisplayName("empty()는 13개 축 모두 0.0이다")
+    @DisplayName("empty()는 12개 축 모두 0.0이다")
     void shouldReturnAllZerosForEmpty() {
         var profile = TasteProfile.empty();
 
         assertAll(
-                () -> assertThat(profile.abv()).isEqualTo(0.0),
                 () -> assertThat(profile.sweetness()).isEqualTo(0.0),
                 () -> assertThat(profile.sourness()).isEqualTo(0.0),
                 () -> assertThat(profile.bitterness()).isEqualTo(0.0),
