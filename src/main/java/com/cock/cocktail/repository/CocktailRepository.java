@@ -12,8 +12,6 @@ public interface CocktailRepository extends Repository<Cocktail, String> {
 
     List<Cocktail> findAll();
 
-    Optional<Cocktail> findByName(String name);
-
     @Query("SELECT c FROM Cocktail c WHERE c.id IN :ids")
     List<Cocktail> findAllByIdIn(@Param("ids") List<Long> ids);
 }
