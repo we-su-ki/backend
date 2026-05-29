@@ -10,7 +10,7 @@ public record IngredientDto(
         String category,
         String role,
         Boolean isAlcohol,
-        Long tier,
+        Integer tier,
         Long frequency,
         List<String> flavorTags,
         TasteProfileDto tasteProfile

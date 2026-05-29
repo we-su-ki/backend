@@ -31,9 +31,8 @@ public class Cocktail {
     @Column(name = "method_category")
     private String methodCategory;
 
-    // TODO: 컬럼 생기면 활성화
-    @Transient
-    private String methodRaw = "";
+    @Column(name = "method_raw")
+    private String methodRaw;
 
     // 알코올 함유 여부 (1 = 알코올 , 0 = 논알콜)
     @Convert(converter = NumericBooleanConverter.class)
@@ -45,8 +44,8 @@ public class Cocktail {
     private Double pureAlcoholGrams;
 
     // 실제 알코올 도수 수치 (proof)
-    @Column(name = "proof_inside_bracket_proof")
-    private Double proofInsideBracketProof;
+    @Column(name = "proof_inside_bracket")
+    private Double proofInsideBracket;
 
     @Convert(converter = CocktailIngredientListConverter.class)
     @Column(name = "ingredients_ml", columnDefinition = "jsonb")
@@ -59,9 +58,8 @@ public class Cocktail {
     @Column(name = "score_sweet_sour")
     private Double scoreSweetSour;
 
-    // TODO: 컬럼 생기면 활성화
-    @Transient
-    private String imageUrl = "https://...";
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @Column(name = "review_text")
     private String reviewText;

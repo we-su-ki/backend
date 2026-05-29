@@ -41,7 +41,7 @@ public class Ingredient {
 
     // 재료별 중요도 ( 자주 쓰이는 재료 기준 )
     @Column(name = "tier")
-    private Long tier;
+    private Integer tier;
 
     @Column(name = "frequency")
     private Long frequency;

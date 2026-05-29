@@ -46,7 +46,7 @@ class IngredientControllerTest {
                         .category("Spirit")
                         .role("Base")
                         .isAlcohol(true)
-                        .tier(1L)
+                        .tier(1)
                         .frequency(120L)
                         .build(),
                 Ingredient.builder().id(2L).name("Lime juice").isAlcohol(false).build()

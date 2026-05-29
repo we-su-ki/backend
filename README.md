@@ -47,7 +47,7 @@ curl -s http://localhost:8080/cocktails
     "imageUrl": "https://cdn.diffordsguide.com/cocktail/NAmyA8/lifestyle/1/1024x.webp?v=1737701571",
     "isAlcohol": true,
     "pureAlcoholGrams": 14.2,
-    "proofInsideBracketProof": 24.0,
+    "proofInsideBracket": 24.0,
     "ingredients": [
       { "name": "Hayman's London Dry Gin", "ml": 45 },
       { "name": "Americano bianco", "ml": 22.5 },
@@ -89,7 +89,7 @@ curl -s http://localhost:8080/cocktails
 | `imageUrl`                | `string`  | 이미지 URL              |                   |
 | `isAlcohol`               | `boolean` | 알코올 여부               |                   |
 | `pureAlcoholGrams`        | `number`  | 순수 알코올 함량 (g)        |                   |
-| `proofInsideBracketProof` | `number`  | 도수                   |                   |
+| `proofInsideBracket`      | `number`  | 도수                   |                   |
 | `ingredients`             | `array`   | 재료 목록                |                   |
 | `ingredients[].name`      | `string`  | 재료 이름                |                   |
 | `ingredients[].ml`        | `number`  | 재료 용량 (ml)           |                   |
@@ -166,7 +166,7 @@ curl -s -X POST http://localhost:8080/cocktails/recommend -H "Content-Type: appl
     "imageUrl": "https://cdn.diffordsguide.com/cocktail/NAmyA8/lifestyle/1/1024x.webp?v=1737701571",
     "isAlcohol": true,
     "pureAlcoholGrams": 14.2,
-    "proofInsideBracketProof": 24.0,
+    "proofInsideBracket": 24.0,
     "ingredients": [
       { "name": "Hayman's London Dry Gin", "ml": 45 },
       { "name": "Americano bianco", "ml": 22.5 },

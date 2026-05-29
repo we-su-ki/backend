@@ -21,7 +21,7 @@ class IngredientDtoTest {
                 .category("Spirit")
                 .role("Base")
                 .isAlcohol(true)
-                .tier(1L)
+                .tier(1)
                 .frequency(120L)
                 .flavorTags(List.of("sweet", "woody"))
                 .tasteProfile(TasteProfile.builder().sweetness(3.0).woodySmoky(6.0).build())
@@ -35,7 +35,7 @@ class IngredientDtoTest {
                 () -> assertThat(dto.category()).isEqualTo("Spirit"),
                 () -> assertThat(dto.role()).isEqualTo("Base"),
                 () -> assertThat(dto.isAlcohol()).isTrue(),
-                () -> assertThat(dto.tier()).isEqualTo(1L),
+                () -> assertThat(dto.tier()).isEqualTo(1),
                 () -> assertThat(dto.frequency()).isEqualTo(120L),
                 () -> assertThat(dto.flavorTags()).containsExactly("sweet", "woody"),
                 () -> assertThat(dto.tasteProfile().sweetness()).isEqualTo(3.0),
