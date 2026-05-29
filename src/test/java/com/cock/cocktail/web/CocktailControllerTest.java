@@ -103,7 +103,7 @@ class CocktailControllerTest {
         var tasteProfile = TasteProfile.builder().sourness(7.5).fizzy(8.5).build();
         when(tasteProfileTranslator.translate(eq("시원하고 상큼한 칵테일")))
                 .thenReturn(tasteProfile);
-        when(matchStrategy.match(tasteProfile))
+        when(matchStrategy.match(tasteProfile, null))
                 .thenReturn(List.of(new TasteMatch(cocktail, 0.88)));
 
         mockMvc.perform(post("/cocktails/recommend")

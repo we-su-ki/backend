@@ -133,23 +133,24 @@ curl -s http://localhost:8080/cocktails
 ### 요청 바디
 
 ```json
-{ "query": "여름처럼 상큼하고 시원한 칵테일" }
+{ "query": "여름처럼 상큼하고 시원한 칵테일", "isAlcohol": true }
 ```
 
-| 필드      | 타입       | 설명          |
-|---------|----------|-------------|
-| `query` | `string` | 자연어 맛 표현 문장 |
+| 필드          | 타입        | 설명                             | 비고                              |
+|-------------|-----------|--------------------------------|---------------------------------|
+| `query`     | `string`  | 자연어 맛 표현 문장                    |                                 |
+| `isAlcohol` | `boolean` | 알코올 필터 (`true`/`false`/`null`) | null 또는 생략 시 알코올·논알코올 모두 포함 |
 
 ### 요청 예시
 
 ```bash
 curl -s -X POST http://localhost:8080/cocktails/recommend \
   -H "Content-Type: application/json" \
-  -d '{"query": "여름처럼 상큼하고 시원한 칵테일"}'
+  -d '{"query": "여름처럼 상큼하고 시원한 칵테일", "isAlcohol": true}'
 ```
 한 줄
 ```bash
-curl -s -X POST http://localhost:8080/cocktails/recommend -H "Content-Type: application/json" -d '{"query": "여름처럼 상큼하고 시원한 칵테일"}'
+curl -s -X POST http://localhost:8080/cocktails/recommend -H "Content-Type: application/json" -d '{"query": "여름처럼 상큼하고 시원한 칵테일", "isAlcohol": true}'
 ```
 
 ### 응답 예시

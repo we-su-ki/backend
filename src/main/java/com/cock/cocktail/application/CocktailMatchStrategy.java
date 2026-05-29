@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface CocktailMatchStrategy {
 
-    List<TasteMatch> match(TasteProfile query);
+    List<TasteMatch> match(TasteProfile query, Boolean isAlcohol);
 }

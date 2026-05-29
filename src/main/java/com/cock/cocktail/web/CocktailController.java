@@ -31,7 +31,7 @@ public class CocktailController {
     @PostMapping("/recommend")
     public List<CocktailListItemDto> recommend(@RequestBody RecommendRequest request) {
         var tasteProfile = tasteProfileTranslator.translate(request.query());
-        var recommendedCocktails = matchStrategy.match(tasteProfile);
+        var recommendedCocktails = matchStrategy.match(tasteProfile, request.isAlcohol());
         return recommendedCocktails.stream()
                 .map(CocktailListItemDto::from)
                 .toList();

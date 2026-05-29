@@ -24,6 +24,14 @@ public record TasteProfile(
         return new TasteProfile(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
     }
 
+    public String toVectorString() {
+        return String.format("[%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s]",
+                v(sweetness), v(sourness), v(bitterness),
+                v(umamiSalty), v(fruity), v(citrus),
+                v(floral), v(herbal), v(spicy),
+                v(woodySmoky), v(body), v(fizzy));
+    }
+
     public boolean isEmpty() {
         return sweetness == null
                 && sourness == null
@@ -37,5 +45,9 @@ public record TasteProfile(
                 && woodySmoky == null
                 && body == null
                 && fizzy == null;
+    }
+
+    private double v(Double value) {
+        return value != null ? value : 0.0;
     }
 }
