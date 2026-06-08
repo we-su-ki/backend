@@ -14,20 +14,24 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class GeminiTasteProfileTranslator implements TasteProfileTranslator {
+public class OpenRouterTasteProfileTranslator implements TasteProfileTranslator {
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
-    @Value("${api.gemini.url}")
-    private String geminiUrl;
+    @Value("${api.openrouter.url}")
+    private String openRouterUrl;
 
-    @Value("${api.gemini.key}")
-    private String geminiApiKey;
+    @Value("${api.openrouter.key}")
+    private String openRouterApiKey;
+
+    @Value("${api.openrouter.model}")
+    private String openRouterModel;
 
     private static final String SYSTEM_PROMPT = """
             너는 칵테일 맛 표현을 수치 벡터로 변환하는 분류기다.
@@ -76,14 +80,12 @@ public class GeminiTasteProfileTranslator implements TasteProfileTranslator {
               "body": number,
               "fizzy": number
             }
-
-            사용자 입력:
             """;
 
     @Override
     public TasteProfile translate(String query) {
         var request = createHttpEntity(query);
-        var response = restTemplate.postForObject(geminiUrl, request, GeminiResponse.class);
+        var response = restTemplate.postForObject(openRouterUrl, request, OpenRouterResponse.class);
         var tasteProfile = parseToTasteProfile(response);
         log.info("자연어 → 벡터 변환: \"{}\" → {}", query, tasteProfile);
         return tasteProfile;
@@ -93,35 +95,44 @@ public class GeminiTasteProfileTranslator implements TasteProfileTranslator {
         try {
             var requestHeaders = new HttpHeaders();
             requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-            requestHeaders.set("X-goog-api-key", geminiApiKey);
+            requestHeaders.set("Authorization", "Bearer " + openRouterApiKey);
 
-            var requestBody = """
-                    {"contents": [{"parts": [{"text": %s}]}]}
-                    """.formatted(objectMapper.writeValueAsString(SYSTEM_PROMPT + query));
+            var requestBody = objectMapper.writeValueAsString(Map.of(
+                    "model", openRouterModel,
+                    "messages", List.of(
+                            Map.of("role", "system", "content", SYSTEM_PROMPT),
+                            Map.of("role", "user", "content", query)
+                    ),
+                    "reasoning", Map.of("enabled", true)
+            ));
             return new HttpEntity<>(requestBody, requestHeaders);
-
         } catch (JsonProcessingException e) {
-            throw new IllegalStateException("LLM 요청 Body 생성 실패 : " + query, e);
+            throw new IllegalStateException("LLM 요청 Body 생성 실패: " + query, e);
         }
     }
 
-    private TasteProfile parseToTasteProfile(GeminiResponse response) {
-        if (response == null || response.candidates().isEmpty()) return TasteProfile.empty();
-        var parts = response.candidates().get(0).content().parts();
-        if (parts.isEmpty()) return TasteProfile.empty();
-        var json = parts.get(0).text();
+    private TasteProfile parseToTasteProfile(OpenRouterResponse response) {
+        if (response == null || response.choices().isEmpty()) return TasteProfile.empty();
+        var content = response.choices().get(0).message().content();
+        if (content == null || content.isBlank()) return TasteProfile.empty();
         try {
-            return objectMapper.readValue(json, ParsedProfile.class).toTasteProfile();
+            return objectMapper.readValue(extractJson(content), ParsedProfile.class).toTasteProfile();
         } catch (JsonProcessingException e) {
-            throw new IllegalStateException("LLM 응답을 TasteProfile로 변환 실패: " + json, e);
+            throw new IllegalStateException("LLM 응답을 TasteProfile로 변환 실패: " + content, e);
         }
     }
 
-    private record GeminiResponse(List<Candidate> candidates) {
-        private record Candidate(Content content) {
-            private record Content(List<Part> parts) {
-                private record Part(String text) {}
-            }
+    // reasoning 모델이 <think>...</think> 등 추가 텍스트를 포함할 수 있어 JSON만 추출
+    private String extractJson(String content) {
+        int start = content.indexOf('{');
+        int end = content.lastIndexOf('}');
+        if (start == -1 || end == -1 || start > end) return content;
+        return content.substring(start, end + 1);
+    }
+
+    private record OpenRouterResponse(List<Choice> choices) {
+        private record Choice(Message message) {
+            private record Message(String role, String content) {}
         }
     }
 
