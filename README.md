@@ -25,58 +25,89 @@
 
 > **GET /cocktails**
 
-전체 칵테일 데이터를 반환합니다.
+칵테일 목록을 페이지 단위로 반환합니다. `method` 파라미터로 제조 방식 필터링이 가능합니다.
+
+### 쿼리 파라미터
+
+| 파라미터     | 타입       | 기본값   | 설명                                                            |
+|----------|----------|-------|---------------------------------------------------------------|
+| `page`   | `number` | `0`  | 페이지 번호 (0부터 시작). 음수이면 `0`으로 처리                               |
+| `size`   | `number` | `20` | 페이지 크기. 음수이면 `20`으로 처리                                       |
+| `method` | `string` | 없음   | 제조 방식 필터 (`Blend`, `Build`, `Float`, `Shake`, `Stir`). 대소문자 무관, 생략 시 전체 반환 |
 
 ### 요청 예시
 
 ```bash
-curl -s http://localhost:8080/cocktails
+# 기본 (1페이지, 20개)
+curl -s "http://localhost:8080/cocktails"
+
+# 2페이지, 10개씩
+curl -s "http://localhost:8080/cocktails?page=1&size=10"
+
+# Shake 필터
+curl -s "http://localhost:8080/cocktails?method=shake"
 ```
 
 ### 응답 예시
 
 ```json
-[
-  {
-    "id": 3,
-    "name": "Abbey",
-    "glassRaw": "Serve in a Coupe glass",
-    "garnishRaw": "EXPRESS lemon zest twist over the cocktail and use as garnish.",
-    "methodRaw": "SHAKE all ingredients with ice. FINE STRAIN into chilled glass.",
-    "methodCategory": "Shake",
-    "imageUrl": "https://cdn.diffordsguide.com/cocktail/NAmyA8/lifestyle/1/1024x.webp?v=1737701571",
-    "isAlcohol": true,
-    "pureAlcoholGrams": 14.2,
-    "proofInsideBracket": 24.0,
-    "ingredients": [
-      { "name": "Hayman's London Dry Gin", "ml": 45 },
-      { "name": "Americano bianco", "ml": 22.5 },
-      { "name": "Orange juice (freshly squeezed)", "ml": 22.5 },
-      { "name": "Angostura Aromatic Bitters", "ml": 0.8 }
-    ],
-    "scoreStrength": 7.0,
-    "scoreSweetSour": 7.0,
-    "reviewText": "A dry, orangey, herbal, gin-laced aperitivo, closely related to the better known Bronx .",
-    "tasteProfile": {
-      "sweetness": 3.2,
-      "sourness": 4.1,
-      "bitterness": 5.7,
-      "umamiSalty": 1.2,
-      "fruity": 4.8,
-      "citrus": 5.3,
-      "floral": 2.1,
-      "herbal": 6.4,
-      "spicy": 1.9,
-      "woodySmoky": 1.5,
-      "body": 3.8,
-      "fizzy": 0.0
-    },
-    "matchScore": 0.0
-  }
-]
+{
+  "content": [
+    {
+      "id": 3,
+      "name": "Abbey",
+      "glassRaw": "Serve in a Coupe glass",
+      "garnishRaw": "EXPRESS lemon zest twist over the cocktail and use as garnish.",
+      "methodRaw": "SHAKE all ingredients with ice. FINE STRAIN into chilled glass.",
+      "methodCategory": "Shake",
+      "imageUrl": "https://cdn.diffordsguide.com/cocktail/NAmyA8/lifestyle/1/1024x.webp?v=1737701571",
+      "isAlcohol": true,
+      "pureAlcoholGrams": 14.2,
+      "proofInsideBracket": 24.0,
+      "ingredients": [
+        { "name": "Hayman's London Dry Gin", "ml": 45 },
+        { "name": "Americano bianco", "ml": 22.5 },
+        { "name": "Orange juice (freshly squeezed)", "ml": 22.5 },
+        { "name": "Angostura Aromatic Bitters", "ml": 0.8 }
+      ],
+      "scoreStrength": 7.0,
+      "scoreSweetSour": 7.0,
+      "reviewText": "A dry, orangey, herbal, gin-laced aperitivo, closely related to the better known Bronx .",
+      "tasteProfile": {
+        "sweetness": 3.2,
+        "sourness": 4.1,
+        "bitterness": 5.7,
+        "umamiSalty": 1.2,
+        "fruity": 4.8,
+        "citrus": 5.3,
+        "floral": 2.1,
+        "herbal": 6.4,
+        "spicy": 1.9,
+        "woodySmoky": 1.5,
+        "body": 3.8,
+        "fizzy": 0.0
+      },
+      "matchScore": 0.0
+    }
+  ],
+  "totalElements": 320,
+  "totalPages": 16,
+  "page": 0,
+  "size": 20
+}
 ```
 
-### 응답 필드
+### 응답 필드 (최상위)
+
+| 필드              | 타입       | 설명              |
+|-----------------|----------|-----------------|
+| `content`       | `array`  | 칵테일 목록 (아래 참고)  |
+| `totalElements` | `number` | 전체 칵테일 수        |
+| `totalPages`    | `number` | 전체 페이지 수        |
+| `page`          | `number` | 현재 페이지 번호       |
+| `size`          | `number` | 현재 페이지 크기       |
+
+### content 항목 필드
 
 | 필드                        | 타입        | 설명                   | 비고                |
 |---------------------------|-----------|----------------------|-------------------|
@@ -116,7 +147,7 @@ curl -s http://localhost:8080/cocktails
 | `body`        | `number` | 바디감    |
 | `fizzy`       | `number` | 탄산감    |
 
-### 프론트 참고
+### 참고
 
 - 현재 정렬은 별도로 보장하지 않습니다.
 
